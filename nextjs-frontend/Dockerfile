@@ -4,7 +4,7 @@ FROM node:20-bookworm
 WORKDIR /app
 
 # Install pnpm globally
-RUN npm install -g pnpm
+RUN npm install -g pnpm@10.7.1
 
 # Copy package files and install dependencies
 COPY package.json pnpm-lock.yaml ./
