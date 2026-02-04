@@ -7,8 +7,34 @@ on:
   pull_request:
 
 jobs:
+  detect-changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+      docker: ${{ steps.filter.outputs.docker }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for file changes
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'fastapi_backend/**'
+            frontend:
+              - 'nextjs-frontend/**'
+            docker:
+              - '**/Dockerfile'
+              - '**/.dockerignore'
+
   lint-backend:
     name: Lint Backend (Ruff)
+    needs: detect-changes
+    if: needs.detect-changes.outputs.backend == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -37,6 +63,8 @@ jobs:
 
   lint-frontend:
     name: Lint Frontend (Biome + TypeScript)
+    needs: detect-changes
+    if: needs.detect-changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -68,6 +96,8 @@ jobs:
 
   lint-docker:
     name: Lint Dockerfiles (Hadolint)
+    needs: detect-changes
+    if: needs.detect-changes.outputs.docker == 'true'
     runs-on: ubuntu-latest
 
     steps:

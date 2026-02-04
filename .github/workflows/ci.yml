@@ -7,8 +7,30 @@ on:
   pull_request:
 
 jobs:
+  detect-changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for file changes
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'fastapi_backend/**'
+            frontend:
+              - 'nextjs-frontend/**'
+
   build-fastapi:
     name: FastAPI CI
+    needs: detect-changes
+    if: needs.detect-changes.outputs.backend == 'true'
 
     runs-on: ubuntu-latest
 
@@ -18,7 +40,7 @@ jobs:
       ACCESS_SECRET_KEY: ci-secret-key-access
       RESET_PASSWORD_SECRET_KEY: ci-secret-key-reset
       VERIFICATION_SECRET_KEY: ci-secret-key-verification
-      CORS_ORIGINS: '["*"]'
+      CORS_ORIGINS: '[\"*\"]'
 
     services:
       postgres:
@@ -64,6 +86,8 @@ jobs:
 
   build-frontend:
     name: Next.js CI
+    needs: detect-changes
+    if: needs.detect-changes.outputs.frontend == 'true'
 
     runs-on: ubuntu-latest
 
@@ -101,6 +125,7 @@ jobs:
     name: Coveralls
 
     needs: [build-fastapi, build-frontend]
+    if: always()
 
     runs-on: ubuntu-latest
 
