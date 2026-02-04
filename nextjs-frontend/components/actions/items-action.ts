@@ -1,9 +1,9 @@
 "use server";
 
-import { cookies } from "next/headers";
-import { readItem, deleteItem, createItem } from "@/app/clientService";
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { createItem, deleteItem, readItem } from "@/app/clientService";
 import { itemSchema } from "@/lib/definitions";
 
 export async function fetchItems(page: number = 1, size: number = 10) {
@@ -54,7 +54,7 @@ export async function removeItem(id: string) {
   revalidatePath("/dashboard");
 }
 
-export async function addItem(prevState: {}, formData: FormData) {
+export async function addItem(_prevState: unknown, formData: FormData) {
   const cookieStore = await cookies();
   const token = cookieStore.get("accessToken")?.value;
 

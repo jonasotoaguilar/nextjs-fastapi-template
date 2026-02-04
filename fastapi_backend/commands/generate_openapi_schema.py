@@ -19,6 +19,20 @@ def generate_openapi_schema(output_file):
     output_path.write_text(json.dumps(updated_schema, indent=2))
     print(f"OpenAPI schema saved to {output_file}")
 
+    # Format with biome if available
+    import subprocess
+
+    try:
+        # We use --no-errors-on-unmatched to avoid failing if biome is not configured to handle json
+        subprocess.run(
+            ["pnpm", "biome", "format", "--write", str(output_path)],
+            check=False,
+            capture_output=True,
+        )
+        print(f"Formatted {output_file} with Biome")
+    except Exception as e:
+        print(f"Could not format with Biome: {e}")
+
 
 def remove_operation_id_tag(schema):
     """

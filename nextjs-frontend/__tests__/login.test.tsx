@@ -1,6 +1,6 @@
-import { login } from "@/components/actions/login-action";
-import { authJwtLogin } from "@/app/clientService";
 import { cookies } from "next/headers";
+import { authJwtLogin } from "@/app/clientService";
+import { login } from "@/components/actions/login-action";
 
 jest.mock("../app/clientService", () => ({
   authJwtLogin: jest.fn(),

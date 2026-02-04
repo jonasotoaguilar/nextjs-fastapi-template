@@ -1,5 +1,8 @@
 "use client";
 
+import Link from "next/link";
+import { useActionState } from "react";
+import { passwordReset } from "@/components/actions/password-reset-action";
 import {
   Card,
   CardContent,
@@ -7,14 +10,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { FormError } from "@/components/ui/FormError";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-import { passwordReset } from "@/components/actions/password-reset-action";
-import { useActionState } from "react";
 import { SubmitButton } from "@/components/ui/submitButton";
-import Link from "next/link";
-import { FormError } from "@/components/ui/FormError";
 
 export default function Page() {
   const [state, dispatch] = useActionState(passwordReset, undefined);

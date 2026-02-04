@@ -35,5 +35,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+/app/openapi-client/
 
 !/lib/
+.env.*
+! .env.example

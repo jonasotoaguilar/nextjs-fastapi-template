@@ -23,12 +23,20 @@ repos:
     hooks:
       # Run the linter.
       - id: ruff
-        args: [ --fix ]
+        args: [--fix]
       # Run the formatter.
       - id: ruff-format
 
   - repo: local
     hooks:
+      - id: frontend-biome
+        name: run frontend biome
+        entry: sh -c 'docker compose run --rm --no-deps -T frontend pnpm biome check --write --no-errors-on-unmatched --files-ignore-unknown=true'
+        language: system
+        types: [file]
+        files: ^nextjs-frontend/.*\.(js|jsx|ts|tsx|json|css)$
+        exclude: (openapi\.json$|openapi-client/)
+        pass_filenames: true
       - id: generate-openapi-schema
         name: generate OpenAPI schema
         entry: sh -c 'docker compose run --rm --no-deps -T backend uv run python -m commands.generate_openapi_schema'

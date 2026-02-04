@@ -29,25 +29,19 @@ repos:
 
   - repo: local
     hooks:
-      - id: frontend-lint
-        name: run frontend lint
-        entry: sh -c 'cd nextjs-frontend && pnpm run lint'
+      - id: frontend-biome
+        name: run frontend biome
+        entry: sh -c 'cd nextjs-frontend && pnpm biome check --write --no-errors-on-unmatched --files-ignore-unknown=true'
         language: system
-        types: [ file ]
-        files: ^nextjs-frontend/.*\.(js|jsx|ts|tsx)$
-        pass_filenames: true
-      - id: frontend-prettier
-        name: Run Prettier on frontend files
-        entry: sh -c 'cd nextjs-frontend && pnpm run prettier'
-        language: system
-        types: [ file ]
-        files: ^nextjs-frontend/.*\.(js|jsx|ts|tsx)$
+        types: [file]
+        files: ^nextjs-frontend/.*\.(js|jsx|ts|tsx|json|css)$
+        exclude: (openapi\.json$|openapi-client/)
         pass_filenames: true
       - id: frontend-tsc
         name: run frontend tsc
         entry: sh -c 'cd nextjs-frontend && pnpm run tsc'
         language: system
-        types: [ file ]
+        types: [file]
         files: ^nextjs-frontend/.*\.(ts|tsx)$
         pass_filenames: false
       - id: generate-openapi-schema

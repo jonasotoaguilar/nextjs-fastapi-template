@@ -1,0 +1,79 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.3.14/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": false,
+    "includes": [
+      "**",
+      "!!node_modules",
+      "!!.next",
+      "!!out",
+      "!!build",
+      "!!next-env.d.ts",
+      "!!app/openapi-client",
+      "!!openapi.json"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 80,
+    "attributePosition": "auto"
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "performance": {
+        "noImgElement": "warn",
+        "noUnwantedPolyfillio": "warn",
+        "useGoogleFontPreconnect": "warn"
+      },
+      "suspicious": {
+        "noExplicitAny": "warn",
+        "noDocumentImportInPage": "error",
+        "noHeadImportInDocument": "error",
+        "noUnknownAtRules": "off"
+      },
+      "style": {
+        "useBlockStatements": "off",
+        "noHeadElement": "warn"
+      },
+      "a11y": {
+        "useButtonType": "error",
+        "useFocusableInteractive": "error",
+        "useSemanticElements": "error"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "jsxQuoteStyle": "double",
+      "trailingCommas": "all",
+      "semicolons": "always",
+      "arrowParentheses": "always"
+    }
+  },
+  "css": {
+    "parser": {
+      "cssModules": true,
+      "tailwindDirectives": true
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["*.js", "*.cjs"],
+      "javascript": {
+        "globals": ["exports", "module", "require"]
+      }
+    }
+  ]
+}

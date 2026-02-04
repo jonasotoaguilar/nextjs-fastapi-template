@@ -86,6 +86,10 @@ jobs:
         working-directory: ./nextjs-frontend
         run: pnpm install
 
+      - name: Run Biome check
+        working-directory: ./nextjs-frontend
+        run: pnpm run check
+
       - name: Run tests
         working-directory: ./nextjs-frontend
         run: pnpm run coverage

@@ -1,24 +1,24 @@
+import Link from "next/link";
+import type { ReadItemResponse } from "@/app/openapi-client";
+import { fetchItems } from "@/components/actions/items-action";
+import { PagePagination } from "@/components/page-pagination";
+import { PageSizeSelector } from "@/components/page-size-selector";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
-  TableRow,
   TableHeader,
+  TableRow,
 } from "@/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-import { fetchItems } from "@/components/actions/items-action";
 import { DeleteButton } from "./deleteButton";
-import { ReadItemResponse } from "@/app/openapi-client";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { PageSizeSelector } from "@/components/page-size-selector";
-import { PagePagination } from "@/components/page-pagination";
 
 interface DashboardPageProps {
   searchParams: Promise<{
@@ -75,8 +75,8 @@ export default async function DashboardPage({
                 </TableCell>
               </TableRow>
             ) : (
-              items.items.map((item, index) => (
-                <TableRow key={index}>
+              items.items.map((item) => (
+                <TableRow key={item.id}>
                   <TableCell>{item.name}</TableCell>
                   <TableCell>{item.description}</TableCell>
                   <TableCell className="text-center">{item.quantity}</TableCell>

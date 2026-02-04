@@ -7,7 +7,7 @@ import { registerRegister } from "@/app/clientService";
 import { registerSchema } from "@/lib/definitions";
 import { getErrorMessage } from "@/lib/utils";
 
-export async function register(prevState: unknown, formData: FormData) {
+export async function register(_prevState: unknown, formData: FormData) {
   const validatedFields = registerSchema.safeParse({
     email: formData.get("email") as string,
     password: formData.get("password") as string,

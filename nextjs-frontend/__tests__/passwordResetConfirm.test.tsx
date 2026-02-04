@@ -1,6 +1,6 @@
-import { passwordResetConfirm } from "@/components/actions/password-reset-action";
-import { resetResetPassword } from "@/app/clientService";
 import { redirect } from "next/navigation";
+import { resetResetPassword } from "@/app/clientService";
+import { passwordResetConfirm } from "@/components/actions/password-reset-action";
 
 jest.mock("next/navigation", () => ({
   redirect: jest.fn(),

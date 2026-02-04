@@ -7,7 +7,7 @@ WORKDIR /app
 RUN npm install -g pnpm
 
 # Copy package files and install dependencies
-COPY package*.json ./
+COPY package.json pnpm-lock.yaml ./
 
 # Install dependencies as root (or myappuser, depending on your structure)
 RUN pnpm install

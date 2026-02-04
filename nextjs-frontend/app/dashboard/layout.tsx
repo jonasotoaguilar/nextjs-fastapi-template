@@ -1,7 +1,8 @@
-import Link from "next/link";
-import { Home, Users2, List } from "lucide-react";
+import { Home, List, Users2 } from "lucide-react";
 import Image from "next/image";
-
+import Link from "next/link";
+import { logout } from "@/components/actions/logout-action";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,8 +16,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { logout } from "@/components/actions/logout-action";
 
 export default function DashboardLayout({
   children,
@@ -79,7 +78,10 @@ export default function DashboardLayout({
           <div className="relative">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-300 hover:bg-gray-400">
+                <button
+                  type="button"
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-300 hover:bg-gray-400"
+                >
                   <Avatar>
                     <AvatarFallback>U</AvatarFallback>
                   </Avatar>
@@ -96,6 +98,7 @@ export default function DashboardLayout({
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <button
+                    type="button"
                     onClick={logout}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >

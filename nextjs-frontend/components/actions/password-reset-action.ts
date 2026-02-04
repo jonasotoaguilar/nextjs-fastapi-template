@@ -1,11 +1,11 @@
 "use server";
 
-import { resetForgotPassword, resetResetPassword } from "@/app/clientService";
 import { redirect } from "next/navigation";
+import { resetForgotPassword, resetResetPassword } from "@/app/clientService";
 import { passwordResetConfirmSchema } from "@/lib/definitions";
 import { getErrorMessage } from "@/lib/utils";
 
-export async function passwordReset(prevState: unknown, formData: FormData) {
+export async function passwordReset(_prevState: unknown, formData: FormData) {
   const input = {
     body: {
       email: formData.get("email") as string,
@@ -27,7 +27,7 @@ export async function passwordReset(prevState: unknown, formData: FormData) {
 }
 
 export async function passwordResetConfirm(
-  prevState: unknown,
+  _prevState: unknown,
   formData: FormData,
 ) {
   const validatedFields = passwordResetConfirmSchema.safeParse({

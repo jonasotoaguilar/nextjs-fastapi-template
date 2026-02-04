@@ -1,8 +1,8 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { authJwtLogout } from "@/app/clientService";
 import { redirect } from "next/navigation";
+import { authJwtLogout } from "@/app/clientService";
 
 export async function logout() {
   const cookieStore = await cookies();

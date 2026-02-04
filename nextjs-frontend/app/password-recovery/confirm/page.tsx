@@ -1,9 +1,8 @@
 "use client";
 
-import { useActionState } from "react";
 import { notFound, useSearchParams } from "next/navigation";
+import { Suspense, useActionState } from "react";
 import { passwordResetConfirm } from "@/components/actions/password-reset-action";
-import { SubmitButton } from "@/components/ui/submitButton";
 import {
   Card,
   CardContent,
@@ -11,10 +10,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Suspense } from "react";
 import { FieldError, FormError } from "@/components/ui/FormError";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { SubmitButton } from "@/components/ui/submitButton";
 
 function ResetPasswordForm() {
   const [state, dispatch] = useActionState(passwordResetConfirm, undefined);

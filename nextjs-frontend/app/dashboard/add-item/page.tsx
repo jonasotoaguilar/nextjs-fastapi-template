@@ -1,9 +1,9 @@
 "use client";
 
+import { useActionState } from "react";
+import { addItem } from "@/components/actions/items-action";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { addItem } from "@/components/actions/items-action";
-import { useActionState } from "react";
 import { SubmitButton } from "@/components/ui/submitButton";
 
 const initialState = { message: "" };

@@ -1,6 +1,9 @@
-import { AuthJwtLoginError, RegisterRegisterError } from "@/app/clientService";
-import { clsx, type ClassValue } from "clsx";
+import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import type {
+  AuthJwtLoginError,
+  RegisterRegisterError,
+} from "@/app/clientService";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -16,7 +19,7 @@ export function getErrorMessage(
     errorMessage = error.detail;
   } else if (typeof error.detail === "object" && "reason" in error.detail) {
     // If detail is an object with a 'reason' key, use that
-    errorMessage = error.detail["reason"];
+    errorMessage = error.detail.reason;
   }
 
   return errorMessage;

@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 interface PagePaginationProps {
   currentPage: number;

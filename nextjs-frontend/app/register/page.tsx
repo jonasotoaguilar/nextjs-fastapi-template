@@ -1,5 +1,8 @@
 "use client";
 
+import Link from "next/link";
+import { useActionState } from "react";
+import { register } from "@/components/actions/register-action";
 import {
   Card,
   CardContent,
@@ -7,14 +10,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { FieldError, FormError } from "@/components/ui/FormError";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-import { register } from "@/components/actions/register-action";
-import { useActionState } from "react";
 import { SubmitButton } from "@/components/ui/submitButton";
-import Link from "next/link";
-import { FieldError, FormError } from "@/components/ui/FormError";
 
 export default function Page() {
   const [state, dispatch] = useActionState(register, undefined);

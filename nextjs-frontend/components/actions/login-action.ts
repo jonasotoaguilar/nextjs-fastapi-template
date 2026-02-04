@@ -1,13 +1,12 @@
 "use server";
 
 import { cookies } from "next/headers";
-
-import { authJwtLogin } from "@/app/clientService";
 import { redirect } from "next/navigation";
+import { authJwtLogin } from "@/app/clientService";
 import { loginSchema } from "@/lib/definitions";
 import { getErrorMessage } from "@/lib/utils";
 
-export async function login(prevState: unknown, formData: FormData) {
+export async function login(_prevState: unknown, formData: FormData) {
   const validatedFields = loginSchema.safeParse({
     username: formData.get("username") as string,
     password: formData.get("password") as string,
