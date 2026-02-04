@@ -1,0 +1,86 @@
+name: Lint
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  lint-backend:
+    name: Lint Backend (Ruff)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install dependencies
+        working-directory: ./fastapi_backend
+        run: uv sync --all-extras --dev
+
+      - name: Run Ruff lint
+        working-directory: ./fastapi_backend
+        run: uv run ruff check .
+
+      - name: Run Ruff format check
+        working-directory: ./fastapi_backend
+        run: uv run ruff format --check .
+
+  lint-frontend:
+    name: Lint Frontend (Biome + TypeScript)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        working-directory: ./nextjs-frontend
+        run: pnpm install
+
+      - name: Run Biome check
+        working-directory: ./nextjs-frontend
+        run: pnpm run check
+
+      - name: Run TypeScript check
+        working-directory: ./nextjs-frontend
+        run: pnpm run tsc
+
+  lint-docker:
+    name: Lint Dockerfiles (Hadolint)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Hadolint on backend Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: fastapi_backend/Dockerfile
+          ignore: DL3013
+
+      - name: Run Hadolint on frontend Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: nextjs-frontend/Dockerfile
