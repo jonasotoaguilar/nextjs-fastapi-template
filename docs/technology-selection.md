@@ -1,29 +1,29 @@
-This template streamlines building APIs with [FastAPI](https://fastapi.tiangolo.com/) and dynamic frontends with [Next.js](https://nextjs.org/). It integrates the backend and frontend using [@hey-api/openapi-ts](https://github.com/hey-ai/openapi-ts) to generate a type-safe client, with automated watchers to keep the OpenAPI schema and client updated, ensuring a smooth and synchronized development workflow.  
+Este template agiliza la construcción de APIs con [FastAPI](https://fastapi.tiangolo.com/) y frontends dinámicos con [Next.js](https://nextjs.org/). Integra el backend y el frontend utilizando [@hey-api/openapi-ts](https://github.com/hey-ai/openapi-ts) para generar un cliente con type-safety, junto con procesos automatizados para mantener el schema OpenAPI y el cliente actualizados, asegurando un flujo de trabajo de desarrollo fluido y sincronizado.
 
-- [Next.js](https://nextjs.org/): Fast, SEO-friendly frontend framework  
-- [FastAPI](https://fastapi.tiangolo.com/): High-performance Python backend  
-- [SQLAlchemy](https://www.sqlalchemy.org/): Powerful Python SQL toolkit and ORM
-- [PostgreSQL](https://www.postgresql.org/): Advanced open-source relational database
-- [Pydantic](https://docs.pydantic.dev/): Data validation and settings management using Python type annotations
-- [Zod](https://zod.dev/) + [TypeScript](https://www.typescriptlang.org/): End-to-end type safety and schema validation  
-- [fastapi-users](https://fastapi-users.github.io/fastapi-users/): Complete authentication system with:
-    - Secure password hashing by default
-    - JWT (JSON Web Token) authentication
-    - Email-based password recovery
-- [Shadcn/ui](https://ui.shadcn.com/): Beautiful and customizable React components
-- [OpenAPI-fetch](https://github.com/Hey-AI/openapi-fetch): Fully typed client generation from OpenAPI schema  
-- [fastapi-mail](https://sabuhish.github.io/fastapi-mail/): Efficient email handling for FastAPI applications
-- [uv](https://docs.astral.sh/uv/): An extremely fast Python package and project manager
-- [Pytest](https://docs.pytest.org/): Powerful Python testing framework
-- Code Quality Tools:
-    - [Ruff](https://github.com/astral-sh/ruff): Fast Python linter
-    - [ESLint](https://eslint.org/): JavaScript/TypeScript code quality
-- Hot reload watchers:  
-    - Backend: [Watchdog](https://github.com/gorakhargosh/watchdog) for monitoring file changes  
-    - Frontend: [Chokidar](https://github.com/paulmillr/chokidar) for live updates  
-- [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/): Consistent environments for development and production
-- [MailHog](https://github.com/mailhog/MailHog): Email server for development
-- [Pre-commit hooks](https://pre-commit.com/): Enforce code quality with automated checks  
-- [OpenAPI JSON schema](https://swagger.io/specification/): Centralized API documentation and client generation  
+- [Next.js](https://nextjs.org/): Framework de frontend rápido y amigable para SEO.
+- [FastAPI](https://fastapi.tiangolo.com/): Backend de Python de alto rendimiento.
+- [SQLAlchemy](https://www.sqlalchemy.org/): Potente toolkit de SQL y ORM para Python.
+- [PostgreSQL](https://www.postgresql.org/): Base de datos relacional de código abierto avanzada.
+- [Pydantic](https://docs.pydantic.dev/): Validación de datos y gestión de configuraciones utilizando anotaciones de tipo de Python.
+- [Zod](https://zod.dev/) + [TypeScript](https://www.typescriptlang.org/): Type-safety de extremo a extremo y validación de schemas.
+- [fastapi-users](https://fastapi-users.github.io/fastapi-users/): Sistema completo de autenticación con:
+  - Hash de contraseña seguro por defecto.
+  - Autenticación JWT (JSON Web Token).
+  - Recuperación de contraseña basada en email.
+- [Shadcn/ui](https://ui.shadcn.com/): Componentes React hermosos y personalizables.
+- [OpenAPI-fetch](https://github.com/Hey-AI/openapi-fetch): Generación de cliente completamente tipado desde el schema OpenAPI.
+- [fastapi-mail](https://sabuhish.github.io/fastapi-mail/): Manejo eficiente de correos electrónicos para aplicaciones FastAPI.
+- [uv](https://docs.astral.sh/uv/): Un gestor de paquetes y proyectos de Python extremadamente rápido.
+- [Pytest](https://docs.pytest.org/): Potente framework de pruebas para Python.
+- Herramientas de calidad de código:
+  - [Ruff](https://github.com/astral-sh/ruff): Linter rápido para Python.
+  - [ESLint](https://eslint.org/): Calidad de código JavaScript/TypeScript.
+- Watchers de Hot reload:
+  - Backend: [Watchdog](https://github.com/gorakhargosh/watchdog) para monitorear cambios en archivos.
+  - Frontend: [Chokidar](https://github.com/paulmillr/chokidar) para actualizaciones en vivo.
+- [Docker](https://www.docker.com/) y [Docker Compose](https://docs.docker.com/compose/): Entornos consistentes para desarrollo y producción.
+- [MailHog](https://github.com/mailhog/MailHog): Servidor de correo para desarrollo.
+- [Hooks de Pre-commit](https://pre-commit.com/): Refuerzan la calidad del código con comprobaciones automatizadas.
+- [Schema OpenAPI JSON](https://swagger.io/specification/): Documentación de API centralizada y generación de clientes.
 
-With this setup, you'll save time and maintain a seamless connection between your backend and frontend, boosting productivity and reliability.
+Con esta configuración, ahorrarás tiempo y mantendrás una conexión perfecta entre tu backend y tu frontend, aumentando la productividad y la fiabilidad.
