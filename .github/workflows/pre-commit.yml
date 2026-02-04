@@ -2,11 +2,12 @@ name: pre-commit
 
 on:
   push:
+    branches:
+      - main
   pull_request:
 
 jobs:
   pre-commit:
-
     runs-on: ubuntu-latest
 
     env:
@@ -17,7 +18,6 @@ jobs:
       VERIFICATION_SECRET_KEY: ${{ secrets.VERIFICATION_SECRET_KEY }}
       OPENAPI_OUTPUT_FILE: ${{ secrets.OPENAPI_OUTPUT_FILE }}
       CORS_ORIGINS: ${{ secrets.CORS_ORIGINS }}
-
 
     steps:
       - name: Checkout code
