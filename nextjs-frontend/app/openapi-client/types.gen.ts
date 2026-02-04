@@ -658,7 +658,7 @@ export type ReadItemData = {
          */
         size?: number;
     };
-    url: '/items/';
+    url: '/api/v1/items/';
 };
 
 export type ReadItemErrors = {
@@ -683,7 +683,7 @@ export type CreateItemData = {
     body: ItemCreate;
     path?: never;
     query?: never;
-    url: '/items/';
+    url: '/api/v1/items/';
 };
 
 export type CreateItemErrors = {
@@ -713,7 +713,7 @@ export type DeleteItemData = {
         item_id: string;
     };
     query?: never;
-    url: '/items/{item_id}';
+    url: '/api/v1/items/{item_id}';
 };
 
 export type DeleteItemErrors = {

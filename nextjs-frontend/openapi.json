@@ -651,9 +651,9 @@
 				}
 			}
 		},
-		"/items/": {
+		"/api/v1/items/": {
 			"get": {
-				"tags": ["item"],
+				"tags": ["items"],
 				"summary": "Read Item",
 				"operationId": "read_item",
 				"security": [
@@ -714,7 +714,7 @@
 				}
 			},
 			"post": {
-				"tags": ["item"],
+				"tags": ["items"],
 				"summary": "Create Item",
 				"operationId": "create_item",
 				"security": [
@@ -756,9 +756,9 @@
 				}
 			}
 		},
-		"/items/{item_id}": {
+		"/api/v1/items/{item_id}": {
 			"delete": {
-				"tags": ["item"],
+				"tags": ["items"],
 				"summary": "Delete Item",
 				"operationId": "delete_item",
 				"security": [

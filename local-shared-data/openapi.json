@@ -675,9 +675,10 @@
         }
       }
     },
-    "/items/": {
+    "/api/v1/items/": {
       "get": {
         "tags": [
+          "items",
           "item"
         ],
         "summary": "Read Item",
@@ -741,6 +742,7 @@
       },
       "post": {
         "tags": [
+          "items",
           "item"
         ],
         "summary": "Create Item",
@@ -784,9 +786,10 @@
         }
       }
     },
-    "/items/{item_id}": {
+    "/api/v1/items/{item_id}": {
       "delete": {
         "tags": [
+          "items",
           "item"
         ],
         "summary": "Delete Item",

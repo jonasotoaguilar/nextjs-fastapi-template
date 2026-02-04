@@ -230,7 +230,7 @@ export const readItem = <ThrowOnError extends boolean = false>(options?: Options
                 type: 'http'
             }
         ],
-        url: '/items/',
+        url: '/api/v1/items/',
         ...options
     });
 };
@@ -247,7 +247,7 @@ export const createItem = <ThrowOnError extends boolean = false>(options: Option
                 type: 'http'
             }
         ],
-        url: '/items/',
+        url: '/api/v1/items/',
         ...options,
         headers: {
             'Content-Type': 'application/json',
@@ -268,7 +268,7 @@ export const deleteItem = <ThrowOnError extends boolean = false>(options: Option
                 type: 'http'
             }
         ],
-        url: '/items/{item_id}',
+        url: '/api/v1/items/{item_id}',
         ...options
     });
 };

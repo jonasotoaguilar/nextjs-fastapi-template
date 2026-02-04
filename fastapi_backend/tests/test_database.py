@@ -2,7 +2,7 @@ import pytest
 from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
 from fastapi_users.db import SQLAlchemyUserDatabase
 
-from app.database import (
+from app.core.database import (
     async_session_maker,
     create_db_and_tables,
     get_async_session,
@@ -38,7 +38,7 @@ async def mock_session(mocker):
     mock_session.__aexit__.return_value = None
 
     # Mock the session maker
-    mock_session_maker = mocker.patch("app.database.async_session_maker")
+    mock_session_maker = mocker.patch("app.core.database.async_session_maker")
     mock_session_maker.return_value = mock_session
 
     return mock_session
@@ -47,7 +47,7 @@ async def mock_session(mocker):
 @pytest.mark.asyncio
 async def test_create_db_and_tables(mock_engine, mocker):
     # Replace the real engine with our mock
-    mocker.patch("app.database.engine", mock_engine)
+    mocker.patch("app.core.database.engine", mock_engine)
 
     await create_db_and_tables()
 
@@ -87,12 +87,12 @@ async def test_get_user_db(mock_session):
 
 def test_engine_creation(mocker):
     # Mock settings
-    mock_settings = mocker.patch("app.database.settings")
+    mock_settings = mocker.patch("app.core.database.settings")
     mock_settings.DATABASE_URL = "sqlite+aiosqlite:///./test.db"
     mock_settings.EXPIRE_ON_COMMIT = False
 
     # Import engine to trigger creation with mocked settings
-    from app.database import engine, async_session_maker
+    from app.core.database import engine, async_session_maker
 
     # Verify engine is created
     assert isinstance(engine, AsyncEngine)

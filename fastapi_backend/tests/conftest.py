@@ -5,12 +5,12 @@ from fastapi_users.db import SQLAlchemyUserDatabase
 from fastapi_users.password import PasswordHelper
 import uuid
 
-from app.config import settings
+from app.core.config import settings
 from app.models import User, Base
 
-from app.database import get_user_db, get_async_session
+from app.core.database import get_user_db, get_async_session
 from app.main import app
-from app.users import get_jwt_strategy
+from app.core.users import get_jwt_strategy
 
 
 @pytest_asyncio.fixture(scope="function")

@@ -7,7 +7,7 @@ from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from .config import settings
-from .models import Base, User
+from app.models import Base, User
 
 
 parsed_db_url = urlparse(settings.DATABASE_URL)

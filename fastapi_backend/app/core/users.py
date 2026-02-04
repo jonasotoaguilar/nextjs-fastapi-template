@@ -21,8 +21,8 @@ from fastapi_users.db import SQLAlchemyUserDatabase
 from .config import settings
 from .database import get_user_db
 from .email import send_reset_password_email
-from .models import User
-from .schemas import UserCreate
+from app.models import User
+from app.schemas import UserCreate
 
 AUTH_URL_PATH = "auth"
 

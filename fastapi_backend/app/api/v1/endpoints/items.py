@@ -6,12 +6,13 @@ from fastapi_pagination.ext.sqlalchemy import apaginate
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from app.database import User, get_async_session
+from app.core.database import get_async_session
+from app.models import User
 from app.models import Item
 from app.schemas import ItemRead, ItemCreate
-from app.users import current_active_user
+from app.core.users import current_active_user
 
-router = APIRouter(tags=["item"])
+router = APIRouter()
 
 
 def transform_items(items):
