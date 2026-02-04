@@ -32,12 +32,12 @@ export function PagePagination({
     <div className="flex items-center justify-between my-4">
       <div className="text-sm text-gray-600">
         {totalItems === 0 ? (
-          <>Showing 0 of 0 results</>
+          <>Mostrando 0 de 0 resultados</>
         ) : (
           <>
-            Showing {(currentPage - 1) * pageSize + 1} to{" "}
-            {Math.min(currentPage * pageSize, totalItems)} of {totalItems}{" "}
-            results
+            Mostrando {(currentPage - 1) * pageSize + 1} a{" "}
+            {Math.min(currentPage * pageSize, totalItems)} de {totalItems}{" "}
+            resultados
           </>
         )}
       </div>
@@ -66,7 +66,7 @@ export function PagePagination({
         {/* Page Info */}
         {totalPages > 0 && (
           <span className="text-sm font-medium">
-            Page {currentPage} of {totalPages}
+            Página {currentPage} de {totalPages}
           </span>
         )}
 

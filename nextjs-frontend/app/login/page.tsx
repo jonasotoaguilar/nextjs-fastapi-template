@@ -23,10 +23,10 @@ export default function Page() {
         <Card className="w-full max-w-sm rounded-lg shadow-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-semibold text-gray-800 dark:text-white">
-              Login
+              Iniciar Sesión
             </CardTitle>
             <CardDescription className="text-sm text-gray-600 dark:text-gray-400">
-              Enter your email below to log in to your account.
+              Ingresá tu email para acceder a tu cuenta.
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-6 p-6">
@@ -35,7 +35,7 @@ export default function Page() {
                 htmlFor="username"
                 className="text-gray-700 dark:text-gray-300"
               >
-                Username
+                Usuario
               </Label>
               <Input
                 id="username"
@@ -52,7 +52,7 @@ export default function Page() {
                 htmlFor="password"
                 className="text-gray-700 dark:text-gray-300"
               >
-                Password
+                Contraseña
               </Label>
               <Input
                 id="password"
@@ -66,18 +66,18 @@ export default function Page() {
                 href="/password-recovery"
                 className="ml-auto inline-block text-sm text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-500"
               >
-                Forgot your password?
+                ¿Olvidaste tu contraseña?
               </Link>
             </div>
-            <SubmitButton text="Sign In" />
+            <SubmitButton text="Ingresar" />
             <FormError state={state} />
             <div className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
-              Don&apos;t have an account?{" "}
+              ¿No tenés cuenta?{" "}
               <Link
                 href="/register"
                 className="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-500"
               >
-                Sign up
+                Registrate
               </Link>
             </div>
           </CardContent>

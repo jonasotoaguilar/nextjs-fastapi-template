@@ -68,6 +68,7 @@ repos:
         language: system
         types: [file]
         files: ^nextjs-frontend/.*\.(ts|tsx)$
+        exclude: ^nextjs-frontend/\.next/
         pass_filenames: false
       - id: generate-openapi-schema
         name: generate OpenAPI schema

@@ -28,19 +28,19 @@ function ResetPasswordForm() {
     <form action={dispatch}>
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">Reset your Password</CardTitle>
+          <CardTitle className="text-2xl">Restablecer Contraseña</CardTitle>
           <CardDescription>
-            Enter the new password and confirm it.
+            Ingresá tu nueva contraseña y confirmála.
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">Contraseña</Label>
             <Input id="password" name="password" type="password" required />
           </div>
           <FieldError state={state} field="password" />
           <div className="grid gap-2">
-            <Label htmlFor="passwordConfirm">Password Confirm</Label>
+            <Label htmlFor="passwordConfirm">Confirmar Contraseña</Label>
             <Input
               id="passwordConfirm"
               name="passwordConfirm"
@@ -56,7 +56,7 @@ function ResetPasswordForm() {
             value={token}
             readOnly
           />
-          <SubmitButton text={"Send"} />
+          <SubmitButton text={"Enviar"} />
           <FormError state={state} />
         </CardContent>
       </Card>
@@ -67,7 +67,7 @@ function ResetPasswordForm() {
 export default function Page() {
   return (
     <div className="flex h-screen w-full items-center justify-center px-4">
-      <Suspense fallback={<div>Loading reset form...</div>}>
+      <Suspense fallback={<div>Cargando formulario...</div>}>
         <ResetPasswordForm />
       </Suspense>
     </div>

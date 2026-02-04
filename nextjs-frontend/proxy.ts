@@ -24,5 +24,7 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  // Add your protected routes here
+  // Example: matcher: ["/dashboard/:path*", "/profile/:path*"],
+  matcher: [],
 };
