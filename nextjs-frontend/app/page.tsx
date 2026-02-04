@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { FaGithub } from "react-icons/fa";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
@@ -30,23 +28,6 @@ export default function Home() {
               Registrarse
             </Button>
           </Link>
-        </div>
-
-        {/* GitHub Badge */}
-        <div className="mt-6">
-          <Badge
-            variant="outline"
-            className="text-sm inline-flex items-center gap-2 px-4 py-2 rounded-lg border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 cursor-pointer"
-          >
-            <FaGithub className="w-5 h-5 text-black dark:text-white" />
-            <Link
-              href="https://github.com/vintasoftware/nextjs-fastapi-template"
-              target="_blank"
-              className="hover:underline"
-            >
-              Ver en GitHub
-            </Link>
-          </Badge>
         </div>
       </div>
     </main>
