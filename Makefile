@@ -12,18 +12,26 @@ help:
 	@awk '/^[a-zA-Z_-]+:/{split($$1, target, ":"); print "  " target[1] "\t" substr($$0, index($$0,$$2))}' $(MAKEFILE_LIST)
 
 # Initialization
-.PHONY:  init-env install
+.PHONY: init-env install install-pre-commit
 
 init-env: ## Copy .env.example to .env in both frontend and backend
 	@echo "Initializing environment variables..."
 	@if [ ! -f $(BACKEND_DIR)/.env ]; then cp $(BACKEND_DIR)/.env.example $(BACKEND_DIR)/.env; echo "Created backend .env"; else echo "Backend .env already exists"; fi
-	@if [ ! -f $(FRONTEND_DIR)/.env ]; then cp $(FRONTEND_DIR)/.env.example $(FRONTEND_DIR)/.env; echo "Created frontend .env"; else echo "Frontend .env already exists"; fi
+	@if [ ! -f $(FRONTEND_DIR)/.env ]; then cp $(FRONTEND_DIR)/.env.example $(FRONTEND_DIR)/.env.local; echo "Created frontend .env.local"; else echo "Frontend .env already exists"; fi
 
 install: ## Install dependencies for both backend (uv) and frontend (pnpm) on host
 	@echo "Installing backend dependencies (uv)..."
 	cd $(BACKEND_DIR) && uv sync
 	@echo "Installing frontend dependencies (pnpm)..."
 	cd $(FRONTEND_DIR) && pnpm install
+
+install-pre-commit: ## Install pre-commit hooks using uv from backend
+	@echo "Installing pre-commit hooks..."
+	cd $(BACKEND_DIR) && uv run pre-commit install
+
+lint: ## Run pre-commit hooks on all files
+	@echo "Running pre-commit hooks..."
+	cd $(BACKEND_DIR) && uv run pre-commit run --all-files
 
 # Cleanup
 .PHONY: clean
@@ -56,10 +64,19 @@ test-frontend: ## Run frontend tests using npm
 
 
 # Docker commands
-.PHONY: docker-backend-shell docker-frontend-shell docker-build docker-build-backend \
+.PHONY: docker-up docker-down docker-logs docker-backend-shell docker-frontend-shell docker-build docker-build-backend \
         docker-build-frontend docker-start-backend docker-start-frontend docker-up-test-db \
         docker-migrate-db docker-db-schema docker-test-backend docker-test-frontend
 
+
+docker-up: ## Start all services in the background
+	$(DOCKER_COMPOSE) up -d
+
+docker-down: ## Stop and remove containers, networks, and images
+	$(DOCKER_COMPOSE) down
+
+docker-logs: ## View output from containers
+	$(DOCKER_COMPOSE) logs -f
 
 docker-backend-shell: ## Access the backend container shell
 	$(DOCKER_COMPOSE) run --rm backend sh
