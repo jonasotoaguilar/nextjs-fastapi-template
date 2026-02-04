@@ -1,9 +1,9 @@
 import { cookies } from "next/headers";
 import { type Mock, vi } from "vitest";
 import { authJwtLogin } from "@/app/clientService";
-import { login } from "@/components/actions/login-action";
+import { login } from "./login-action";
 
-vi.mock("../app/clientService", () => ({
+vi.mock("@/app/clientService", () => ({
   authJwtLogin: vi.fn(),
 }));
 

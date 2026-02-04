@@ -1,16 +1,16 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { notFound, useSearchParams } from "next/navigation";
 import { type Mock, vi } from "vitest";
-import Page from "@/app/password-recovery/confirm/page";
 import { passwordResetConfirm } from "@/components/actions/password-reset-action";
+import Page from "./page";
 
-vi.mock("next/navigation", () => ({
-  ...vi.importActual("next/navigation"),
+vi.mock("next/navigation", async () => ({
+  ...(await vi.importActual("next/navigation")),
   useSearchParams: vi.fn(),
   notFound: vi.fn(),
 }));
 
-vi.mock("../components/actions/password-reset-action", () => ({
+vi.mock("@/components/actions/password-reset-action", () => ({
   passwordResetConfirm: vi.fn(),
 }));
 
@@ -26,9 +26,9 @@ describe("Password Reset Confirm Page", () => {
 
     render(<Page />);
 
-    expect(screen.getByLabelText("Password")).toBeInTheDocument();
-    expect(screen.getByLabelText("Password Confirm")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /send/i })).toBeInTheDocument();
+    expect(screen.getByLabelText("Contraseña")).toBeInTheDocument();
+    expect(screen.getByLabelText("Confirmar Contraseña")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /enviar/i })).toBeInTheDocument();
   });
 
   it("renders the 404 page in case there is not a token", () => {
@@ -53,10 +53,10 @@ describe("Password Reset Confirm Page", () => {
 
     render(<Page />);
 
-    const password = screen.getByLabelText("Password");
-    const passwordConfirm = screen.getByLabelText("Password Confirm");
+    const password = screen.getByLabelText("Contraseña");
+    const passwordConfirm = screen.getByLabelText("Confirmar Contraseña");
 
-    const submitButton = screen.getByRole("button", { name: /send/i });
+    const submitButton = screen.getByRole("button", { name: /enviar/i });
 
     fireEvent.change(password, { target: { value: "P12345678#" } });
     fireEvent.change(passwordConfirm, { target: { value: "P12345678#" } });
@@ -87,10 +87,10 @@ describe("Password Reset Confirm Page", () => {
 
     render(<Page />);
 
-    const password = screen.getByLabelText("Password");
-    const passwordConfirm = screen.getByLabelText("Password Confirm");
+    const password = screen.getByLabelText("Contraseña");
+    const passwordConfirm = screen.getByLabelText("Confirmar Contraseña");
 
-    const submitButton = screen.getByRole("button", { name: /send/i });
+    const submitButton = screen.getByRole("button", { name: /enviar/i });
 
     fireEvent.change(password, { target: { value: "12345678#" } });
     fireEvent.change(passwordConfirm, { target: { value: "45678#" } });

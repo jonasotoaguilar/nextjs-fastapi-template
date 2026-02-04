@@ -1,10 +1,9 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { type Mock, vi } from "vitest";
-
-import Page from "@/app/password-recovery/page";
 import { passwordReset } from "@/components/actions/password-reset-action";
+import Page from "./page";
 
-vi.mock("../components/actions/password-reset-action", () => ({
+vi.mock("@/components/actions/password-reset-action", () => ({
   passwordReset: vi.fn(),
 }));
 
@@ -17,7 +16,7 @@ describe("Password Reset Page", () => {
     render(<Page />);
 
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /send/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /enviar/i })).toBeInTheDocument();
   });
 
   it("displays success message on successful form submission", async () => {
@@ -29,7 +28,7 @@ describe("Password Reset Page", () => {
     render(<Page />);
 
     const emailInput = screen.getByLabelText(/email/i);
-    const submitButton = screen.getByRole("button", { name: /send/i });
+    const submitButton = screen.getByRole("button", { name: /enviar/i });
 
     fireEvent.change(emailInput, { target: { value: "testuser@example.com" } });
     fireEvent.click(submitButton);
@@ -54,7 +53,7 @@ describe("Password Reset Page", () => {
     render(<Page />);
 
     const emailInput = screen.getByLabelText(/email/i);
-    const submitButton = screen.getByRole("button", { name: /send/i });
+    const submitButton = screen.getByRole("button", { name: /enviar/i });
 
     fireEvent.change(emailInput, {
       target: { value: "invaliduser@example.com" },

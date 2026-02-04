@@ -1,13 +1,13 @@
 import { redirect } from "next/navigation";
 import { type Mock, vi } from "vitest";
 import { registerRegister } from "@/app/clientService";
-import { register } from "@/components/actions/register-action";
+import { register } from "./register-action";
 
 vi.mock("next/navigation", () => ({
   redirect: vi.fn(),
 }));
 
-vi.mock("../app/clientService", () => ({
+vi.mock("@/app/clientService", () => ({
   registerRegister: vi.fn(),
 }));
 

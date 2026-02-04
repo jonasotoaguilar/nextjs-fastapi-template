@@ -1,10 +1,9 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { type Mock, vi } from "vitest";
-
-import Page from "@/app/register/page";
 import { register } from "@/components/actions/register-action";
+import Page from "./page";
 
-vi.mock("../components/actions/register-action", () => ({
+vi.mock("@/components/actions/register-action", () => ({
   register: vi.fn(),
 }));
 
@@ -17,9 +16,9 @@ describe("Register Page", () => {
     render(<Page />);
 
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/contraseña/i)).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: /sign up/i }),
+      screen.getByRole("button", { name: /crear cuenta/i }),
     ).toBeInTheDocument();
   });
 
@@ -30,8 +29,8 @@ describe("Register Page", () => {
     render(<Page />);
 
     const emailInput = screen.getByLabelText(/email/i);
-    const passwordInput = screen.getByLabelText(/password/i);
-    const submitButton = screen.getByRole("button", { name: /sign up/i });
+    const passwordInput = screen.getByLabelText(/contraseña/i);
+    const submitButton = screen.getByRole("button", { name: /crear cuenta/i });
 
     fireEvent.change(emailInput, { target: { value: "testuser@example.com" } });
     fireEvent.change(passwordInput, { target: { value: "@1231231%a" } });
@@ -53,8 +52,8 @@ describe("Register Page", () => {
     render(<Page />);
 
     const emailInput = screen.getByLabelText(/email/i);
-    const passwordInput = screen.getByLabelText(/password/i);
-    const submitButton = screen.getByRole("button", { name: /sign up/i });
+    const passwordInput = screen.getByLabelText(/contraseña/i);
+    const submitButton = screen.getByRole("button", { name: /crear cuenta/i });
 
     fireEvent.change(emailInput, { target: { value: "already@already.com" } });
     fireEvent.change(passwordInput, { target: { value: "@1231231%a" } });
@@ -73,8 +72,8 @@ describe("Register Page", () => {
     render(<Page />);
 
     const emailInput = screen.getByLabelText(/email/i);
-    const passwordInput = screen.getByLabelText(/password/i);
-    const submitButton = screen.getByRole("button", { name: /sign up/i });
+    const passwordInput = screen.getByLabelText(/contraseña/i);
+    const submitButton = screen.getByRole("button", { name: /crear cuenta/i });
 
     fireEvent.change(emailInput, { target: { value: "test@test.com" } });
     fireEvent.change(passwordInput, { target: { value: "@1231231%a" } });
@@ -109,8 +108,8 @@ describe("Register Page", () => {
     render(<Page />);
 
     const emailInput = screen.getByLabelText(/email/i);
-    const passwordInput = screen.getByLabelText(/password/i);
-    const submitButton = screen.getByRole("button", { name: /sign up/i });
+    const passwordInput = screen.getByLabelText(/contraseña/i);
+    const submitButton = screen.getByRole("button", { name: /crear cuenta/i });
 
     fireEvent.change(emailInput, { target: { value: "email@email.com" } });
     fireEvent.change(passwordInput, { target: { value: "invalid_password" } });
