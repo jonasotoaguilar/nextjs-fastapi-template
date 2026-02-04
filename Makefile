@@ -11,6 +11,30 @@ help:
 	@echo "Available commands:"
 	@awk '/^[a-zA-Z_-]+:/{split($$1, target, ":"); print "  " target[1] "\t" substr($$0, index($$0,$$2))}' $(MAKEFILE_LIST)
 
+# Initialization
+.PHONY:  init-env install
+
+init-env: ## Copy .env.example to .env in both frontend and backend
+	@echo "Initializing environment variables..."
+	@if [ ! -f $(BACKEND_DIR)/.env ]; then cp $(BACKEND_DIR)/.env.example $(BACKEND_DIR)/.env; echo "Created backend .env"; else echo "Backend .env already exists"; fi
+	@if [ ! -f $(FRONTEND_DIR)/.env ]; then cp $(FRONTEND_DIR)/.env.example $(FRONTEND_DIR)/.env; echo "Created frontend .env"; else echo "Frontend .env already exists"; fi
+
+install: ## Install dependencies for both backend (uv) and frontend (pnpm) on host
+	@echo "Installing backend dependencies (uv)..."
+	cd $(BACKEND_DIR) && uv sync
+	@echo "Installing frontend dependencies (pnpm)..."
+	cd $(FRONTEND_DIR) && pnpm install
+
+# Cleanup
+.PHONY: clean
+
+clean: ## Remove temporary files, caches and dependency folders (node_modules, .venv, etc.)
+	@echo "Cleaning up..."
+	rm -rf $(FRONTEND_DIR)/node_modules $(FRONTEND_DIR)/.next
+	rm -rf $(BACKEND_DIR)/.venv $(BACKEND_DIR)/__pycache__ $(BACKEND_DIR)/.pytest_cache
+	find . -type d -name "__pycache__" -exec rm -rf {} +
+	@echo "Cleanup complete."
+
 # Backend commands
 .PHONY: start-backend test-backend
 
