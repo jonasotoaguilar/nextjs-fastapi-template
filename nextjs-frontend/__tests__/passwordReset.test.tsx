@@ -1,26 +1,27 @@
+import { type Mock, vi } from "vitest";
 import { resetForgotPassword } from "@/app/clientService";
 import { passwordReset } from "@/components/actions/password-reset-action";
 
-jest.mock("../app/openapi-client/sdk.gen", () => ({
-  resetForgotPassword: jest.fn(),
+vi.mock("../app/openapi-client/sdk.gen", () => ({
+  resetForgotPassword: vi.fn(),
 }));
 
-jest.mock("../lib/clientConfig", () => ({
+vi.mock("../lib/clientConfig", () => ({
   client: {
-    setConfig: jest.fn(),
+    setConfig: vi.fn(),
   },
 }));
 
 describe("passwordReset action", () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should call resetForgotPassword with the correct input and return success message", async () => {
     const formData = new FormData();
     formData.set("email", "testuser@example.com");
     // Mock a successful password reset
-    (resetForgotPassword as jest.Mock).mockResolvedValue({});
+    (resetForgotPassword as Mock).mockResolvedValue({});
 
     const result = await passwordReset({}, formData);
 
@@ -37,7 +38,7 @@ describe("passwordReset action", () => {
     formData.set("email", "testuser@example.com");
 
     // Mock a failed password reset
-    (resetForgotPassword as jest.Mock).mockResolvedValue({
+    (resetForgotPassword as Mock).mockResolvedValue({
       error: { detail: "User not found" },
     });
 
@@ -52,7 +53,7 @@ describe("passwordReset action", () => {
   it("should handle unexpected errors and return server error message", async () => {
     // Mock the resetForgotPassword to throw an error
     const mockError = new Error("Network error");
-    (resetForgotPassword as jest.Mock).mockRejectedValue(mockError);
+    (resetForgotPassword as Mock).mockRejectedValue(mockError);
 
     const formData = new FormData();
     formData.append("email", "testuser@example.com");

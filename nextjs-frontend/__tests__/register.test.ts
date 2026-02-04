@@ -1,23 +1,28 @@
 import { redirect } from "next/navigation";
+import { type Mock, vi } from "vitest";
 import { registerRegister } from "@/app/clientService";
 import { register } from "@/components/actions/register-action";
 
-jest.mock("next/navigation", () => ({
-  redirect: jest.fn(),
+vi.mock("next/navigation", () => ({
+  redirect: vi.fn(),
 }));
 
-jest.mock("../app/clientService", () => ({
-  registerRegister: jest.fn(),
+vi.mock("../app/clientService", () => ({
+  registerRegister: vi.fn(),
 }));
 
 describe("register action", () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("should call register service action with the correct input", async () => {
     const formData = new FormData();
     formData.set("email", "a@a.com");
     formData.set("password", "Q12341414#");
 
     // Mock a successful register
-    (registerRegister as jest.Mock).mockResolvedValue({});
+    (registerRegister as Mock).mockResolvedValue({});
 
     await register({}, formData);
 
@@ -36,7 +41,7 @@ describe("register action", () => {
     formData.set("password", "Q12341414#");
 
     // Mock a failed register
-    (registerRegister as jest.Mock).mockResolvedValue({
+    (registerRegister as Mock).mockResolvedValue({
       error: {
         detail: "REGISTER_USER_ALREADY_EXISTS",
       },
@@ -77,7 +82,7 @@ describe("register action", () => {
   it("should handle unexpected errors and return server error message", async () => {
     // Mock the registerRegister to throw an error
     const mockError = new Error("Network error");
-    (registerRegister as jest.Mock).mockRejectedValue(mockError);
+    (registerRegister as Mock).mockRejectedValue(mockError);
 
     const formData = new FormData();
     formData.append("email", "testuser@example.com");

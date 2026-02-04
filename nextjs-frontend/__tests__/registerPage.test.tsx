@@ -1,16 +1,16 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import "@testing-library/jest-dom";
+import { type Mock, vi } from "vitest";
 
 import Page from "@/app/register/page";
 import { register } from "@/components/actions/register-action";
 
-jest.mock("../components/actions/register-action", () => ({
-  register: jest.fn(),
+vi.mock("../components/actions/register-action", () => ({
+  register: vi.fn(),
 }));
 
 describe("Register Page", () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("renders the form with email and password input and submit button", () => {
@@ -25,7 +25,7 @@ describe("Register Page", () => {
 
   it("displays success message on successful form submission", async () => {
     // Mock a successful register
-    (register as jest.Mock).mockResolvedValue({});
+    (register as Mock).mockResolvedValue({});
 
     render(<Page />);
 
@@ -46,7 +46,7 @@ describe("Register Page", () => {
   });
 
   it("displays server validation error if register fails", async () => {
-    (register as jest.Mock).mockResolvedValue({
+    (register as Mock).mockResolvedValue({
       server_validation_error: "User already exists",
     });
 
@@ -66,7 +66,7 @@ describe("Register Page", () => {
   });
 
   it("displays server error for unexpected errors", async () => {
-    (register as jest.Mock).mockResolvedValue({
+    (register as Mock).mockResolvedValue({
       server_error: "An unexpected error occurred. Please try again later.",
     });
 
@@ -96,7 +96,7 @@ describe("Register Page", () => {
 
   it("displays validation errors if password and email are invalid", async () => {
     // Mock a successful password register
-    (register as jest.Mock).mockResolvedValue({
+    (register as Mock).mockResolvedValue({
       errors: {
         email: ["Invalid email address"],
         password: [

@@ -1,24 +1,25 @@
 import { redirect } from "next/navigation";
+import { type Mock, vi } from "vitest";
 import { resetResetPassword } from "@/app/clientService";
 import { passwordResetConfirm } from "@/components/actions/password-reset-action";
 
-jest.mock("next/navigation", () => ({
-  redirect: jest.fn(),
+vi.mock("next/navigation", () => ({
+  redirect: vi.fn(),
 }));
 
-jest.mock("../app/openapi-client/sdk.gen", () => ({
-  resetResetPassword: jest.fn(),
+vi.mock("../app/openapi-client/sdk.gen", () => ({
+  resetResetPassword: vi.fn(),
 }));
 
-jest.mock("../lib/clientConfig", () => ({
+vi.mock("../lib/clientConfig", () => ({
   client: {
-    setConfig: jest.fn(),
+    setConfig: vi.fn(),
   },
 }));
 
 describe("passwordReset action", () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should call resetPassword with the correct input", async () => {
@@ -27,7 +28,7 @@ describe("passwordReset action", () => {
     formData.set("password", "P12345678#");
     formData.set("passwordConfirm", "P12345678#");
     // Mock a successful password reset confirm
-    (resetResetPassword as jest.Mock).mockResolvedValue({});
+    (resetResetPassword as Mock).mockResolvedValue({});
 
     await passwordResetConfirm({}, formData);
 
@@ -44,7 +45,7 @@ describe("passwordReset action", () => {
     formData.set("passwordConfirm", "P12345678#");
 
     // Mock a failed password reset
-    (resetResetPassword as jest.Mock).mockResolvedValue({
+    (resetResetPassword as Mock).mockResolvedValue({
       error: { detail: "Invalid token" },
     });
 
@@ -76,7 +77,7 @@ describe("passwordReset action", () => {
   it("should handle unexpected errors and return server error message", async () => {
     // Mock the resetResetPassword to throw an error
     const mockError = new Error("Network error");
-    (resetResetPassword as jest.Mock).mockRejectedValue(mockError);
+    (resetResetPassword as Mock).mockRejectedValue(mockError);
 
     const formData = new FormData();
     formData.append("resetToken", "token");

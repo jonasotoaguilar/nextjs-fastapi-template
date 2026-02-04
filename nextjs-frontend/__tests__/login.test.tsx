@@ -1,21 +1,26 @@
 import { cookies } from "next/headers";
+import { type Mock, vi } from "vitest";
 import { authJwtLogin } from "@/app/clientService";
 import { login } from "@/components/actions/login-action";
 
-jest.mock("../app/clientService", () => ({
-  authJwtLogin: jest.fn(),
+vi.mock("../app/clientService", () => ({
+  authJwtLogin: vi.fn(),
 }));
 
-jest.mock("next/headers", () => {
-  const mockSet = jest.fn();
-  return { cookies: jest.fn().mockResolvedValue({ set: mockSet }) };
+vi.mock("next/headers", () => {
+  const mockSet = vi.fn();
+  return { cookies: vi.fn().mockResolvedValue({ set: mockSet }) };
 });
 
-jest.mock("next/navigation", () => ({
-  redirect: jest.fn(),
+vi.mock("next/navigation", () => ({
+  redirect: vi.fn(),
 }));
 
 describe("login action", () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("should call login service action with the correct input", async () => {
     const formData = new FormData();
     formData.set("username", "a@a.com");
@@ -24,7 +29,7 @@ describe("login action", () => {
     const mockSet = (await cookies()).set;
 
     // Mock a successful login
-    (authJwtLogin as jest.Mock).mockResolvedValue({
+    (authJwtLogin as Mock).mockResolvedValue({
       data: { access_token: "1245token" },
     });
 
@@ -47,7 +52,7 @@ describe("login action", () => {
     formData.set("password", "Q12341414#");
 
     // Mock a failed login
-    (authJwtLogin as jest.Mock).mockResolvedValue({
+    (authJwtLogin as Mock).mockResolvedValue({
       error: {
         detail: "LOGIN_BAD_CREDENTIALS",
       },
@@ -91,7 +96,7 @@ describe("login action", () => {
   it("should handle unexpected errors and return server error message", async () => {
     // Mock the authJwtLogin to throw an error
     const mockError = new Error("Network error");
-    (authJwtLogin as jest.Mock).mockRejectedValue(mockError);
+    (authJwtLogin as Mock).mockRejectedValue(mockError);
 
     const formData = new FormData();
     formData.append("username", "testuser");

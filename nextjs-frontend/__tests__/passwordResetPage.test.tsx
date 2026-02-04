@@ -1,16 +1,16 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import "@testing-library/jest-dom";
+import { type Mock, vi } from "vitest";
 
 import Page from "@/app/password-recovery/page";
 import { passwordReset } from "@/components/actions/password-reset-action";
 
-jest.mock("../components/actions/password-reset-action", () => ({
-  passwordReset: jest.fn(),
+vi.mock("../components/actions/password-reset-action", () => ({
+  passwordReset: vi.fn(),
 }));
 
 describe("Password Reset Page", () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("renders the form with email input and submit button", () => {
@@ -22,7 +22,7 @@ describe("Password Reset Page", () => {
 
   it("displays success message on successful form submission", async () => {
     // Mock a successful password reset
-    (passwordReset as jest.Mock).mockResolvedValue({
+    (passwordReset as Mock).mockResolvedValue({
       message: "Password reset instructions sent to your email.",
     });
 
@@ -47,7 +47,7 @@ describe("Password Reset Page", () => {
 
   it("displays error message if password reset fails", async () => {
     // Mock a failed password reset
-    (passwordReset as jest.Mock).mockResolvedValue({
+    (passwordReset as Mock).mockResolvedValue({
       server_validation_error: "User not found",
     });
 
