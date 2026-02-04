@@ -1,18 +1,16 @@
 site_name: Next.js FastAPI Template
 site_description: Kickstart scalable apps with our Next.js FastAPI Template. Includes auth, type safety (Zod), hot reload, Docker, and Vercel-ready deployment.
-site_url: https://vintasoftware.github.io/nextjs-fastapi-template/
+site_url: https://jonasotoaguilar.github.io/nextjs-fastapi-template/
 
-repo_name: vintasoftware/nextjs-fastapi-template
-repo_url: https://github.com/vintasoftware/nextjs-fastapi-template/
+repo_name: jonasotoaguilar/nextjs-fastapi-template
+repo_url: https://github.com/jonasotoaguilar/nextjs-fastapi-template/
 edit_uri: blob/main/docs/
 
-copyright: From <a href="https://www.vintasoftware.com">Vinta Software</a> to the community with 💙
+copyright: Fork de <a href="https://github.com/vintasoftware/nextjs-fastapi-template">Vinta Software Template</a> por Jona Soto Aguilar
 
 theme:
   name: material
   custom_dir: overrides
-  logo: images/nav-logo.png
-  favicon: images/github-favicon.png
   features:
     - navigation.footer
     - navigation.indexes
@@ -66,6 +64,7 @@ markdown_extensions:
 nav:
   - Home: README.md
   - Get Started: get-started.md
+  - Extending Template: extending-template.md
   - Additional Settings: additional-settings.md
   - Technology Selection: technology-selection.md
   - Deployment: deployment.md
@@ -73,26 +72,16 @@ nav:
   - Contributing: contributing.md
   - Support: support.md
 
-
 plugins:
   - search
 
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/vintasoftware/nextjs-fastapi-template/
-      name: Nextjs FastAPI Template GitHub
-    - icon: fontawesome/brands/x-twitter
-      link: https://x.com/vintasoftware
-      name: Vinta Software X
-    - icon: fontawesome/brands/linkedin
-      link: https://linkedin.com/company/vintasoftware
-      name: Vinta Software LinkedIn
+      link: https://github.com/jonasotoaguilar/nextjs-fastapi-template/
+      name: Next.js FastAPI Template - Fork
   version:
     provider: mike
-  analytics:
-    provider: google
-    property: GTM-M9GMGBHR
 
 extra_css:
   - stylesheets/extra.css

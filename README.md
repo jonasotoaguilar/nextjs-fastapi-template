@@ -1,70 +1,213 @@
 ## Next.js FastAPI Template
 
-<a href="https://www.vintasoftware.com/blog/next-js-fastapi-template"><img src="docs/images/banner.png" alt="Next.js FastAPI Template" width="auto"></a>
 <p align="center">
-    <em>Next.js FastAPI Template: Python + Modern TypeScript stack with Zod validation.</em>
+    <em>Template Next.js + FastAPI: Stack moderno con Python y TypeScript, validación con Zod.</em>
 </p>
 <p align="center">
-<a href="https://github.com/vintasoftware/nextjs-fastapi-template/actions/workflows/ci.yml" target="_blank">
-    <img src="https://github.com/vintasoftware/nextjs-fastapi-template/actions/workflows/ci.yml/badge.svg" alt="CI">
-</a>
-<a href="https://coveralls.io/github/vintasoftware/nextjs-fastapi-template" target="_blank">
-    <img src="https://coveralls.io/repos/github/vintasoftware/nextjs-fastapi-template/badge.svg" alt="Coverage">
+<a href="https://github.com/jonasotoaguilar/nextjs-fastapi-template/actions/workflows/ci.yml" target="_blank">
+    <img src="https://github.com/jonasotoaguilar/nextjs-fastapi-template/actions/workflows/ci.yml/badge.svg" alt="CI">
 </a>
 </p>
 
 ---
 
-**Documentation**: <a href="https://vintasoftware.github.io/nextjs-fastapi-template/" target="_blank">https://vintasoftware.github.io/nextjs-fastapi-template/</a>
+**Documentación**: <a href="https://jonasotoaguilar.github.io/nextjs-fastapi-template/" target="_blank">https://jonasotoaguilar.github.io/nextjs-fastapi-template/</a>
 
-**Source Code**: <a href="https://github.com/vintasoftware/nextjs-fastapi-template/" target="_blank">https://github.com/vintasoftware/nextjs-fastapi-template/</a>
+**Código Fuente**: <a href="https://github.com/jonasotoaguilar/nextjs-fastapi-template/" target="_blank">https://github.com/jonasotoaguilar/nextjs-fastapi-template/</a>
+
+**Template Original**: <a href="https://github.com/vintasoftware/nextjs-fastapi-template/" target="_blank">Vinta Software - Next.js FastAPI Template</a>
 
 ---
 
-The Next.js FastAPI Template provides a solid foundation for scalable, high-performance web applications, following clean architecture and best practices. It simplifies development by integrating FastAPI, Pydantic, and Next.js with TypeScript and Zod, ensuring end-to-end type safety and schema validation between frontend and backend.
+Este template proporciona una base sólida para aplicaciones web escalables y de alto rendimiento, siguiendo arquitectura limpia y mejores prácticas. Simplifica el desarrollo integrando FastAPI, Pydantic y Next.js con TypeScript y Zod, asegurando type safety de extremo a extremo y validación de schemas entre frontend y backend.
 
-The FastAPI backend supports fully asynchronous operations, optimizing database queries, API routes, and test execution for better performance. Deployment is seamless, with both backend and frontend fully deployable to Vercel, enabling quick product releases with minimal configuration.
+El backend FastAPI soporta operaciones completamente asíncronas, optimizando consultas a base de datos, rutas de API y ejecución de tests para mejor rendimiento. El despliegue es simple, con backend y frontend completamente desplegables en Vercel, permitiendo lanzamientos rápidos con configuración mínima.
 
-### Key features
-✔ End-to-end type safety – Automatically generated typed clients from the OpenAPI schema ensure seamless API contracts between frontend and backend.
+### Características principales
 
-✔ Hot-reload updates – The client updates automatically when backend routes change, keeping FastAPI and Next.js in sync.
+✔ **Type safety de extremo a extremo** – Clientes tipados generados automáticamente desde el schema OpenAPI aseguran contratos de API sin fricción entre frontend y backend.
 
-✔ Versatile foundation – Designed for MVPs and production-ready applications, with a pre-configured authentication system and API layer.
+✔ **Actualizaciones con hot-reload** – El cliente se actualiza automáticamente cuando cambian las rutas del backend, manteniendo FastAPI y Next.js sincronizados.
 
-✔ Quick deployment – Deploys a full-stack application—including authentication flow and a dashboard—on Vercel in just a few steps.
+✔ **Base versátil** – Diseñado para MVPs y aplicaciones production-ready, con sistema de autenticación preconfigurado y capa de API.
 
-✔ Production-ready authentication – Includes a pre-configured authentication system and dashboard interface, allowing you to immediately start development with user management features.
+✔ **Despliegue rápido** – Despliega una aplicación full-stack—incluyendo flujo de autenticación—en Vercel en pocos pasos.
 
-## Technology stack
-This template features a carefully selected set of technologies to ensure efficiency, scalability, and ease of use:
+✔ **Autenticación lista para producción** – Incluye sistema de autenticación preconfigurado, permitiendo comenzar el desarrollo inmediatamente con funcionalidades de gestión de usuarios.
 
-- Zod + TypeScript – Type safety and schema validation across the stack.
-- fastapi-users – Complete authentication system with:
-    - Secure password hashing
-    - JWT authentication
-- Email-based password recovery
-- shadcn/ui – Prebuilt React components with Tailwind CSS.
-- OpenAPI-fetch – Fully typed client generation from the OpenAPI schema.
-- UV – Simplified dependency management and packaging.
-- Docker Compose – Consistent environments for development and production.
-- Pre-commit hooks – Automated code linting, formatting, and validation before commits.
-- Vercel Deployment – Serverless backend and scalable frontend, deployable with minimal configuration.
+## Stack tecnológico
 
-This is a partial list of the technologies included in the template. For a complete overview, visit our [Technology selection](https://vintasoftware.github.io/nextjs-fastapi-template/technology-selection/) page.
+Este template incluye un conjunto cuidadosamente seleccionado de tecnologías para asegurar eficiencia, escalabilidad y facilidad de uso:
 
-## Get Started
+- **Zod + TypeScript** – Type safety y validación de schemas en todo el stack.
+- **fastapi-users** – Sistema completo de autenticación con:
+  - Hash seguro de contraseñas
+  - Autenticación JWT
+  - Recuperación de contraseña por email
+- **shadcn/ui** – Componentes React preconstruidos con Tailwind CSS.
+- **OpenAPI-fetch** – Generación de cliente completamente tipado desde el schema OpenAPI.
+- **UV** – Gestión simplificada de dependencias y empaquetado.
+- **Docker Compose** – Entornos consistentes para desarrollo y producción.
+- **Pre-commit hooks** – Linting, formateo y validación automática de código antes de commits.
+- **Vercel Deployment** – Backend serverless y frontend escalable, desplegable con configuración mínima.
 
-To use this template, visit our [Get Started](https://vintasoftware.github.io/nextjs-fastapi-template/get-started/) and follow the steps.
+Esta es una lista parcial de las tecnologías incluidas en el template. Para una descripción completa, visita nuestra página de [Selección de tecnologías](https://jonasotoaguilar.github.io/nextjs-fastapi-template/technology-selection/).
 
-## Using the template? Let's talk!
+## Comenzar
 
-We’re always curious to see how the community builds on top of it and where it’s being used. To collaborate:
+Para usar este template, visita nuestra guía [Get Started](https://jonasotoaguilar.github.io/nextjs-fastapi-template/get-started/) y sigue los pasos.
 
-- Join the conversation on [GitHub Discussions](https://github.com/vintasoftware/nextjs-fastapi-template/discussions)
-- Report bugs or suggest improvements via [issues](https://github.com/vintasoftware/nextjs-fastapi-template/issues)
-- Check the [Contributing](https://vintasoftware.github.io/nextjs-fastapi-template/contributing/) guide to get involved
+## Estructura del proyecto
 
-This project is maintained by [Vinta Software](https://www.vinta.com.br/) and is actively used in production systems we build for clients. Talk to our expert consultants — get a free technical review: contact@vinta.com.br.
+```
+nextjs-fastapi-template/
+├── fastapi_backend/          # Backend FastAPI
+│   ├── app/                  # Código de la aplicación
+│   │   ├── api/             # Endpoints de la API
+│   │   ├── core/            # Configuración y utilidades
+│   │   ├── db/              # Modelos y configuración de base de datos
+│   │   └── schemas/         # Schemas Pydantic
+│   ├── alembic/             # Migraciones de base de datos
+│   ├── commands/            # Scripts de utilidad
+│   └── tests/               # Tests del backend
+├── nextjs-frontend/         # Frontend Next.js
+│   ├── app/                 # App Router de Next.js
+│   ├── components/          # Componentes React
+│   ├── lib/                 # Utilidades y configuración
+│   └── public/              # Assets estáticos
+├── docs/                    # Documentación MkDocs
+└── docker-compose.yml       # Configuración Docker
+```
 
-*Disclaimer: This project is not affiliated with Vercel.*
+## Extender el template
+
+### Agregar nuevos modelos
+
+1. **Crear el modelo en el backend** (`fastapi_backend/app/db/models/`):
+
+```python
+from sqlalchemy import Column, String, Integer
+from app.db.base import Base
+
+class Product(Base):
+    __tablename__ = "products"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    description = Column(String)
+    price = Column(Integer, nullable=False)
+```
+
+2. **Crear schemas Pydantic** (`fastapi_backend/app/schemas/`):
+
+```python
+from pydantic import BaseModel
+
+class ProductBase(BaseModel):
+    name: str
+    description: str | None = None
+    price: int
+
+class ProductCreate(ProductBase):
+    pass
+
+class ProductRead(ProductBase):
+    id: int
+
+    class Config:
+        from_attributes = True
+```
+
+3. **Crear migración de base de datos**:
+
+```bash
+make docker-db-schema migration_name="add products table"
+make docker-migrate-db
+```
+
+### Agregar nuevos endpoints
+
+1. **Crear router** (`fastapi_backend/app/api/routes/`):
+
+```python
+from fastapi import APIRouter, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+from app.db.session import get_async_session
+from app.schemas.product import ProductCreate, ProductRead
+
+router = APIRouter(prefix="/products", tags=["products"])
+
+@router.post("/", response_model=ProductRead)
+async def create_product(
+    product: ProductCreate,
+    session: AsyncSession = Depends(get_async_session)
+):
+    # Implementación
+    pass
+```
+
+2. **Registrar el router** (`fastapi_backend/app/api/routes/__init__.py`):
+
+```python
+from app.api.routes import products
+
+# En la función que configura los routers
+api_router.include_router(products.router)
+```
+
+3. **Regenerar el cliente del frontend**:
+
+```bash
+# El hot-reload lo hace automáticamente, o manualmente:
+cd nextjs-frontend && pnpm run generate-client
+```
+
+### Usar el cliente tipado en el frontend
+
+```typescript
+import { client } from "@/lib/api-client";
+
+// El cliente está completamente tipado
+const { data, error } = await client.POST("/api/products/", {
+  body: {
+    name: "Producto nuevo",
+    description: "Descripción",
+    price: 1000,
+  },
+});
+
+// TypeScript conoce la estructura de 'data' y 'error'
+if (data) {
+  console.log(data.id, data.name);
+}
+```
+
+## Comandos útiles
+
+El proyecto incluye un `Makefile` con comandos para simplificar tareas comunes:
+
+```bash
+make help                    # Ver todos los comandos disponibles
+make docker-build           # Construir contenedores
+make docker-start-backend   # Iniciar backend
+make docker-start-frontend  # Iniciar frontend
+make docker-migrate-db      # Aplicar migraciones
+make test-backend          # Ejecutar tests del backend
+make test-frontend         # Ejecutar tests del frontend
+```
+
+## Contribuir
+
+¿Usas este template? ¡Nos encantaría saber cómo lo estás usando!
+
+- Únete a la conversación en [GitHub Discussions](https://github.com/jonasotoaguilar/nextjs-fastapi-template/discussions)
+- Reporta bugs o sugiere mejoras vía [issues](https://github.com/jonasotoaguilar/nextjs-fastapi-template/issues)
+- Consulta la guía de [Contributing](https://jonasotoaguilar.github.io/nextjs-fastapi-template/contributing/) para involucrarte
+
+## Créditos
+
+Este proyecto es un fork del template original creado y mantenido por [Vinta Software](https://www.vinta.com.br/). El template original es usado activamente en sistemas de producción que construyen para sus clientes.
+
+**Template Original**: [vintasoftware/nextjs-fastapi-template](https://github.com/vintasoftware/nextjs-fastapi-template/)
+
+_Disclaimer: Este proyecto no está afiliado con Vercel._
