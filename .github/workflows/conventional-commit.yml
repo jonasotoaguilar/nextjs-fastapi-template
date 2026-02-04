@@ -1,16 +1,14 @@
-name: 'Tools: Conventional Commit'
+name: "Tools: Conventional Commit"
 
 on:
   pull_request:
     branches:
-      - 'master'
-      - 'v3'
-      - 'v4.*'
-      - 'v5.*'
+      - "main"
+      - "develop"
     types:
-      - 'opened'
-      - 'edited'
-      - 'synchronize'
+      - "opened"
+      - "edited"
+      - "synchronize"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
