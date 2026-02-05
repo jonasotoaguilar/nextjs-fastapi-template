@@ -1,5 +1,5 @@
 services:
-  api:
+  api-dev:
     hostname: api-dev
     build:
       context: api
@@ -18,8 +18,8 @@ services:
       - fastapi-venv:/app/.venv
       - ./local-shared-data:/app/shared-data
     depends_on:
-      - db
-  db:
+      - db-dev
+  db-dev:
     hostname: db-dev
     image: postgres:17
     environment:
@@ -44,7 +44,7 @@ services:
     networks:
       - my_network
     restart: always
-  ui:
+  ui-dev:
     hostname: ui-dev
     build:
       context: ./ui

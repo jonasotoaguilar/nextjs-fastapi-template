@@ -6,6 +6,24 @@ services:
       target: prod
     environment:
       - DATABASE_URL=postgresql+asyncpg://postgres:password@db:5432/mydatabase
+      # Secret keys - CHANGE THESE IN PRODUCTION!
+      - ACCESS_SECRET_KEY=change_this_to_a_random_secret_key_in_production
+      - RESET_PASSWORD_SECRET_KEY=change_this_to_a_random_secret_key_in_production
+      - VERIFICATION_SECRET_KEY=change_this_to_a_random_secret_key_in_production
+      # CORS - Adjust to your frontend domain in production
+      - CORS_ORIGINS=["http://localhost:3000"]
+      # Frontend URL
+      - FRONTEND_URL=http://ui:3000
+      # Mail configuration - Configure with real SMTP server in production
+      # Example for Gmail:
+      # - MAIL_USERNAME=your-email@gmail.com
+      # - MAIL_PASSWORD=your-app-password
+      # - MAIL_FROM=your-email@gmail.com
+      # - MAIL_PORT=587
+      # - MAIL_SERVER=smtp.gmail.com
+      # - MAIL_STARTTLS=True
+      # - MAIL_SSL_TLS=False
+      # - USE_CREDENTIALS=True
     ports:
       - "8001:8001"
     networks:
@@ -41,8 +59,6 @@ services:
     environment:
       NODE_ENV: production
       API_BASE_URL: http://api:8001
-      # In production logic, this variable usually needs to be public for client-side fetching
-      # or handled via proxy. For server-side fetching in container network, this is fine.
     restart: always
 
 volumes:

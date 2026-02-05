@@ -35,6 +35,9 @@ importers:
       '@radix-ui/react-tabs':
         specifier: ^1.1.13
         version: 1.1.13(@types/react-dom@19.2.3(@types/react@19.2.13))(@types/react@19.2.13)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@tailwindcss/postcss':
+        specifier: ^4.0.0
+        version: 4.1.18
       axios:
         specifier: ^1.13.4
         version: 1.13.4
@@ -81,9 +84,6 @@ importers:
       '@hey-api/openapi-ts':
         specifier: ^0.92.3
         version: 0.92.3(magicast@0.5.2)(typescript@5.9.3)
-      '@tailwindcss/postcss':
-        specifier: ^4.0.0
-        version: 4.1.18
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
