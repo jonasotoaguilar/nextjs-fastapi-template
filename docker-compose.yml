@@ -1,0 +1,53 @@
+services:
+  api:
+    hostname: api
+    build:
+      context: api
+      target: prod
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://postgres:password@db:5432/mydatabase
+    ports:
+      - "8001:8001"
+    networks:
+      - my_network
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    hostname: db
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+    networks:
+      - my_network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  ui:
+    hostname: ui
+    build:
+      context: ./ui
+      target: prod
+    ports:
+      - "3000:3000"
+    networks:
+      - my_network
+    environment:
+      NODE_ENV: production
+      API_BASE_URL: http://api:8001
+      # In production logic, this variable usually needs to be public for client-side fetching
+      # or handled via proxy. For server-side fetching in container network, this is fine.
+    restart: always
+
+volumes:
+  postgres_data:
+
+networks:
+  my_network:
+    driver: bridge
