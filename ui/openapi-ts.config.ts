@@ -6,11 +6,10 @@ config({ path: ".env.local" });
 const openapiFile = process.env.OPENAPI_OUTPUT_FILE;
 
 export default defineConfig({
-  input: openapiFile as string,
-  output: {
-    format: "biome",
-    lint: "biome",
-    path: "app/openapi-client",
-  },
-  plugins: ["@hey-api/client-axios"],
+	input: openapiFile as string,
+	output: {
+		path: "app/openapi-client",
+		postProcess: ["biome:format", "biome:lint"],
+	},
+	plugins: ["@hey-api/client-axios"],
 });
