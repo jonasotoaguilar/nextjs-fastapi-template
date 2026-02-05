@@ -1,6 +1,7 @@
 fail_fast: true
 
 repos:
+  # General
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
@@ -17,14 +18,12 @@ repos:
       - id: debug-statements
       - id: detect-private-key
 
+  # Python
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    # Ruff version.
     rev: v0.15.0
     hooks:
-      # Run the linter.
       - id: ruff
         args: [--fix]
-      # Run the formatter.
       - id: ruff-format
 
   - repo: https://github.com/compilerla/conventional-pre-commit
@@ -33,6 +32,7 @@ repos:
       - id: conventional-pre-commit
         stages: [commit-msg]
 
+  # TOML
   - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
     rev: v2.13.0
     hooks:
@@ -40,12 +40,14 @@ repos:
         args: [--autofix]
         files: pyproject.toml
 
+  # Bash
   - repo: https://github.com/koalaman/shellcheck-precommit
     rev: v0.10.0
     hooks:
       - id: shellcheck
         exclude: contrib
 
+  # Dockerfile
   - repo: https://github.com/hadolint/hadolint
     rev: v2.13.0-beta
     hooks:
