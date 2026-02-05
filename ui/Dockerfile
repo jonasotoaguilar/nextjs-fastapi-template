@@ -1,24 +1,66 @@
-FROM node:20-bookworm
+FROM node:20-bookworm AS base
 
-# Set the working directory
+# Install pnpm via corepack
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
 WORKDIR /app
 
-# Install pnpm globally
-RUN npm install -g pnpm@10.7.1
-
-# Copy package files and install dependencies
 COPY package.json pnpm-lock.yaml ./
 
-# Install dependencies as root (or myappuser, depending on your structure)
-RUN pnpm install
+# DEV Stage
+FROM base AS dev
+# Install all dependencies
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    pnpm install
 
-## Switch to the non-root user
-USER node
-
-# Copy the rest of your application code
 COPY . .
 
 EXPOSE 3000
+CMD ["pnpm", "dev"]
 
-# Start the application
-CMD ["./start.sh"]
+# BUILDER Stage
+FROM base AS builder
+# Install dependencies (frozen lockfile for reproducibility)
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    pnpm install --frozen-lockfile
+
+COPY . .
+
+# Build the application
+# We assume that next.config.mjs has been updated with output: 'standalone'
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN pnpm run build
+
+# PROD Stage
+FROM node:20-slim-bookworm AS prod
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Create a non-root user
+RUN addgroup --system --gid 1001 nodejs \
+    && adduser --system --uid 1001 nextjs
+
+# Copy only the necessary files for the standalone build
+COPY --from=builder /app/public ./public
+
+# Set the correct permission for prerender cache
+RUN mkdir .next \
+    && chown nextjs:nodejs .next
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
+EXPOSE 3000
+
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+
+CMD ["node", "server.js"]

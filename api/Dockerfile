@@ -1,36 +1,60 @@
-FROM python:3.12-bookworm
+FROM python:3.12-bookworm AS base
+
+# Install uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # Set the working directory
 WORKDIR /app
 
-# The uv installer requires curl (and certificates) to download the release archive
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl=7.88.1-10+deb12u14 \
-    ca-certificates=20230311+deb12u1 \
-    && rm -rf /var/lib/apt/lists/*
+# Set environment variables for uv
+ENV UV_COMPILE_BYTECODE=1
+ENV UV_LINK_MODE=copy
 
-# Download the latest uv installer
-ADD https://astral.sh/uv/install.sh /uv-installer.sh
-
-# Run the uv installer then remove it
-RUN sh /uv-installer.sh && rm /uv-installer.sh
-
-# Ensure the installed binary is on the `PATH`
-ENV PATH="/root/.local/bin/:$PATH"
-
-# Copy dependency files first to leverage Docker caching
+# Copy dependency files
 COPY pyproject.toml uv.lock ./
 
-# Install dependencies using uv
-RUN uv sync --frozen
+# DEV Stage
+FROM base AS dev
+# Install all dependencies (including dev)
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen
 
 ENV PATH="/app/.venv/bin:$PATH"
 
-# Copy the rest of the application code
+# Copy source code
 COPY . .
 
-# Expose the application port
-EXPOSE 8001
+# Ensure start script is executable
+RUN chmod +x ./start.sh
 
-# Command to run the application
+EXPOSE 8001
+CMD ["./start.sh"]
+
+# BUILDER Stage (for prod)
+FROM base AS builder
+# Install ONLY prod dependencies into a virtual environment
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev
+
+# PROD Stage
+FROM python:3.12-slim-bookworm AS prod
+
+WORKDIR /app
+
+# Copy the virtual environment from the builder stage
+COPY --from=builder /app/.venv /app/.venv
+
+# Update PATH to use the virtual environment
+ENV PATH="/app/.venv/bin:$PATH"
+
+# Copy the application code
+COPY . .
+
+# Ensure start script is executable (redundant but safe)
+RUN chmod +x ./start.sh \
+    && groupadd -r appuser \
+    && useradd -r -g appuser appuser
+USER appuser
+
+EXPOSE 8001
 CMD ["./start.sh"]
