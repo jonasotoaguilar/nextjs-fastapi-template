@@ -1,8 +1,8 @@
 import json
 import os
-import pytest
 from pathlib import Path
 
+import pytest
 from commands.generate_openapi_schema import (
     generate_openapi_schema,
     remove_operation_id_tag,
@@ -49,7 +49,6 @@ def test_generate_openapi_schema(mocker, mock_app):
     mock_remove_operation_id_tag.return_value = {"mocked_schema": True}
 
     output_file = "openapi_test.json"
-    expected_output = json.dumps({"mocked_schema": True}, indent=2)
 
     generate_openapi_schema(output_file)
 
@@ -59,7 +58,7 @@ def test_generate_openapi_schema(mocker, mock_app):
     output_path = Path(output_file)
     assert output_path.is_file()
     with open(output_file, "r") as f:
-        content = f.read()
-        assert content == expected_output
+        content = json.load(f)
+        assert content == {"mocked_schema": True}
 
     output_path.unlink()

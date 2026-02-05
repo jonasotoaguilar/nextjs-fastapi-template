@@ -1,6 +1,8 @@
-import pytest
 from pathlib import Path
+
+import pytest
 from fastapi_mail import ConnectionConfig, MessageSchema
+
 from app.core.email import get_email_config, send_reset_password_email
 from app.models import User
 

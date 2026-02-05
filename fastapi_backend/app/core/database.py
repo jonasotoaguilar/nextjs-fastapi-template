@@ -1,20 +1,20 @@
 from typing import AsyncGenerator
 from urllib.parse import urlparse
 
+from app.models import Base, User
 from fastapi import Depends
 from fastapi_users.db import SQLAlchemyUserDatabase
 from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from .config import settings
-from app.models import Base, User
-
 
 parsed_db_url = urlparse(settings.DATABASE_URL)
 
 async_db_connection_url = (
     f"postgresql+asyncpg://{parsed_db_url.username}:{parsed_db_url.password}@"
-    f"{parsed_db_url.hostname}{':' + str(parsed_db_url.port) if parsed_db_url.port else ''}"
+    f"{parsed_db_url.hostname}"
+    f"{':' + str(parsed_db_url.port) if parsed_db_url.port else ''}"
     f"{parsed_db_url.path}"
 )
 

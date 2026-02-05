@@ -1,6 +1,6 @@
 import pytest
-from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
 from fastapi_users.db import SQLAlchemyUserDatabase
+from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 
 from app.core.database import (
     async_session_maker,
@@ -92,7 +92,7 @@ def test_engine_creation(mocker):
     mock_settings.EXPIRE_ON_COMMIT = False
 
     # Import engine to trigger creation with mocked settings
-    from app.core.database import engine, async_session_maker
+    from app.core.database import async_session_maker, engine
 
     # Verify engine is created
     assert isinstance(engine, AsyncEngine)

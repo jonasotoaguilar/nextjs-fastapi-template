@@ -1,12 +1,12 @@
 from fastapi import FastAPI
-from fastapi_pagination import add_pagination
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi_pagination import add_pagination
 
-from app.core.config import settings
-from app.core.utils import simple_generate_unique_route_id
-from app.core.users import auth_backend, fastapi_users, AUTH_URL_PATH
-from app.schemas import UserCreate, UserRead, UserUpdate
 from app.api.v1.router import api_router
+from app.core.config import settings
+from app.core.users import AUTH_URL_PATH, auth_backend, fastapi_users
+from app.core.utils import simple_generate_unique_route_id
+from app.schemas import UserCreate, UserRead, UserUpdate
 
 app = FastAPI(
     generate_unique_id_function=simple_generate_unique_route_id,

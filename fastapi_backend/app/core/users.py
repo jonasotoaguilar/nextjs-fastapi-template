@@ -1,16 +1,14 @@
-import uuid
 import re
-
+import uuid
 from typing import Optional
 
 from fastapi import Depends, Request
 from fastapi_users import (
     BaseUserManager,
     FastAPIUsers,
-    UUIDIDMixin,
     InvalidPasswordException,
+    UUIDIDMixin,
 )
-
 from fastapi_users.authentication import (
     AuthenticationBackend,
     BearerTransport,
@@ -18,11 +16,12 @@ from fastapi_users.authentication import (
 )
 from fastapi_users.db import SQLAlchemyUserDatabase
 
+from app.models import User
+from app.schemas import UserCreate
+
 from .config import settings
 from .database import get_user_db
 from .email import send_reset_password_email
-from app.models import User
-from app.schemas import UserCreate
 
 AUTH_URL_PATH = "auth"
 

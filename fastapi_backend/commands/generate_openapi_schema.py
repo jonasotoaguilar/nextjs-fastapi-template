@@ -1,8 +1,8 @@
 import json
-from pathlib import Path
-from app.main import app
 import os
+from pathlib import Path
 
+from app.main import app
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -44,11 +44,17 @@ def remove_operation_id_tag(schema):
     """
     for path_data in schema["paths"].values():
         for operation in path_data.values():
-            tag = operation["tags"][0]
-            operation_id = operation["operationId"]
-            to_remove = f"{tag}-"
-            new_operation_id = operation_id[len(to_remove) :]
-            operation["operationId"] = new_operation_id
+            if (
+                isinstance(operation, dict)
+                and "tags" in operation
+                and "operationId" in operation
+            ):
+                tag = operation["tags"][0]
+                operation_id = operation["operationId"]
+                to_remove = f"{tag}-"
+                if operation_id.startswith(to_remove):
+                    new_operation_id = operation_id[len(to_remove) :]
+                    operation["operationId"] = new_operation_id
     return schema
 
 
