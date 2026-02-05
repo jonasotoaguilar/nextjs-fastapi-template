@@ -3,7 +3,7 @@
 # Variables
 API_DIR=api
 UI_DIR=ui
-DOCKER_COMPOSE=docker compose
+DOCKER_COMPOSE=docker compose -f docker-compose-dev.yml
 
 # Help
 .PHONY: help

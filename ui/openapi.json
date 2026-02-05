@@ -14,7 +14,7 @@
 					"content": {
 						"application/x-www-form-urlencoded": {
 							"schema": {
-								"$ref": "#/components/schemas/login"
+								"$ref": "#/components/schemas/Body_auth-auth_jwt.login"
 							}
 						}
 					},
@@ -336,7 +336,7 @@
 								},
 								"examples": {
 									"VERIFY_USER_BAD_TOKEN": {
-										"summary": "Bad token, not existing user ornot the e-mail currently set for the user.",
+										"summary": "Bad token, not existing user or not the e-mail currently set for the user.",
 										"value": {
 											"detail": "VERIFY_USER_BAD_TOKEN"
 										}
@@ -669,6 +669,62 @@
 				"required": ["access_token", "token_type"],
 				"title": "BearerResponse"
 			},
+			"Body_auth-auth_jwt.login": {
+				"properties": {
+					"grant_type": {
+						"anyOf": [
+							{
+								"type": "string",
+								"pattern": "^password$"
+							},
+							{
+								"type": "null"
+							}
+						],
+						"title": "Grant Type"
+					},
+					"username": {
+						"type": "string",
+						"title": "Username"
+					},
+					"password": {
+						"type": "string",
+						"format": "password",
+						"title": "Password"
+					},
+					"scope": {
+						"type": "string",
+						"title": "Scope",
+						"default": ""
+					},
+					"client_id": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "null"
+							}
+						],
+						"title": "Client Id"
+					},
+					"client_secret": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "null"
+							}
+						],
+						"format": "password",
+						"title": "Client Secret"
+					}
+				},
+				"type": "object",
+				"required": ["username", "password"],
+				"title": "Body_auth-auth:jwt.login"
+			},
 			"Body_auth-reset_forgot_password": {
 				"properties": {
 					"email": {
@@ -922,65 +978,18 @@
 					"type": {
 						"type": "string",
 						"title": "Error Type"
+					},
+					"input": {
+						"title": "Input"
+					},
+					"ctx": {
+						"type": "object",
+						"title": "Context"
 					}
 				},
 				"type": "object",
 				"required": ["loc", "msg", "type"],
 				"title": "ValidationError"
-			},
-			"login": {
-				"properties": {
-					"grant_type": {
-						"anyOf": [
-							{
-								"type": "string",
-								"pattern": "password"
-							},
-							{
-								"type": "null"
-							}
-						],
-						"title": "Grant Type"
-					},
-					"username": {
-						"type": "string",
-						"title": "Username"
-					},
-					"password": {
-						"type": "string",
-						"title": "Password"
-					},
-					"scope": {
-						"type": "string",
-						"title": "Scope",
-						"default": ""
-					},
-					"client_id": {
-						"anyOf": [
-							{
-								"type": "string"
-							},
-							{
-								"type": "null"
-							}
-						],
-						"title": "Client Id"
-					},
-					"client_secret": {
-						"anyOf": [
-							{
-								"type": "string"
-							},
-							{
-								"type": "null"
-							}
-						],
-						"title": "Client Secret"
-					}
-				},
-				"type": "object",
-				"required": ["username", "password"],
-				"title": "Body_auth-auth:jwt.login"
 			}
 		},
 		"securitySchemes": {
