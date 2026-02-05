@@ -1,9 +1,0 @@
-# Biome ignore file
-node_modules/
-.next/
-out/
-build/
-app/openapi-client/
-openapi.json
-biome_output.txt
-biome_output_2.txt

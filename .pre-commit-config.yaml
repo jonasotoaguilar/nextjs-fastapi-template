@@ -18,7 +18,7 @@ repos:
       - id: debug-statements
       - id: detect-private-key
 
-  # Python
+  # api - Lint
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.15.0
     hooks:
@@ -26,6 +26,7 @@ repos:
         args: [--fix]
       - id: ruff-format
 
+  # Conventional Commits
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v4.3.0
     hooks:
@@ -54,35 +55,35 @@ repos:
       - id: hadolint-docker
         args: ["--ignore=DL3013"]
 
+  # ui - openapi
   - repo: local
     hooks:
       - id: ui-biome
-        name: run ui biome
+        name: UI - biome
         entry: sh -c 'cd ui && pnpm run check'
         language: system
-        types: [file]
         files: ^ui/.*\.(js|jsx|ts|tsx|json|css)$
         exclude: (openapi\.json$|openapi-client/)
         pass_filenames: false
+
       - id: ui-tsc
-        name: run ui tsc
+        name: UI - tsc
         entry: sh -c 'cd ui && pnpm run tsc'
         language: system
-        types: [file]
         files: ^ui/.*\.(ts|tsx)$
         exclude: ^ui/\.next/
         pass_filenames: false
+
       - id: generate-openapi-schema
-        name: generate OpenAPI schema
+        name: UI - generate OpenAPI schema
         entry: sh -c 'cd api && uv run python -m commands.generate_openapi_schema'
         language: system
-        # Only run OpenAPI schema generation if schemas.py, main.py or package version have changed:
         files: (main\.py$|schemas\.py$|pyproject\.toml)
         pass_filenames: false
+
       - id: generate-frontend-client
-        name: generate frontend client
+        name: UI - generate frontend client
         entry: sh -c 'cd ui && pnpm run generate-client'
         language: system
-        # Only run frontend client generation if frontend files have changed:
         files: openapi\.json$
         pass_filenames: false
