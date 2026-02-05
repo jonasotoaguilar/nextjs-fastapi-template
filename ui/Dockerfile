@@ -22,10 +22,13 @@ CMD ["pnpm", "dev"]
 
 # BUILDER Stage
 FROM base AS builder
+
 # Install dependencies (frozen lockfile for reproducibility)
+# Use pnpm fetch to populate cache, then install
 # Ignore scripts during install for security, then rebuild sharp for Next.js image optimization
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-    pnpm install --frozen-lockfile --ignore-scripts && \
+    pnpm fetch --frozen-lockfile && \
+    pnpm install --frozen-lockfile --offline --ignore-scripts && \
     pnpm rebuild sharp
 
 COPY . .

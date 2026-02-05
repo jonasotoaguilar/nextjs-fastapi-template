@@ -13,6 +13,10 @@ on:
       - 'published'
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   REGISTRY: ghcr.io
   # We will set IMAGE_NAME dynamically to ensure it is lowercase
