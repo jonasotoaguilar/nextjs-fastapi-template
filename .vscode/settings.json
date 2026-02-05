@@ -1,0 +1,64 @@
+{
+	// General settings
+	"editor.formatOnSave": true,
+	"editor.codeActionsOnSave": {
+		"source.fixAll": "explicit",
+		"source.organizeImports": "explicit"
+	},
+	"editor.defaultFormatter": "biomejs.biome",
+	"files.trimTrailingWhitespace": true,
+	"files.insertFinalNewline": true,
+
+	// Python / Ruff Settings (API)
+	"[python]": {
+		"editor.defaultFormatter": "charliermarsh.ruff",
+		"editor.codeActionsOnSave": {
+			"source.fixAll.ruff": "explicit",
+			"source.organizeImports.ruff": "explicit"
+		}
+	},
+	"python.defaultInterpreterPath": "${workspaceFolder}/api/.venv/bin/python",
+	"python.testing.pytestEnabled": true,
+	"python.testing.pytestArgs": ["api/tests"],
+	"python.analysis.extraPaths": ["${workspaceFolder}/api"],
+	"ruff.enable": true,
+	"ruff.configuration": "${workspaceFolder}/api/pyproject.toml",
+	"mypy.enabled": true,
+	"mypy.configFile": "api/mypy.ini",
+	"mypy.runUsingUv": true,
+
+	// Frontend Settings (UI)
+	"biome.enabled": true,
+	"[javascript]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[json]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[jsonc]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[css]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+
+	// Tailwind CSS
+	"tailwindCSS.experimental.classRegex": ["class: \"([^\"]*)\""],
+	"tailwindCSS.includeLanguages": {
+		"typescript": "javascript",
+		"typescriptreact": "javascript"
+	},
+
+	// Hadolint
+	"hadolint.dockerfile": "Dockerfile",
+
+	// Snyk
+	"snyk.advanced.organization": "aea24540-be5c-4ac8-8e68-ab1e3cb248b7",
+	"snyk.advanced.autoSelectOrganization": true
+}

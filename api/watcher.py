@@ -7,18 +7,20 @@ from threading import Timer
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
+from typing import Any, Optional
+
 # Updated regex to include main.py, schemas.py, and all .py files in app/routes
 WATCHER_REGEX_PATTERN = re.compile(r"(main\.py|schemas\.py|routes/.*\.py)$")
 APP_PATH = "app"
 
 
 class MyHandler(FileSystemEventHandler):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
-        self.debounce_timer = None
-        self.last_modified = 0
+        self.debounce_timer: Optional[Timer] = None
+        self.last_modified: float = 0
 
-    def on_modified(self, event):
+    def on_modified(self, event: Any) -> None:
         if not event.is_directory and WATCHER_REGEX_PATTERN.search(
             os.path.relpath(event.src_path, APP_PATH)
         ):
@@ -30,12 +32,12 @@ class MyHandler(FileSystemEventHandler):
                 self.debounce_timer = Timer(1.0, self.execute_command, [event.src_path])
                 self.debounce_timer.start()
 
-    def execute_command(self, file_path):
+    def execute_command(self, file_path: str) -> None:
         print(f"File {file_path} has been modified and saved.")
         self.run_mypy_checks()
         self.run_openapi_schema_generation()
 
-    def run_mypy_checks(self):
+    def run_mypy_checks(self) -> None:
         """Run mypy type checks and print output."""
         print("Running mypy type checks...")
         result = subprocess.run(
@@ -52,7 +54,7 @@ class MyHandler(FileSystemEventHandler):
             else "No type errors detected."
         )
 
-    def run_openapi_schema_generation(self):
+    def run_openapi_schema_generation(self) -> None:
         """Run the OpenAPI schema generation command."""
         print("Proceeding with OpenAPI schema generation...")
         try:

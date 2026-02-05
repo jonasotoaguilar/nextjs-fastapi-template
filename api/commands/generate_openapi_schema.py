@@ -5,12 +5,17 @@ from pathlib import Path
 from app.main import app
 from dotenv import load_dotenv
 
+from typing import Any, Dict, Optional
+
 load_dotenv()
 
 OUTPUT_FILE = os.getenv("OPENAPI_OUTPUT_FILE")
 
 
-def generate_openapi_schema(output_file):
+def generate_openapi_schema(output_file: Optional[str]) -> None:
+    if not output_file:
+        print("No output file specified in OPENAPI_OUTPUT_FILE env var")
+        return
     schema = app.openapi()
     output_path = Path(output_file)
 
@@ -34,7 +39,7 @@ def generate_openapi_schema(output_file):
         print(f"Could not format with Biome: {e}")
 
 
-def remove_operation_id_tag(schema):
+def remove_operation_id_tag(schema: Dict[str, Any]) -> Dict[str, Any]:
     """
     Removes the tag prefix from the operation IDs in the OpenAPI schema.
 

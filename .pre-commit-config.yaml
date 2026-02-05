@@ -17,14 +17,12 @@ repos:
       - id: check-symlinks
       - id: debug-statements
       - id: detect-private-key
-
-  # api - Lint
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.0
-    hooks:
-      - id: ruff
-        args: [--fix]
-      - id: ruff-format
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: [--unsafe]
+      - id: check-json
+        exclude: ^\.vscode/settings\.json$
 
   # Conventional Commits
   - repo: https://github.com/compilerla/conventional-pre-commit
@@ -33,7 +31,14 @@ repos:
       - id: conventional-pre-commit
         stages: [commit-msg]
 
-  # TOML
+  # formatters
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.0
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
   - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
     rev: v2.13.0
     hooks:
@@ -41,39 +46,70 @@ repos:
         args: [--autofix]
         files: pyproject.toml
 
-  # Bash
+  # Linters
   - repo: https://github.com/koalaman/shellcheck-precommit
     rev: v0.10.0
     hooks:
       - id: shellcheck
         exclude: contrib
 
-  # Dockerfile
   - repo: https://github.com/hadolint/hadolint
     rev: v2.13.0-beta
     hooks:
       - id: hadolint-docker
         args: ["--ignore=DL3013"]
 
-  # ui - openapi
   - repo: local
     hooks:
+      # UI - Linting & Type checking
       - id: ui-biome
         name: UI - biome
-        entry: sh -c 'cd ui && pnpm run check'
+        # Optimized: runs only on changed files
+        entry: sh -c 'cd ui && pnpm biome check --write --no-errors-on-unmatched --files-ignore-unknown=true "$@"' --
         language: system
         files: ^ui/.*\.(js|jsx|ts|tsx|json|css)$
         exclude: (openapi\.json$|openapi-client/)
-        pass_filenames: false
+        pass_filenames: true
 
       - id: ui-tsc
         name: UI - tsc
+        # TSC needs context, so it runs project-wide if any TS file changes
         entry: sh -c 'cd ui && pnpm run tsc'
         language: system
         files: ^ui/.*\.(ts|tsx)$
         exclude: ^ui/\.next/
         pass_filenames: false
 
+      # api - Security scans & Type checking
+      - id: api-mypy
+        name: API - MyPy (Type Checking)
+        entry: sh -c 'cd api && uv run mypy .'
+        language: system
+        files: ^api/.*\.py$
+        pass_filenames: false
+
+      - id: api-bandit
+        name: API - Bandit (Security)
+        entry: uvx bandit -r api -lll -x api/tests,api/alembic_migrations,api/.venv
+        language: system
+        files: ^api/.*\.py$
+        pass_filenames: false
+
+      - id: api-vulture
+        name: API - Vulture (Dead Code)
+        entry: uvx vulture --min-confidence 100 --exclude api/tests,api/alembic_migrations,api/.venv api
+        language: system
+        files: ^api/.*\.py$
+        pass_filenames: false
+
+      - id: api-safety
+        name: API - Safety (Dependencies Audit)
+        entry: sh -c 'cd api && uv pip compile pyproject.toml -q -o requirements.txt && uvx safety check -r requirements.txt --ignore 70612 && rm requirements.txt'
+        language: system
+        files: ^api/pyproject\.toml$
+        pass_filenames: false
+
+      # codegen - OpenAPI
       - id: generate-openapi-schema
         name: UI - generate OpenAPI schema
         entry: sh -c 'cd api && uv run python -m commands.generate_openapi_schema'

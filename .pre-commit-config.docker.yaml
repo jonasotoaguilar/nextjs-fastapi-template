@@ -1,8 +1,9 @@
 fail_fast: true
 
 repos:
+  # General
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v5.0.0
     hooks:
       - id: check-added-large-files
         args: ["--maxkb=500"]
@@ -16,7 +17,13 @@ repos:
       - id: check-symlinks
       - id: debug-statements
       - id: detect-private-key
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: [--unsafe]
+      - id: check-json
 
+  # formatters
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.15.0
     hooks:
@@ -31,6 +38,7 @@ repos:
         args: [--autofix]
         files: pyproject.toml
 
+  # Linters
   - repo: https://github.com/koalaman/shellcheck-precommit
     rev: v0.10.0
     hooks:
@@ -40,30 +48,60 @@ repos:
   - repo: https://github.com/hadolint/hadolint
     rev: v2.13.0-beta
     hooks:
-      - id: hadolint
+      - id: hadolint-docker
         args: ["--ignore=DL3013"]
 
   - repo: local
     hooks:
+      # UI - Linting
       - id: ui-biome
-        name: run ui biome
+        name: UI - biome
         entry: sh -c 'docker compose run --rm --no-deps -T ui pnpm biome check --write --no-errors-on-unmatched --files-ignore-unknown=true'
         language: system
-        types: [file]
         files: ^ui/.*\.(js|jsx|ts|tsx|json|css)$
         exclude: (openapi\.json$|openapi-client/)
-        pass_filenames: true
+        pass_filenames: false
+
+      # api - Security scans & Type checking
+      - id: api-mypy
+        name: API - MyPy (Type Checking)
+        entry: sh -c 'docker compose run --rm --no-deps -T api uv run mypy .'
+        language: system
+        files: ^api/.*\.py$
+        pass_filenames: false
+
+      - id: api-bandit
+        name: API - Bandit (Security)
+        entry: sh -c 'docker compose run --rm --no-deps -T api uv run bandit -r . -lll -x tests,alembic_migrations'
+        language: system
+        files: ^api/.*\.py$
+        pass_filenames: false
+
+      - id: api-vulture
+        name: API - Vulture (Dead Code)
+        entry: sh -c 'docker compose run --rm --no-deps -T api uv run vulture --min-confidence 100 --exclude tests,alembic_migrations .'
+        language: system
+        files: ^api/.*\.py$
+        pass_filenames: false
+
+      - id: api-safety
+        name: API - Safety (Dependencies Audit)
+        entry: sh -c 'docker compose run --rm --no-deps -T api sh -c "uv pip compile pyproject.toml -q -o requirements.txt && uv run safety check -r requirements.txt --ignore 70612 && rm requirements.txt"'
+        language: system
+        files: ^api/pyproject\.toml$
+        pass_filenames: false
+
+      # codegen - OpenAPI
       - id: generate-openapi-schema
-        name: generate OpenAPI schema
+        name: UI - generate OpenAPI schema
         entry: sh -c 'docker compose run --rm --no-deps -T api uv run python -m commands.generate_openapi_schema'
         language: system
-        # Only run OpenAPI schema generation if schemas.py, main.py or package version have changed:
         files: (main\.py$|schemas\.py$|pyproject\.toml)
         pass_filenames: false
+
       - id: generate-frontend-client
-        name: generate frontend client
+        name: UI - generate frontend client
         entry: sh -c 'docker compose run --rm --no-deps -T ui pnpm run generate-client'
         language: system
-        # Only run frontend client generation if frontend files have changed:
         files: ^local-shared-data/openapi\.json$
         pass_filenames: false

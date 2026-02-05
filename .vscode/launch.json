@@ -1,0 +1,34 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "API: Debug FastAPI",
+			"type": "debugpy",
+			"request": "launch",
+			"module": "fastapi",
+			"args": ["dev", "app/main.py", "--host", "0.0.0.0", "--port", "8001"],
+			"jinja": true,
+			"cwd": "${workspaceFolder}/api",
+			"env": {
+				"PYTHONPATH": "${workspaceFolder}/api"
+			},
+			"python": "${workspaceFolder}/api/.venv/bin/python"
+		},
+		{
+			"name": "API: Debug Pytest",
+			"type": "debugpy",
+			"request": "launch",
+			"module": "pytest",
+			"args": ["tests"],
+			"cwd": "${workspaceFolder}/api",
+			"python": "${workspaceFolder}/api/.venv/bin/python"
+		}
+	],
+	"compounds": [
+		{
+			"name": "Full Stack Dev (No Debug)",
+			"configurations": [],
+			"preLaunchTask": "API: Dev"
+		}
+	]
+}

@@ -1,0 +1,63 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "API: Dev",
+			"type": "shell",
+			"command": "cd api && ./start.sh",
+			"group": "test",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "UI: Dev",
+			"type": "shell",
+			"command": "cd ui && ./start.sh",
+			"group": "test",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "API: Test",
+			"type": "shell",
+			"command": "cd api && uv run pytest",
+			"group": "test",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "UI: Test",
+			"type": "shell",
+			"command": "cd ui && pnpm run test",
+			"group": "test",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Pre-commit: All files",
+			"type": "shell",
+			"command": "cd api && uv run pre-commit run --all-files",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		}
+	]
+}
