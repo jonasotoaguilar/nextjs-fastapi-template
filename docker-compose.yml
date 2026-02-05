@@ -1,7 +1,7 @@
 services:
-  backend:
+  api:
     build:
-      context: fastapi_backend
+      context: api
     environment:
       - OPENAPI_OUTPUT_FILE=./shared-data/openapi.json
       - DATABASE_URL=postgresql+asyncpg://postgres:password@db:5432/mydatabase
@@ -12,7 +12,7 @@ services:
     networks:
       - my_network
     volumes:
-      - ./fastapi_backend:/app
+      - ./api:/app
       - fastapi-venv:/app/.venv
       - ./local-shared-data:/app/shared-data
     depends_on:
@@ -40,9 +40,9 @@ services:
     networks:
       - my_network
     restart: always
-  frontend:
+  ui:
     build:
-      context: ./nextjs-frontend
+      context: ./ui
     user: node
     ports:
       - "3000:3000"
@@ -50,10 +50,10 @@ services:
       - my_network
     environment:
       NODE_ENV: development
-      API_BASE_URL: http://backend:8001
+      API_BASE_URL: http://api:8001
       OPENAPI_OUTPUT_FILE: ./shared-data/openapi.json
     volumes:
-      - ./nextjs-frontend:/app
+      - ./ui:/app
       - nextjs-node-modules:/app/node_modules
       - ./local-shared-data:/app/shared-data
   mailhog:

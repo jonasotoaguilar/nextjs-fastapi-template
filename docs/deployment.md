@@ -6,7 +6,7 @@ Se admite el despliegue en **Vercel**, con botones dedicados para las aplicacion
 
 ### Despliegue del Frontend
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fjonasotoaguilar%2Fnextjs-fastapi-template%2Ftree%2Fmain%2Fnextjs-frontend&env=API_BASE_URL&envDescription=The%20API_BASE_URL%20is%20the%20backend%20URL%20where%20the%20frontend%20sends%20requests.)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fjonasotoaguilar%2Fnextjs-fastapi-template%2Ftree%2Fmain%2Fui&env=API_BASE_URL&envDescription=The%20API_BASE_URL%20is%20the%20backend%20URL%20where%20the%20frontend%20sends%20requests.)
 
 - Haz clic en el botón **Frontend** de arriba para iniciar el proceso de despliegue.
 - Durante el despliegue, se te pedirá que configures `API_BASE_URL`. Usa un valor provisional (por ejemplo, `https://`) por ahora, ya que se actualizará con la URL del backend más adelante.
@@ -14,7 +14,7 @@ Se admite el despliegue en **Vercel**, con botones dedicados para las aplicacion
 
 ### Despliegue del Backend
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fjonasotoaguilar%2Fnextjs-fastapi-template%2Ftree%2Fmain%2Ffastapi_backend&env=CORS_ORIGINS,ACCESS_SECRET_KEY,RESET_PASSWORD_SECRET_KEY,VERIFICATION_SECRET_KEY&stores=%5B%7B%22type%22%3A%22postgres%22%7D%5D)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fjonasotoaguilar%2Fnextjs-fastapi-template%2Ftree%2Fmain%2Fapi&env=CORS_ORIGINS,ACCESS_SECRET_KEY,RESET_PASSWORD_SECRET_KEY,VERIFICATION_SECRET_KEY&stores=%5B%7B%22type%22%3A%22postgres%22%7D%5D)
 
 - Haz clic en el botón **Backend** de arriba para comenzar el despliegue.
 - Primero, configura la base de datos. La conexión se configura automáticamente, así que sigue los pasos y debería funcionar por defecto.
@@ -29,13 +29,13 @@ Se admite el despliegue en **Vercel**, con botones dedicados para las aplicacion
 
 ## Configuración de CI (GitHub Actions) para el Despliegue de Producción
 
-Proporcionamos los archivos **prod-backend-deploy.yml** y **prod-frontend-deploy.yml** para habilitar la integración continua a través de GitHub Actions. Para conectarlos a GitHub, simplemente muévelos al directorio `.github/workflows/`.
+Proporcionamos los archivos **prod-api-deploy.yml** y **prod-ui-deploy.yml** para habilitar la integración continua a través de GitHub Actions. Para conectarlos a GitHub, simplemente muévelos al directorio `.github/workflows/`.
 
 Puedes hacerlo con los siguientes comandos:
 
 ```bash
- mv prod-backend-deploy.yml .github/workflows/prod-backend-deploy.yml
- mv prod-frontend-deploy.yml .github/workflows/prod-frontend-deploy.yml
+ mv prod-api-deploy.yml .github/workflows/prod-api-deploy.yml
+ mv prod-ui-deploy.yml .github/workflows/prod-ui-deploy.yml
 ```
 
 ### Prerrequisitos
@@ -71,11 +71,11 @@ Puedes hacerlo con los siguientes comandos:
 
 ### Configuración del Frontend
 
-1. Vincula el proyecto `nextjs-frontend`.
+1. Vincula el proyecto `ui`.
 
-2. Navega al directorio `nextjs-frontend` y ejecuta:
+2. Navega al directorio `ui` y ejecuta:
    ```bash
-   cd nextjs-frontend
+   cd ui
    vercel link
    ```
 3. Sigue las instrucciones:
@@ -84,18 +84,18 @@ Puedes hacerlo con los siguientes comandos:
 
 4. Guarda los IDs del Proyecto y añade los Secretos de GitHub:
 
-- Abre `nextjs-frontend/.vercel/project.json` y añade lo siguiente a los secretos de tu repositorio de GitHub:
+- Abre `ui/.vercel/project.json` y añade lo siguiente a los secretos de tu repositorio de GitHub:
   - `projectId` → `VERCEL_PROJECT_ID_FRONTEND`
   - `orgId` → `VERCEL_ORG_ID`
 
 ### Configuración del Backend
 
-1. Vincula el proyecto `fastapi_backend`.
+1. Vincula el proyecto `api`.
 
-2. Navega al directorio `fastapi_backend` y ejecuta:
+2. Navega al directorio `api` y ejecuta:
 
    ```bash
-   cd fastapi_backend
+   cd api
    vercel link --local-config=vercel.prod.json
    ```
 
@@ -107,13 +107,14 @@ Puedes hacerlo con los siguientes comandos:
 
 4. Guarda los IDs del Proyecto y añade los Secretos de GitHub:
 
-- Abre `fastapi_backend/.vercel/project.json` y añade lo siguiente a los secretos de tu repositorio de GitHub:
+- Abre `api/.vercel/project.json` y añade lo siguiente a los secretos de tu repositorio de GitHub:
   - `projectId` → `VERCEL_PROJECT_ID_BACKEND`
   - `orgId` → `VERCEL_ORG_ID` (Solo en caso de que no lo hayas añadido antes)
 
 5. Actualiza el archivo requirements.txt:
+
    ```bash
-   cd fastapi_backend
+   cd api
    uv export > requirements.txt
    ```
 

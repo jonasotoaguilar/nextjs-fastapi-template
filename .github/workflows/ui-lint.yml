@@ -1,0 +1,56 @@
+name: UI Lint
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "ui/**"
+      - ".github/workflows/ui-lint.yml"
+  pull_request:
+    paths:
+      - "ui/**"
+      - ".github/workflows/ui-lint.yml"
+
+jobs:
+  biome:
+    name: Biome + TSC
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        working-directory: ./ui
+        run: pnpm install
+
+      - name: Run Biome check
+        working-directory: ./ui
+        run: pnpm run check
+
+      - name: Run TypeScript check
+        working-directory: ./ui
+        run: pnpm run tsc
+
+  hadolint:
+    name: Hadolint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Run Hadolint
+        uses: hadolint/hadolint-action@v3.3.0
+        with:
+          dockerfile: ui/Dockerfile

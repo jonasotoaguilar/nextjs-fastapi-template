@@ -48,7 +48,7 @@ El backend y el frontend están versionados juntos, es decir, deben tener el mis
 
 Para lanzar y publicar una nueva versión, sigue estos pasos:
 
-1. Actualiza la versión en `fastapi_backend/pyproject.toml` y `nextjs-frontend/package.json`.
+1. Actualiza la versión en `api/pyproject.toml` y `ui/package.json`.
 2. Actualiza el historial de cambios en `CHANGELOG.md`.
 3. Abre un PR con los cambios.
 4. Una vez que el PR se haya fusionado, ejecuta la [GitHub Action de Lanzamiento](https://github.com/jonasotoaguilar/nextjs-fastapi-template/actions/workflows/release.yml) para crear un borrador de lanzamiento.

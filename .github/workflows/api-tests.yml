@@ -1,0 +1,67 @@
+name: API Tests
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "api/**"
+      - ".github/workflows/api-tests.yml"
+  pull_request:
+    paths:
+      - "api/**"
+      - ".github/workflows/api-tests.yml"
+
+jobs:
+  pytest:
+    name: Pytest
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql+asyncpg://postgres:password@localhost:5433/testdatabase
+      TEST_DATABASE_URL: postgresql+asyncpg://postgres:password@localhost:5433/testdatabase
+      ACCESS_SECRET_KEY: ci-secret-key-access
+      RESET_PASSWORD_SECRET_KEY: ci-secret-key-reset
+      VERIFICATION_SECRET_KEY: ci-secret-key-verification
+      CORS_ORIGINS: '["*"]'
+
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: testdatabase
+        ports:
+          - 5433:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Install dependencies
+        working-directory: ./api
+        run: uv sync --all-extras --dev
+
+      - name: Run tests
+        working-directory: ./api
+        run: uv run coverage run -m pytest
+
+      - name: Generate XML coverage report
+        working-directory: ./api
+        run: uv run coverage xml -o coverage.xml
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2.3.6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          flag-name: python-coverage
+          parallel: true
+          path-to-lcov: api/coverage.xml

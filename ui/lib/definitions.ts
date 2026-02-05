@@ -14,7 +14,7 @@ export const passwordResetConfirmSchema = z
   .object({
     password: passwordSchema,
     passwordConfirm: z.string(),
-    token: z.string({ required_error: "Token is required" }),
+    token: z.string({ message: "Token is required" }),
   })
   .refine((data) => data.password === data.passwordConfirm, {
     message: "Passwords must match.",

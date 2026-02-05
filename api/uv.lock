@@ -78,11 +78,11 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "asyncpg", specifier = ">=0.29.0,<0.30" },
-    { name = "fastapi", extras = ["standard"], specifier = ">=0.115.0,<0.116" },
+    { name = "asyncpg", specifier = ">=0.29.0,<0.32" },
+    { name = "fastapi", extras = ["standard"], specifier = ">=0.115.0,<0.129" },
     { name = "fastapi-mail", specifier = ">=1.4.1,<2" },
-    { name = "fastapi-pagination", specifier = "==0.13.3" },
-    { name = "fastapi-users", extras = ["sqlalchemy"], specifier = ">=13.0.0,<14" },
+    { name = "fastapi-pagination", specifier = "==0.15.9" },
+    { name = "fastapi-users", extras = ["sqlalchemy"], specifier = ">=13.0.0,<16" },
     { name = "pydantic-settings", specifier = ">=2.5.2,<3" },
 ]
 
@@ -93,13 +93,13 @@ dev = [
     { name = "mkdocs-material", specifier = ">=9.6.9" },
     { name = "mkdocs-material", extras = ["imaging"], specifier = ">=9.6.9" },
     { name = "mypy", specifier = ">=1.13.0,<2" },
-    { name = "pre-commit", specifier = ">=3.4.0,<4" },
-    { name = "pytest", specifier = ">=8.3.3,<9" },
-    { name = "pytest-asyncio", specifier = ">=0.24.0,<0.25" },
+    { name = "pre-commit", specifier = ">=3.4.0,<5" },
+    { name = "pytest", specifier = ">=8.3.3,<10" },
+    { name = "pytest-asyncio", specifier = ">=0.24.0,<1.4" },
     { name = "pytest-mock", specifier = ">=3.14.0,<4" },
     { name = "python-dotenv", specifier = ">=1.0.1,<2" },
     { name = "ruff", specifier = ">=0.15.0,<0.16" },
-    { name = "watchdog", specifier = ">=5.0.3,<6" },
+    { name = "watchdog", specifier = ">=5.0.3,<7" },
 ]
 
 [[package]]
@@ -507,16 +507,16 @@ wheels = [
 
 [[package]]
 name = "fastapi-pagination"
-version = "0.13.3"
+version = "0.15.9"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fastapi" },
     { name = "pydantic" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/10/4c/e98a1665b6ac2e9e4ed98450e4e0ea48108f3bc52de517d9a70cc22761c2/fastapi_pagination-0.13.3.tar.gz", hash = "sha256:40c2383aff13a3a0e4a2742dfbf004572e88458cd8f338d85f90a27e07abab4a", size = 550898, upload-time = "2025-06-25T21:22:15.287Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/48/4b/057fea634912ba285e71fa9b65594c9cc90f589ad25ccbdc7549202c12a2/fastapi_pagination-0.15.9.tar.gz", hash = "sha256:e24b0419a6077a75f38970ada2a57e277845fb177cc2da7300374ee8be32e8b5", size = 574790, upload-time = "2026-02-02T18:29:20.863Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/bf/73/ef1ab892c2d189d8b6bd72325e9e710df6737c3b7976e12aa5749a56ea01/fastapi_pagination-0.13.3-py3-none-any.whl", hash = "sha256:e1b1cc7fa5c773c61087845ef8a73ed6b516071c057418698b9242461573f44e", size = 50986, upload-time = "2025-06-25T21:22:13.591Z" },
+    { url = "https://files.pythonhosted.org/packages/c8/7e/7d1a66b618309ef3d1d969ccab187a8c09444e6eb8d3abcd3bc12f145578/fastapi_pagination-0.15.9-py3-none-any.whl", hash = "sha256:21f5ab465fb75e21a3454234603071711b679b1973ba2428e7a63db2221abc09", size = 60100, upload-time = "2026-02-02T18:29:19.363Z" },
 ]
 
 [[package]]

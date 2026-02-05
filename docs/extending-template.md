@@ -6,10 +6,10 @@ Esta guía te muestra cómo extender el template con nuevas funcionalidades, mod
 
 ### 1. Crear el modelo SQLAlchemy
 
-Crea un nuevo archivo en `fastapi_backend/app/db/models/` o agrega tu modelo a un archivo existente:
+Crea un nuevo archivo en `api/app/db/models/` o agrega tu modelo a un archivo existente:
 
 ```python
-# fastapi_backend/app/db/models/product.py
+# api/app/db/models/product.py
 from sqlalchemy import Column, String, Integer, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -32,10 +32,10 @@ class Product(Base):
 
 ### 2. Registrar el modelo
 
-Asegúrate de que tu modelo sea importado en `fastapi_backend/app/db/base.py`:
+Asegúrate de que tu modelo sea importado en `api/app/db/base.py`:
 
 ```python
-# fastapi_backend/app/db/base.py
+# api/app/db/base.py
 from app.db.base_class import Base
 from app.db.models.user import User
 from app.db.models.product import Product  # Agregar esta línea
@@ -45,10 +45,10 @@ __all__ = ["Base", "User", "Product"]
 
 ### 3. Crear schemas Pydantic
 
-Crea schemas para validación y serialización en `fastapi_backend/app/schemas/`:
+Crea schemas para validación y serialización en `api/app/schemas/`:
 
 ```python
-# fastapi_backend/app/schemas/product.py
+# api/app/schemas/product.py
 from pydantic import BaseModel, Field
 from datetime import datetime
 
@@ -86,7 +86,7 @@ Genera y aplica la migración:
 # Generar migración
 make docker-db-schema migration_name="add products table"
 
-# Revisar el archivo generado en fastapi_backend/alembic/versions/
+# Revisar el archivo generado en api/alembic/versions/
 
 # Aplicar migración
 make docker-migrate-db
@@ -96,10 +96,10 @@ make docker-migrate-db
 
 ### 1. Crear el router
 
-Crea un nuevo archivo en `fastapi_backend/app/api/routes/`:
+Crea un nuevo archivo en `api/app/api/routes/`:
 
 ```python
-# fastapi_backend/app/api/routes/products.py
+# api/app/api/routes/products.py
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -204,7 +204,7 @@ async def delete_product(
 
 ### 2. Registrar el router
 
-Agrega el router en `fastapi_backend/app/api/routes/__init__.py`:
+Agrega el router en `api/app/api/routes/__init__.py`:
 
 ```python
 from fastapi import APIRouter
@@ -224,7 +224,7 @@ El hot-reload regenera automáticamente el cliente cuando detecta cambios en el 
 
 ```bash
 # Desde el directorio raíz
-cd nextjs-frontend && pnpm run generate-client
+cd ui && pnpm run generate-client
 ```
 
 ## Usar el cliente tipado en el frontend
@@ -385,7 +385,7 @@ const { data, error } = await authenticatedClient.POST("/api/products/", {
 ### Tests del backend
 
 ```python
-# fastapi_backend/tests/api/test_products.py
+# api/tests/api/test_products.py
 import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -428,7 +428,7 @@ async def test_list_products(client: AsyncClient, session: AsyncSession):
 ### Tests del frontend
 
 ```typescript
-// nextjs-frontend/__tests__/products.test.tsx
+// ui/__tests__/products.test.tsx
 import { render, screen, waitFor } from "@testing-library/react";
 import ProductsPage from "@/app/products/page";
 import { client } from "@/lib/api-client";

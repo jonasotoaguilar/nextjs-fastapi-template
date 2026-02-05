@@ -18,13 +18,10 @@ repos:
       - id: detect-private-key
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    # Ruff version.
     rev: v0.15.0
     hooks:
-      # Run the linter.
       - id: ruff
         args: [--fix]
-      # Run the formatter.
       - id: ruff-format
 
   - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
@@ -48,24 +45,24 @@ repos:
 
   - repo: local
     hooks:
-      - id: frontend-biome
-        name: run frontend biome
-        entry: sh -c 'docker compose run --rm --no-deps -T frontend pnpm biome check --write --no-errors-on-unmatched --files-ignore-unknown=true'
+      - id: ui-biome
+        name: run ui biome
+        entry: sh -c 'docker compose run --rm --no-deps -T ui pnpm biome check --write --no-errors-on-unmatched --files-ignore-unknown=true'
         language: system
         types: [file]
-        files: ^nextjs-frontend/.*\.(js|jsx|ts|tsx|json|css)$
+        files: ^ui/.*\.(js|jsx|ts|tsx|json|css)$
         exclude: (openapi\.json$|openapi-client/)
         pass_filenames: true
       - id: generate-openapi-schema
         name: generate OpenAPI schema
-        entry: sh -c 'docker compose run --rm --no-deps -T backend uv run python -m commands.generate_openapi_schema'
+        entry: sh -c 'docker compose run --rm --no-deps -T api uv run python -m commands.generate_openapi_schema'
         language: system
         # Only run OpenAPI schema generation if schemas.py, main.py or package version have changed:
         files: (main\.py$|schemas\.py$|pyproject\.toml)
         pass_filenames: false
       - id: generate-frontend-client
         name: generate frontend client
-        entry: sh -c 'docker compose run --rm --no-deps -T frontend pnpm run generate-client'
+        entry: sh -c 'docker compose run --rm --no-deps -T ui pnpm run generate-client'
         language: system
         # Only run frontend client generation if frontend files have changed:
         files: ^local-shared-data/openapi\.json$

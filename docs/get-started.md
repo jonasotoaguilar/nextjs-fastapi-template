@@ -37,12 +37,12 @@ Asegúrate de tener `docker-compose` instalado. Consulta la [guía de instalaci�
 
 ### Configuración de variables de entorno
 
-**Backend (`fastapi_backend/.env`):**
+**Backend (`api/.env`):**
 
 Copia los archivos `.env.example` a `.env` y actualiza las variables con tus propios valores.
 
 ```bash
-cd fastapi_backend && cp .env.example .env
+cd api && cp .env.example .env
 ```
 
 Solo necesitarás actualizar las claves secretas. Puedes usar el siguiente comando para generar una nueva clave secreta:
@@ -57,12 +57,12 @@ python3 -c "import secrets; print(secrets.token_hex(32))"
 
 Puedes consultar el archivo .env.example para más información sobre las variables.
 
-**Frontend (`nextjs-frontend/.env.local`):**
+**Frontend (`ui/.env.local`):**
 
 Copia los archivos `.env.example` a `.env.local`. Es poco probable que estos valores cambien, por lo que puedes dejarlos como están.
 
 ```bash
-cd nextjs-frontend && cp .env.example .env.local
+cd ui && cp .env.example .env.local
 ```
 
 ### Ejecutando la base de datos
@@ -86,7 +86,7 @@ Para configurar el entorno del proyecto localmente, usa los siguientes comandos:
 
 #### Backend
 
-Navega al directorio `fastapi_backend` y ejecuta:
+Navega al directorio `api` y ejecuta:
 
 ```bash
 uv sync
@@ -94,7 +94,7 @@ uv sync
 
 #### Frontend
 
-Navega al directorio `nextjs-frontend` y ejecuta:
+Navega al directorio `ui` y ejecuta:
 
 ```bash
 pnpm install
@@ -115,13 +115,13 @@ make docker-build
 Inicia el servidor FastAPI:
 
 ```bash
-make start-backend
+make start-api
 ```
 
 Inicia el servidor de desarrollo de Next.js:
 
 ```bash
-make start-frontend
+make start-ui
 ```
 
 **Si estás usando Docker:**
@@ -129,13 +129,13 @@ make start-frontend
 Inicia el contenedor del servidor FastAPI:
 
 ```bash
-make docker-start-backend
+make docker-start-api
 ```
 
 Inicia el contenedor del servidor de desarrollo de Next.js:
 
 ```bash
-make docker-start-frontend
+make docker-start-ui
 ```
 
 - **Backend**: Accede a la API en `http://localhost:8001`.

@@ -1,4 +1,4 @@
-name: Vercel Production Backend Deployment
+name: Vercel Production API Deployment
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_BACKEND }}
@@ -7,11 +7,11 @@ on:
     branches:
       - main
 jobs:
-  Deploy-Production-Backend:
+  Deploy-Production-API:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: fastapi_backend
+        working-directory: api
     steps:
       - uses: actions/checkout@v2
 
@@ -36,7 +36,7 @@ jobs:
         run: |
           set -o allexport
           source .env.local
-          set +o allexport 
+          set +o allexport
           alembic upgrade head
 
       # Build project artifacts

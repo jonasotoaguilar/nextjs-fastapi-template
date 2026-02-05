@@ -61,8 +61,8 @@ Para usar este template, visita nuestra guía [Get Started](https://jonasotoagui
 
 ```
 nextjs-fastapi-template/
-├── fastapi_backend/          # Backend FastAPI
-│   ├── app/                  # Código de la aplicación
+├── api                      # Backend FastAPI
+│   ├── app/                 # Código de la aplicación
 │   │   ├── api/             # Endpoints de la API
 │   │   ├── core/            # Configuración y utilidades
 │   │   ├── db/              # Modelos y configuración de base de datos
@@ -70,7 +70,7 @@ nextjs-fastapi-template/
 │   ├── alembic/             # Migraciones de base de datos
 │   ├── commands/            # Scripts de utilidad
 │   └── tests/               # Tests del backend
-├── nextjs-frontend/         # Frontend Next.js
+├── ui/         # Frontend Next.js
 │   ├── app/                 # App Router de Next.js
 │   ├── components/          # Componentes React
 │   ├── lib/                 # Utilidades y configuración
@@ -83,7 +83,7 @@ nextjs-fastapi-template/
 
 ### Agregar nuevos modelos
 
-1. **Crear el modelo en el backend** (`fastapi_backend/app/db/models/`):
+1. **Crear el modelo en el backend** (`api/app/db/models/`):
 
 ```python
 from sqlalchemy import Column, String, Integer
@@ -98,7 +98,7 @@ class Product(Base):
     price = Column(Integer, nullable=False)
 ```
 
-2. **Crear schemas Pydantic** (`fastapi_backend/app/schemas/`):
+2. **Crear schemas Pydantic** (`api/app/schemas/`):
 
 ```python
 from pydantic import BaseModel
@@ -127,7 +127,7 @@ make docker-migrate-db
 
 ### Agregar nuevos endpoints
 
-1. **Crear router** (`fastapi_backend/app/api/routes/`):
+1. **Crear router** (`api/app/api/routes/`):
 
 ```python
 from fastapi import APIRouter, Depends
@@ -146,7 +146,7 @@ async def create_product(
     pass
 ```
 
-2. **Registrar el router** (`fastapi_backend/app/api/routes/__init__.py`):
+2. **Registrar el router** (`api/app/api/routes/__init__.py`):
 
 ```python
 from app.api.routes import products
@@ -159,7 +159,7 @@ api_router.include_router(products.router)
 
 ```bash
 # El hot-reload lo hace automáticamente, o manualmente:
-cd nextjs-frontend && pnpm run generate-client
+cd ui && pnpm run generate-client
 ```
 
 ### Usar el cliente tipado en el frontend
@@ -189,11 +189,11 @@ El proyecto incluye un `Makefile` con comandos para simplificar tareas comunes:
 ```bash
 make help                    # Ver todos los comandos disponibles
 make docker-build           # Construir contenedores
-make docker-start-backend   # Iniciar backend
-make docker-start-frontend  # Iniciar frontend
+make docker-start-api       # Iniciar api
+make docker-start-ui        # Iniciar ui
 make docker-migrate-db      # Aplicar migraciones
-make test-backend          # Ejecutar tests del backend
-make test-frontend         # Ejecutar tests del frontend
+make test-api               # Ejecutar tests de la api
+make test-ui                # Ejecutar tests del ui
 ```
 
 ## Contribuir

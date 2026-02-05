@@ -10,7 +10,7 @@ updates:
           - "*"
 
   - package-ecosystem: "npm"
-    directory: "/nextjs-frontend"
+    directory: "/ui"
     schedule:
       interval: "weekly"
     groups:
@@ -18,8 +18,8 @@ updates:
         patterns:
           - "*"
 
-  - package-ecosystem: "pip"
-    directory: "/fastapi_backend"
+  - package-ecosystem: "uv"
+    directory: "/api"
     schedule:
       interval: "weekly"
     groups:

@@ -16,7 +16,7 @@ Puedes ejecutar manualmente los mismos comandos que llaman los hot reloads cuand
 1. Para exportar el schema `openapi.json`:
 
    ```bash
-   cd fastapi_backend && uv run python -m commands.generate_openapi_schema
+   cd api && uv run python -m commands.generate_openapi_schema
    ```
 
    o usando Docker:
@@ -27,7 +27,7 @@ Puedes ejecutar manualmente los mismos comandos que llaman los hot reloads cuand
 
 2. Para generar el cliente del frontend:
    ```bash
-   cd nextjs-frontend && pnpm run generate-client
+   cd ui && pnpm run generate-client
    ```
    o usando Docker:
    ```bash

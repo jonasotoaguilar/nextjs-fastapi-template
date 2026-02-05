@@ -1,6 +1,6 @@
 # Historial de cambios
 
-Este historial de cambios hace referencia a las modificaciones realizadas tanto en el backend de FastAPI (`fastapi_backend`) como en el cliente TypeScript del frontend (`nextjs-frontend`).
+Este historial de cambios hace referencia a las modificaciones realizadas tanto en el backend de FastAPI (`api`) como en el cliente TypeScript del frontend (`ui`).
 
 !!! note
 El backend y el frontend se versionan juntos, es decir, tienen el mismo número de versión. Cuando actualices el backend, también debes actualizar el frontend a la misma versión.

@@ -54,32 +54,32 @@ repos:
 
   - repo: local
     hooks:
-      - id: frontend-biome
-        name: run frontend biome
-        entry: sh -c 'cd nextjs-frontend && pnpm run check'
+      - id: ui-biome
+        name: run ui biome
+        entry: sh -c 'cd ui && pnpm run check'
         language: system
         types: [file]
-        files: ^nextjs-frontend/.*\.(js|jsx|ts|tsx|json|css)$
+        files: ^ui/.*\.(js|jsx|ts|tsx|json|css)$
         exclude: (openapi\.json$|openapi-client/)
         pass_filenames: false
-      - id: frontend-tsc
-        name: run frontend tsc
-        entry: sh -c 'cd nextjs-frontend && pnpm run tsc'
+      - id: ui-tsc
+        name: run ui tsc
+        entry: sh -c 'cd ui && pnpm run tsc'
         language: system
         types: [file]
-        files: ^nextjs-frontend/.*\.(ts|tsx)$
-        exclude: ^nextjs-frontend/\.next/
+        files: ^ui/.*\.(ts|tsx)$
+        exclude: ^ui/\.next/
         pass_filenames: false
       - id: generate-openapi-schema
         name: generate OpenAPI schema
-        entry: sh -c 'cd fastapi_backend && uv run python -m commands.generate_openapi_schema'
+        entry: sh -c 'cd api && uv run python -m commands.generate_openapi_schema'
         language: system
         # Only run OpenAPI schema generation if schemas.py, main.py or package version have changed:
         files: (main\.py$|schemas\.py$|pyproject\.toml)
         pass_filenames: false
       - id: generate-frontend-client
         name: generate frontend client
-        entry: sh -c 'cd nextjs-frontend && pnpm run generate-client'
+        entry: sh -c 'cd ui && pnpm run generate-client'
         language: system
         # Only run frontend client generation if frontend files have changed:
         files: openapi\.json$
