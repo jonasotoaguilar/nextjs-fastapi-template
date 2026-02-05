@@ -3,6 +3,7 @@ services:
     hostname: api-dev
     build:
       context: api
+      target: dev
     environment:
       - OPENAPI_OUTPUT_FILE=./shared-data/openapi.json
       - DATABASE_URL=postgresql+asyncpg://postgres:password@db:5432/mydatabase
@@ -47,6 +48,7 @@ services:
     hostname: ui-dev
     build:
       context: ./ui
+      target: dev
     user: node
     ports:
       - "3000:3000"

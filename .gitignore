@@ -160,3 +160,4 @@ cython_debug/
 
 # Snyk Security Extension - AI Rules (auto-generated)
 .agent/
+ui/.pnpm-store
