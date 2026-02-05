@@ -28,6 +28,11 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
 
 COPY . .
 
+# Generate OpenAPI client before building
+# Set the OpenAPI file path as environment variable
+ENV OPENAPI_OUTPUT_FILE=./openapi.json
+RUN pnpm run generate-client
+
 # Build the application
 # We assume that next.config.mjs has been updated with output: 'standalone'
 ENV NEXT_TELEMETRY_DISABLED=1
