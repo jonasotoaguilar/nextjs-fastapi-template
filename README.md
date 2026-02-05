@@ -4,8 +4,14 @@
     <em>Template Next.js + FastAPI: Stack moderno con Python y TypeScript, validación con Zod.</em>
 </p>
 <p align="center">
-<a href="https://github.com/jonasotoaguilar/nextjs-fastapi-template/actions/workflows/ci.yml" target="_blank">
-    <img src="https://github.com/jonasotoaguilar/nextjs-fastapi-template/actions/workflows/ci.yml/badge.svg" alt="CI">
+<a href="https://coveralls.io/github/jonasotoaguilar/nextjs-fastapi-template?branch=main" target="_blank">
+    <img src="https://coveralls.io/repos/github/jonasotoaguilar/nextjs-fastapi-template/badge.svg?branch=main" alt="Coverage Status">
+</a>
+<a href="https://github.com/jonasotoaguilar/nextjs-fastapi-template/blob/main/LICENSE.txt" target="_blank">
+    <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License">
+</a>
+<a href="https://github.com/jonasotoaguilar/nextjs-fastapi-template" target="_blank">
+    <img src="https://img.shields.io/github/stars/jonasotoaguilar/nextjs-fastapi-template?style=social" alt="GitHub stars">
 </a>
 </p>
 
@@ -22,6 +28,63 @@
 Este template proporciona una base sólida para aplicaciones web escalables y de alto rendimiento, siguiendo arquitectura limpia y mejores prácticas. Simplifica el desarrollo integrando FastAPI, Pydantic y Next.js con TypeScript y Zod, asegurando type safety de extremo a extremo y validación de schemas entre frontend y backend.
 
 El backend FastAPI soporta operaciones completamente asíncronas, optimizando consultas a base de datos, rutas de API y ejecución de tests para mejor rendimiento. El despliegue es simple, con backend y frontend completamente desplegables en Vercel, permitiendo lanzamientos rápidos con configuración mínima.
+
+## 🚀 Inicio Rápido
+
+### Prerrequisitos
+
+- **Docker** y **Docker Compose** (recomendado)
+- O bien:
+  - **Node.js 18+** y **pnpm 10+**
+  - **Python 3.12**
+  - **PostgreSQL 15+**
+
+### Instalación Rápida con Docker
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/jonasotoaguilar/nextjs-fastapi-template.git
+cd nextjs-fastapi-template
+
+# 2. Inicializar variables de entorno
+make init-env
+
+# 3. Construir e iniciar servicios
+make docker-build
+make docker-up
+
+# 4. Aplicar migraciones
+make docker-migrate-db
+
+# 5. Abrir en el navegador
+# Frontend: http://localhost:3000
+# Backend API: http://localhost:8000
+# API Docs: http://localhost:8000/docs
+```
+
+### Instalación sin Docker
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/jonasotoaguilar/nextjs-fastapi-template.git
+cd nextjs-fastapi-template
+
+# 2. Inicializar variables de entorno
+make init-env
+
+# 3. Instalar dependencias
+make install
+
+# 4. Configurar base de datos PostgreSQL
+# Editar api/.env con tu DATABASE_URL
+
+# 5. Aplicar migraciones
+cd api && uv run alembic upgrade head
+
+# 6. Iniciar servicios (en terminales separadas)
+make start-api    # Terminal 1 - Backend en :8000
+make start-ui     # Terminal 2 - Frontend en :3000
+```
 
 ### Características principales
 
@@ -78,6 +141,23 @@ nextjs-fastapi-template/
 ├── docs/                    # Documentación MkDocs
 └── docker-compose.yml       # Configuración Docker
 ```
+
+## 📚 Documentación Específica
+
+Para información detallada sobre cada parte del proyecto:
+
+- **[Frontend (UI)](./ui/README.md)** - Documentación completa del frontend Next.js
+  - Estructura de componentes
+  - Cliente API tipado
+  - Testing con Vitest
+  - Configuración y despliegue
+
+- **[Backend (API)](./api/README.md)** - Documentación completa del backend FastAPI
+  - Endpoints disponibles
+  - Modelos y schemas
+  - Migraciones de base de datos
+  - Testing con pytest
+
 
 ## Extender el template
 

@@ -2,7 +2,7 @@ name: Coveralls Finished
 
 on:
   workflow_run:
-    workflows: ["API Tests", "UI Tests"]
+    workflows: ["API: CI", "UI: CI"]
     types:
       - completed
 
