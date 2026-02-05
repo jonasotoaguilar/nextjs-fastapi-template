@@ -34,7 +34,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN pnpm run build
 
 # PROD Stage
-FROM node:20-slim-bookworm AS prod
+FROM node:20-bookworm-slim AS prod
 WORKDIR /app
 
 ENV NODE_ENV=production
