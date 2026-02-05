@@ -1,4 +1,4 @@
-name: UI Tests
+name: UI CI
 
 on:
   push:
@@ -6,15 +6,15 @@ on:
       - main
     paths:
       - "ui/**"
-      - ".github/workflows/ui-tests.yml"
+      - ".github/workflows/ui-ci.yml"
   pull_request:
     paths:
       - "ui/**"
-      - ".github/workflows/ui-tests.yml"
+      - ".github/workflows/ui-ci.yml"
 
 jobs:
-  vitest:
-    name: Vitest
+  validate:
+    name: Validate UI
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -35,6 +35,20 @@ jobs:
         working-directory: ./ui
         run: pnpm install
 
+      - name: Generate client
+        working-directory: ./ui
+        env:
+          OPENAPI_OUTPUT_FILE: openapi.json
+        run: pnpm run generate-client
+
+      - name: Run Biome check
+        working-directory: ./ui
+        run: pnpm run check
+
+      - name: Run TypeScript check
+        working-directory: ./ui
+        run: pnpm run tsc
+
       - name: Run tests
         working-directory: ./ui
         run: pnpm run coverage
@@ -45,3 +59,14 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           flag-name: node-coverage
           parallel: true
+
+  hadolint:
+    name: Docker Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Run Hadolint
+        uses: hadolint/hadolint-action@v3.3.0
+        with:
+          dockerfile: ui/Dockerfile

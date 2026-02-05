@@ -1,4 +1,4 @@
-name: API Tests
+name: API CI
 
 on:
   push:
@@ -6,15 +6,15 @@ on:
       - main
     paths:
       - "api/**"
-      - ".github/workflows/api-tests.yml"
+      - ".github/workflows/api-ci.yml"
   pull_request:
     paths:
       - "api/**"
-      - ".github/workflows/api-tests.yml"
+      - ".github/workflows/api-ci.yml"
 
 jobs:
-  pytest:
-    name: Pytest
+  validate:
+    name: Validate API
     runs-on: ubuntu-latest
     env:
       DATABASE_URL: postgresql+asyncpg://postgres:password@localhost:5433/testdatabase
@@ -50,6 +50,18 @@ jobs:
         working-directory: ./api
         run: uv sync --all-extras --dev
 
+      - name: Run Ruff lint
+        working-directory: ./api
+        run: uv run ruff check .
+
+      - name: Run Ruff format check
+        working-directory: ./api
+        run: uv run ruff format --check .
+
+      - name: Run MyPy
+        working-directory: ./api
+        run: uv run mypy .
+
       - name: Run tests
         working-directory: ./api
         run: uv run coverage run -m pytest
@@ -65,3 +77,15 @@ jobs:
           flag-name: python-coverage
           parallel: true
           path-to-lcov: api/coverage.xml
+
+  hadolint:
+    name: Docker Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Run Hadolint
+        uses: hadolint/hadolint-action@v3.3.0
+        with:
+          dockerfile: api/Dockerfile
+          ignore: DL3013

@@ -26,6 +26,7 @@
 	"mypy.enabled": true,
 	"mypy.configFile": "api/mypy.ini",
 	"mypy.runUsingUv": true,
+	"mypy.dmypyExecutable": "${workspaceFolder}/api/.venv/bin/dmypy",
 
 	// Frontend Settings (UI)
 	"biome.enabled": true,
