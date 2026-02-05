@@ -1,4 +1,4 @@
-name: UI CI
+name: "UI: CI"
 
 on:
   push:
