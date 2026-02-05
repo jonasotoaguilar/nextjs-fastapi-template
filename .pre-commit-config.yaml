@@ -61,25 +61,6 @@ repos:
 
   - repo: local
     hooks:
-      # UI - Linting & Type checking
-      - id: ui-biome
-        name: UI - biome
-        # Optimized: runs only on changed files
-        entry: sh -c 'cd ui && pnpm biome check --write --no-errors-on-unmatched --files-ignore-unknown=true "$@"' --
-        language: system
-        files: ^ui/.*\.(js|jsx|ts|tsx|json|css)$
-        exclude: (openapi\.json$|openapi-client/)
-        pass_filenames: true
-
-      - id: ui-tsc
-        name: UI - tsc
-        # TSC needs context, so it runs project-wide if any TS file changes
-        entry: sh -c 'cd ui && pnpm run tsc'
-        language: system
-        files: ^ui/.*\.(ts|tsx)$
-        exclude: ^ui/\.next/
-        pass_filenames: false
-
       # api - Security scans & Type checking
       - id: api-mypy
         name: API - MyPy (Type Checking)
@@ -107,6 +88,25 @@ repos:
         entry: sh -c 'cd api && uv pip compile pyproject.toml -q -o requirements.txt && uvx safety check -r requirements.txt --ignore 70612 && rm requirements.txt'
         language: system
         files: ^api/pyproject\.toml$
+        pass_filenames:
+          false
+          # UI - Linting & Type checking
+      - id: ui-biome
+        name: UI - biome
+        # Optimized: runs only on changed files
+        entry: sh -c 'cd ui && pnpm biome check --write --no-errors-on-unmatched --files-ignore-unknown=true "$@"' --
+        language: system
+        files: ^ui/.*\.(js|jsx|ts|tsx|json|css)$
+        exclude: (openapi\.json$|openapi-client/)
+        pass_filenames: true
+
+      - id: ui-tsc
+        name: UI - tsc
+        # TSC needs context, so it runs project-wide if any TS file changes
+        entry: sh -c 'cd ui && pnpm run tsc'
+        language: system
+        files: ^ui/.*\.(ts|tsx)$
+        exclude: ^ui/\.next/
         pass_filenames: false
 
       # codegen - OpenAPI
