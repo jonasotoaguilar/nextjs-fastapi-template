@@ -40,7 +40,7 @@ jobs:
       ACCESS_SECRET_KEY: ci-secret-key-access
       RESET_PASSWORD_SECRET_KEY: ci-secret-key-reset
       VERIFICATION_SECRET_KEY: ci-secret-key-verification
-      CORS_ORIGINS: '[\"*\"]'
+      CORS_ORIGINS: '["*"]'
 
     services:
       postgres:
