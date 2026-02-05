@@ -48,3 +48,7 @@ docker-compose*
 
 # Shared data
 shared-data/
+
+# Documentation
+README.md
+AGENTS.md
