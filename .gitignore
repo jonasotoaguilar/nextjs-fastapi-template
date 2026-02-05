@@ -157,3 +157,6 @@ cython_debug/
 # Local files
 .biome_cache
 *.log
+
+# Snyk Security Extension - AI Rules (auto-generated)
+.agent/
