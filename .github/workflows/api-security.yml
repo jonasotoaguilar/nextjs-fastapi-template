@@ -1,0 +1,58 @@
+name: "API: Security"
+
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "api/**"
+      - ".github/workflows/api-security.yml"
+  pull_request:
+    branches:
+      - "main"
+    paths:
+      - "api/**"
+      - ".github/workflows/api-security.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  api-security-scans:
+    name: Security Scans
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Bandit (Static Analysis)
+        working-directory: ./api
+        run: uvx bandit -r . -lll -x "**/tests/*,**/migrations/*"
+        # Bandit encuentra vulnerabilidades comunes (hardcoded passwords, insecure functions, etc.)
+        # -lll: Reporta solo problemas de alta severidad.
+
+      - name: Safety (Dependencies Audit)
+        working-directory: ./api
+        run: |
+          uv pip compile pyproject.toml -o requirements.txt
+          uvx safety check -r requirements.txt --ignore 70612
+        # Safety revisa que tus dependencias no tengan vulnerabilidades conocidas (CVEs).
+        # Generamos un requirements.txt temporal con uv para que safety pueda analizarlo.
+
+      - name: Vulture (Dead Code)
+        working-directory: ./api
+        run: uvx vulture --min-confidence 100 --exclude "**/tests/*,**/migrations/*" .
+        # Vulture detecta código muerto o sin usar. Menos código = menor superficie de ataque.
