@@ -12,6 +12,7 @@
 		"stinkfist0.conventional-commits",
 		"eamodio.gitlens",
 		"exiasr.hadolint",
-		"editorconfig.editorconfig"
+		"editorconfig.editorconfig",
+		"redhat.vscode-yaml"
 	]
 }
