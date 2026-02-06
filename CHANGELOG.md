@@ -1,38 +1,15 @@
 # Historial de cambios
 
-Este historial de cambios hace referencia a las modificaciones realizadas tanto en el backend de FastAPI (`api`) como en el cliente TypeScript del frontend (`ui`).
+Este historial de cambios registra las versiones iniciales y actualizaciones del template Next.js + FastAPI.
 
-!!! note
-El backend y el frontend se versionan juntos, es decir, tienen el mismo número de versión. Cuando actualices el backend, también debes actualizar el frontend a la misma versión.
+## 0.1.0 <small>(Actual)</small> {id="0.1.0"}
 
-## 0.0.8 <small>December 17, 2025</small> {id="0.0.8"}
+- **Inicialización del Template**: Base sólida con Next.js (App Router), FastAPI y autenticación integrada.
+- **Type Safety**: Integración completa entre frontend y backend usando OpenAPI-fetch y Zod.
+- **Docker**: Configuración lista para desarrollo y producción con Docker Compose.
+- **Salud de la Comunidad**: Agregados CODE_OF_CONDUCT.md y SECURITY.md.
 
-- Upgrade Next.js version to latest version
+---
 
-## 0.0.7 <small>October 24, 2025</small> {id="0.0.7"}
-
-- Upgrade @hey-api/openapi-ts version to ^0.83.1
-
-## 0.0.6 <small>September 1, 2025</small> {id="0.0.6"}
-
-- Upgrade Next.js version to 15.5.0
-
-## 0.0.5 <small>July 9, 2025</small> {id="0.0.5"}
-
-- Items Pagination
-
-## 0.0.4 <small>July 9, 2025</small> {id="0.0.4"}
-
-- Fix ESlint missing for pre-commit
-
-## 0.0.3 <small>April 23, 2025</small> {id="0.0.3"}
-
-- Created docs
-
-## 0.0.2 <small>March 12, 2025</small> {id="0.0.2"}
-
-- Generate release draft using github actions
-
-## 0.0.1 <small>March 12, 2025</small> {id="0.0.1"}
-
-- Initial release
+!!! info
+Como este es un **template**, se recomienda a los usuarios limpiar este archivo o reiniciarlo una vez que comiencen su propio desarrollo basado en esta base.
