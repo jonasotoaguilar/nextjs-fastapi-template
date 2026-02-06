@@ -19,8 +19,8 @@ services:
       - ./local-shared-data:/app/shared-data
     depends_on:
       - db
+      - db_test
   db:
-    hostname: db
     image: postgres:17
     environment:
       POSTGRES_USER: postgres
@@ -33,7 +33,6 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
   db_test:
-    hostname: db-test-dev
     image: postgres:17
     environment:
       POSTGRES_USER: postgres
