@@ -1,10 +1,10 @@
 "use client";
 
-import { Lock, Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { Eye, EyeOff, Lock } from "lucide-react";
 import type { InputHTMLAttributes } from "react";
+import { useState } from "react";
 
 interface PasswordInputProps extends InputHTMLAttributes<HTMLInputElement> {
 	className?: string;
@@ -12,7 +12,6 @@ interface PasswordInputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export function PasswordInput({ className, ...props }: PasswordInputProps) {
 	const [showPassword, setShowPassword] = useState(false);
-	const [isFocused, setIsFocused] = useState(false);
 
 	return (
 		<div className="relative group">
@@ -20,11 +19,9 @@ export function PasswordInput({ className, ...props }: PasswordInputProps) {
 			<Input
 				{...props}
 				type={showPassword ? "text" : "password"}
-				onFocus={() => setIsFocused(true)}
-				onBlur={() => setIsFocused(false)}
 				className={cn(
 					"pl-11 pr-11 h-12 bg-gray-50/50 dark:bg-gray-900/50 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-blue-500/20 transition-all rounded-xl",
-					className
+					className,
 				)}
 			/>
 			<button
