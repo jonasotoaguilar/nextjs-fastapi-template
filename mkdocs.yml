@@ -70,6 +70,8 @@ nav:
   - Deployment: deployment.md
   - Changelog: CHANGELOG.md
   - Contributing: contributing.md
+  - Code of Conduct: CODE_OF_CONDUCT.md
+  - Security: SECURITY.md
   - Support: support.md
 
 plugins:
