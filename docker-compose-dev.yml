@@ -1,6 +1,6 @@
 services:
-  api-dev:
-    hostname: api-dev
+  api:
+    hostname: api
     build:
       context: api
       target: dev
@@ -18,9 +18,9 @@ services:
       - fastapi-venv:/app/.venv
       - ./local-shared-data:/app/shared-data
     depends_on:
-      - db-dev
-  db-dev:
-    hostname: db-dev
+      - db
+  db:
+    hostname: db
     image: postgres:17
     environment:
       POSTGRES_USER: postgres
@@ -44,8 +44,8 @@ services:
     networks:
       - my_network
     restart: always
-  ui-dev:
-    hostname: ui-dev
+  ui:
+    hostname: ui
     build:
       context: ./ui
       target: dev
@@ -63,11 +63,11 @@ services:
       - nextjs-node-modules:/app/node_modules
       - ./local-shared-data:/app/shared-data
   mailhog:
-    hostname: mailhog-dev
+    hostname: mailhog
     image: mailhog/mailhog
     ports:
-      - "1025:1025" # SMTP server
-      - "8025:8025" # Web UI
+      - "1025:1025"
+      - "8025:8025"
     networks:
       - my_network
 

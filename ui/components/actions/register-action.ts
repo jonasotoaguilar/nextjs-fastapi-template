@@ -8,10 +8,9 @@ import { registerSchema } from "@/lib/definitions";
 import { getErrorMessage } from "@/lib/utils";
 
 export async function register(_prevState: unknown, formData: FormData) {
-  const validatedFields = registerSchema.safeParse({
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  });
+  const validatedFields = registerSchema.safeParse(
+    Object.fromEntries(formData),
+  );
 
   if (!validatedFields.success) {
     return {
@@ -35,7 +34,8 @@ export async function register(_prevState: unknown, formData: FormData) {
   } catch (err) {
     console.error("Registration error:", err);
     return {
-      server_error: "An unexpected error occurred. Please try again later.",
+      server_error:
+        "Ocurrió un error inesperado. Por favor, intenta de nuevo más tarde.",
     };
   }
   redirect(`/login`);

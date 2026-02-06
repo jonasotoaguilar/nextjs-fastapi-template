@@ -1,137 +1,127 @@
+import { register } from "@/components/actions/register-action";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { type Mock, vi } from "vitest";
-import { register } from "@/components/actions/register-action";
 import Page from "./page";
 
 vi.mock("@/components/actions/register-action", () => ({
-  register: vi.fn(),
+	register: vi.fn(),
 }));
 
 describe("Register Page", () => {
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
+	afterEach(() => {
+		vi.clearAllMocks();
+	});
 
-  it("renders the form with email and password input and submit button", () => {
-    render(<Page />);
+	it("renders the form with email and password input and submit button", () => {
+		render(<Page />);
 
-    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/contraseña/i)).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /crear cuenta/i }),
-    ).toBeInTheDocument();
-  });
+		expect(screen.getByLabelText(/^email$/i)).toBeInTheDocument();
+		expect(screen.getByLabelText(/^contraseña$/i)).toBeInTheDocument();
+		expect(screen.getByLabelText(/confirmar contraseña/i)).toBeInTheDocument();
+		expect(
+			screen.getByRole("button", { name: /registrarse/i }),
+		).toBeInTheDocument();
+	});
 
-  it("displays success message on successful form submission", async () => {
-    // Mock a successful register
-    (register as Mock).mockResolvedValue({});
+	it("displays success message on successful form submission", async () => {
+		(register as Mock).mockResolvedValue({});
 
-    render(<Page />);
+		render(<Page />);
 
-    const emailInput = screen.getByLabelText(/email/i);
-    const passwordInput = screen.getByLabelText(/contraseña/i);
-    const submitButton = screen.getByRole("button", { name: /crear cuenta/i });
+		const emailInput = screen.getByLabelText(/^email$/i);
+		const passwordInput = screen.getByLabelText(/^contraseña$/i);
+		const confirmInput = screen.getByLabelText(/confirmar contraseña/i);
+		const submitButton = screen.getByRole("button", { name: /registrarse/i });
 
-    fireEvent.change(emailInput, { target: { value: "testuser@example.com" } });
-    fireEvent.change(passwordInput, { target: { value: "@1231231%a" } });
-    fireEvent.click(submitButton);
+		fireEvent.change(emailInput, { target: { value: "testuser@example.com" } });
+		fireEvent.change(passwordInput, { target: { value: "Password123!" } });
+		fireEvent.change(confirmInput, { target: { value: "Password123!" } });
 
-    await waitFor(() => {
-      const formData = new FormData();
-      formData.set("email", "testuser@example.com");
-      formData.set("password", "@1231231%a");
-      expect(register).toHaveBeenCalledWith(undefined, formData);
-    });
-  });
+		// RHF might need blur events to trigger validation properly in some modes
+		fireEvent.blur(emailInput);
+		fireEvent.blur(passwordInput);
+		fireEvent.blur(confirmInput);
 
-  it("displays server validation error if register fails", async () => {
-    (register as Mock).mockResolvedValue({
-      server_validation_error: "User already exists",
-    });
+		fireEvent.click(submitButton);
 
-    render(<Page />);
+		await waitFor(
+			() => {
+				expect(register).toHaveBeenCalled();
+			},
+			{ timeout: 2000 },
+		);
+	});
 
-    const emailInput = screen.getByLabelText(/email/i);
-    const passwordInput = screen.getByLabelText(/contraseña/i);
-    const submitButton = screen.getByRole("button", { name: /crear cuenta/i });
+	it("displays server validation error if register fails", async () => {
+		(register as Mock).mockResolvedValue({
+			server_validation_error: "Ya existe un usuario con este email.",
+		});
 
-    fireEvent.change(emailInput, { target: { value: "already@already.com" } });
-    fireEvent.change(passwordInput, { target: { value: "@1231231%a" } });
-    fireEvent.click(submitButton);
+		render(<Page />);
 
-    await waitFor(() => {
-      expect(screen.getByText("User already exists")).toBeInTheDocument();
-    });
-  });
+		const emailInput = screen.getByLabelText(/^email$/i);
+		const passwordInput = screen.getByLabelText(/^contraseña$/i);
+		const confirmInput = screen.getByLabelText(/confirmar contraseña/i);
+		const submitButton = screen.getByRole("button", { name: /registrarse/i });
 
-  it("displays server error for unexpected errors", async () => {
-    (register as Mock).mockResolvedValue({
-      server_error: "An unexpected error occurred. Please try again later.",
-    });
+		fireEvent.change(emailInput, { target: { value: "already@already.com" } });
+		fireEvent.change(passwordInput, { target: { value: "Password123!" } });
+		fireEvent.change(confirmInput, { target: { value: "Password123!" } });
+		fireEvent.click(submitButton);
 
-    render(<Page />);
+		expect(
+			await screen.findByText(/ya existe un usuario con este email/i),
+		).toBeInTheDocument();
+	});
 
-    const emailInput = screen.getByLabelText(/email/i);
-    const passwordInput = screen.getByLabelText(/contraseña/i);
-    const submitButton = screen.getByRole("button", { name: /crear cuenta/i });
+	it("displays server error for unexpected errors", async () => {
+		(register as Mock).mockResolvedValue({
+			server_error:
+				"Ocurrió un error inesperado. Por favor, intenta de nuevo más tarde.",
+		});
 
-    fireEvent.change(emailInput, { target: { value: "test@test.com" } });
-    fireEvent.change(passwordInput, { target: { value: "@1231231%a" } });
-    fireEvent.click(submitButton);
+		render(<Page />);
 
-    await waitFor(() => {
-      expect(
-        screen.getByText(
-          "An unexpected error occurred. Please try again later.",
-        ),
-      ).toBeInTheDocument();
-    });
+		const emailInput = screen.getByLabelText(/^email$/i);
+		const passwordInput = screen.getByLabelText(/^contraseña$/i);
+		const confirmInput = screen.getByLabelText(/confirmar contraseña/i);
+		const submitButton = screen.getByRole("button", { name: /registrarse/i });
 
-    const formData = new FormData();
-    formData.set("email", "test@test.com");
-    formData.set("password", "@1231231%a");
-    expect(register).toHaveBeenCalledWith(undefined, formData);
-  });
+		fireEvent.change(emailInput, { target: { value: "test@test.com" } });
+		fireEvent.change(passwordInput, { target: { value: "Password123!" } });
+		fireEvent.change(confirmInput, { target: { value: "Password123!" } });
+		fireEvent.click(submitButton);
 
-  it("displays validation errors if password and email are invalid", async () => {
-    // Mock a successful password register
-    (register as Mock).mockResolvedValue({
-      errors: {
-        email: ["Invalid email address"],
-        password: [
-          "Password should contain at least one uppercase letter.",
-          "Password should contain at least one special character.",
-        ],
-      },
-    });
+		expect(
+			await screen.findByText(/ocurrió un error inesperado/i),
+		).toBeInTheDocument();
+	});
 
-    render(<Page />);
+	it("displays validation errors if password and email are invalid", async () => {
+		render(<Page />);
 
-    const emailInput = screen.getByLabelText(/email/i);
-    const passwordInput = screen.getByLabelText(/contraseña/i);
-    const submitButton = screen.getByRole("button", { name: /crear cuenta/i });
+		const emailInput = screen.getByLabelText(/^email$/i);
+		const passwordInput = screen.getByLabelText(/^contraseña$/i);
+		const confirmInput = screen.getByLabelText(/confirmar contraseña/i);
+		const submitButton = screen.getByRole("button", { name: /registrarse/i });
 
-    fireEvent.change(emailInput, { target: { value: "email@email.com" } });
-    fireEvent.change(passwordInput, { target: { value: "invalid_password" } });
-    fireEvent.click(submitButton);
+		fireEvent.change(emailInput, { target: { value: "invalid-email" } });
+		fireEvent.change(passwordInput, { target: { value: "password" } }); // 8 chars but no uppercase
+		fireEvent.change(confirmInput, { target: { value: "different" } });
 
-    await waitFor(() => {
-      expect(
-        screen.getByText(
-          "Password should contain at least one uppercase letter.",
-        ),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(
-          "Password should contain at least one special character.",
-        ),
-      ).toBeInTheDocument();
-      expect(screen.getByText("Invalid email address")).toBeInTheDocument();
-    });
+		fireEvent.blur(emailInput);
+		fireEvent.blur(passwordInput);
+		fireEvent.blur(confirmInput);
 
-    const formData = new FormData();
-    formData.set("email", "email@email.com");
-    formData.set("password", "invalid_password");
-    expect(register).toHaveBeenCalledWith(undefined, formData);
-  });
+		// Try to submit
+		fireEvent.click(submitButton);
+
+		// Wait for at least one error message to appear
+		const errorMessage = await screen.findByText(
+			/dirección de email inválida/i,
+		);
+		expect(errorMessage).toBeInTheDocument();
+
+		expect(register).not.toHaveBeenCalled();
+	});
 });

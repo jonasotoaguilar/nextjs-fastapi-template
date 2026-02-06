@@ -1,12 +1,15 @@
 import { useFormStatus } from "react-dom";
 import { Button } from "@/components/ui/button";
 
-export function SubmitButton({ text }: { text: string }) {
+export function SubmitButton({
+  text,
+  className = "w-full",
+}: Readonly<{ text: string; className?: string }>) {
   const { pending } = useFormStatus();
 
   return (
-    <Button className="w-full" type="submit" disabled={pending}>
-      {pending ? "Loading..." : text}
+    <Button className={className} type="submit" disabled={pending}>
+      {pending ? "Cargando..." : text}
     </Button>
   );
 }

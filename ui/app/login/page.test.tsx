@@ -15,10 +15,10 @@ describe("Login Page", () => {
   it("renders the form with username and password input and submit button", () => {
     render(<Page />);
 
-    expect(screen.getByLabelText(/usuario/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/contraseña/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+    expect(screen.getByText("Contraseña")).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: /ingresar/i }),
+      screen.getByRole("button", { name: /Iniciar Sesión/i }),
     ).toBeInTheDocument();
   });
 
@@ -27,11 +27,11 @@ describe("Login Page", () => {
 
     render(<Page />);
 
-    const usernameInput = screen.getByLabelText(/usuario/i);
-    const passwordInput = screen.getByLabelText(/contraseña/i);
-    const submitButton = screen.getByRole("button", { name: /ingresar/i });
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByPlaceholderText(/••••••••/);
+    const submitButton = screen.getByRole("button", { name: /Iniciar Sesión/i });
 
-    fireEvent.change(usernameInput, {
+    fireEvent.change(emailInput, {
       target: { value: "testuser@example.com" },
     });
     fireEvent.change(passwordInput, { target: { value: "#123176a@" } });
@@ -39,7 +39,7 @@ describe("Login Page", () => {
 
     await waitFor(() => {
       const formData = new FormData();
-      formData.set("username", "testuser@example.com");
+      formData.set("email", "testuser@example.com");
       formData.set("password", "#123176a@");
       expect(login).toHaveBeenCalledWith(undefined, formData);
     });
@@ -53,11 +53,11 @@ describe("Login Page", () => {
 
     render(<Page />);
 
-    const usernameInput = screen.getByLabelText(/usuario/i);
-    const passwordInput = screen.getByLabelText(/contraseña/i);
-    const submitButton = screen.getByRole("button", { name: /ingresar/i });
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByPlaceholderText(/••••••••/);
+    const submitButton = screen.getByRole("button", { name: /Iniciar Sesión/i });
 
-    fireEvent.change(usernameInput, { target: { value: "wrong@example.com" } });
+    fireEvent.change(emailInput, { target: { value: "wrong@example.com" } });
     fireEvent.change(passwordInput, { target: { value: "wrongpass" } });
     fireEvent.click(submitButton);
 
@@ -73,11 +73,11 @@ describe("Login Page", () => {
 
     render(<Page />);
 
-    const usernameInput = screen.getByLabelText(/usuario/i);
-    const passwordInput = screen.getByLabelText(/contraseña/i);
-    const submitButton = screen.getByRole("button", { name: /ingresar/i });
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByPlaceholderText(/••••••••/);
+    const submitButton = screen.getByRole("button", { name: /Iniciar Sesión/i });
 
-    fireEvent.change(usernameInput, { target: { value: "test@test.com" } });
+    fireEvent.change(emailInput, { target: { value: "test@test.com" } });
     fireEvent.change(passwordInput, { target: { value: "password123" } });
     fireEvent.click(submitButton);
 

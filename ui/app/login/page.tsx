@@ -1,88 +1,183 @@
 "use client";
 
+import { LogIn } from "lucide-react";
 import Link from "next/link";
-import { useActionState } from "react";
+import { startTransition, useActionState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { login } from "@/components/actions/login-action";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { FieldError, FormError } from "@/components/ui/FormError";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SubmitButton } from "@/components/ui/submitButton";
+import { PasswordInput } from "@/components/ui/password-input";
+import { loginSchema } from "@/lib/definitions";
+import { cn } from "@/lib/utils";
+import { Mail } from "lucide-react";
 
-export default function Page() {
-  const [state, dispatch] = useActionState(login, undefined);
-  return (
-    <div className="flex h-screen w-full items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
-      <form action={dispatch}>
-        <Card className="w-full max-w-sm rounded-lg shadow-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-semibold text-gray-800 dark:text-white">
-              Iniciar Sesión
-            </CardTitle>
-            <CardDescription className="text-sm text-gray-600 dark:text-gray-400">
-              Ingresá tu email para acceder a tu cuenta.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="grid gap-6 p-6">
-            <div className="grid gap-3">
-              <Label
-                htmlFor="username"
-                className="text-gray-700 dark:text-gray-300"
-              >
-                Usuario
-              </Label>
-              <Input
-                id="username"
-                name="username"
-                type="email"
-                placeholder="m@example.com"
-                required
-                className="border-gray-300 dark:border-gray-600"
-              />
-              <FieldError state={state} field="username" />
-            </div>
-            <div className="grid gap-3">
-              <Label
-                htmlFor="password"
-                className="text-gray-700 dark:text-gray-300"
-              >
-                Contraseña
-              </Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                required
-                className="border-gray-300 dark:border-gray-600"
-              />
-              <FieldError state={state} field="password" />
-              <Link
-                href="/password-recovery"
-                className="ml-auto inline-block text-sm text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-500"
-              >
-                ¿Olvidaste tu contraseña?
-              </Link>
-            </div>
-            <SubmitButton text="Ingresar" />
-            <FormError state={state} />
-            <div className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
-              ¿No tenés cuenta?{" "}
-              <Link
-                href="/register"
-                className="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-500"
-              >
-                Registrate
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
-      </form>
-    </div>
-  );
+type LoginInputs = z.infer<typeof loginSchema>;
+
+export default function LoginPage() {
+	const [state, dispatch] = useActionState(login, undefined);
+
+	const {
+		register: registerField,
+		handleSubmit,
+		formState: { errors },
+		setError,
+	} = useForm<LoginInputs>({
+		resolver: zodResolver(loginSchema),
+		mode: "onBlur",
+		defaultValues: {
+			email: "",
+			password: "",
+		},
+	});
+
+	useEffect(() => {
+		if (state?.errors) {
+			for (const [key, message] of Object.entries(state.errors)) {
+				setError(key as keyof LoginInputs, {
+					type: "server",
+					message: Array.isArray(message) ? message[0] : message,
+				});
+			}
+		}
+	}, [state, setError]);
+
+	const onSubmit = (data: LoginInputs) => {
+		const formData = new FormData();
+		formData.append("email", data.email);
+		formData.append("password", data.password);
+		startTransition(() => {
+			dispatch(formData);
+		});
+	};
+
+	return (
+		<div className="flex min-h-screen w-full items-center justify-center bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-blue-50 via-gray-50 to-gray-100 dark:from-blue-950/20 dark:via-gray-950 dark:to-gray-900 px-4 py-12">
+			<Card className="w-full max-w-md rounded-2xl shadow-2xl border-none bg-white/90 dark:bg-gray-800/90 backdrop-blur-md overflow-hidden animate-in fade-in zoom-in duration-500">
+				<CardHeader className="text-center space-y-1 pb-2 pt-8">
+					<div className="mx-auto bg-blue-500/10 p-4 rounded-2xl w-fit mb-4 ring-1 ring-blue-500/20">
+						<LogIn className="h-10 w-10 text-blue-600 dark:text-blue-400" />
+					</div>
+					<CardTitle className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+						Iniciar Sesión
+					</CardTitle>
+					<CardDescription className="text-gray-500 dark:text-gray-400 text-base">
+						Ingresá tu email para acceder a tu cuenta.
+					</CardDescription>
+				</CardHeader>
+				<CardContent className="p-8 pt-4">
+					<form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+						<div className="space-y-2">
+							<Label
+								htmlFor="email"
+								className="text-sm font-semibold ml-1 text-gray-700 dark:text-gray-300"
+							>
+								Email
+							</Label>
+							<div className="relative group">
+								<Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
+								<Input
+									{...registerField("email")}
+									id="email"
+									type="email"
+									placeholder="ejemplo@correo.com"
+									autoComplete="email"
+									className={cn(
+										"pl-11 h-12 bg-gray-50/50 dark:bg-gray-900/50 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-blue-500/20 transition-all rounded-xl",
+										errors.email && "border-red-500 focus:ring-red-500/20 bg-red-50/30",
+									)}
+								/>
+							</div>
+							{errors.email && (
+								<p className="text-xs font-semibold text-red-500 ml-1 mt-1 flex items-center gap-1 animate-in slide-in-from-top-1" role="alert">
+									<span className="w-1 h-1 rounded-full bg-red-500" aria-hidden="true" />
+									{errors.email.message}
+								</p>
+							)}
+						</div>
+
+						<div className="space-y-2">
+							<div className="flex items-center justify-between ml-1">
+								<Label
+									htmlFor="password"
+									className="text-sm font-semibold text-gray-700 dark:text-gray-300"
+								>
+									Contraseña
+								</Label>
+							</div>
+							<PasswordInput
+								{...registerField("password")}
+								id="password"
+								placeholder="••••••••"
+								autoComplete="current-password"
+								className={cn(
+									errors.password && "border-red-500 focus:ring-red-500/20 bg-red-50/30"
+								)}
+							/>
+							{errors.password && (
+								<p className="text-xs font-semibold text-red-500 ml-1 mt-1 flex items-center gap-1 animate-in slide-in-from-top-1" role="alert">
+									<span className="w-1 h-1 rounded-full bg-red-500" aria-hidden="true" />
+									{errors.password.message}
+								</p>
+							)}
+							<div className="flex items-center justify-between mt-2">
+								<label className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 cursor-pointer">
+									<input
+										type="checkbox"
+										className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+									/>
+									<span>Recordarme</span>
+								</label>
+								<Link
+									href="/password-recovery"
+									className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline decoration-2 underline-offset-4 transition-all"
+								>
+									¿Olvidaste tu contraseña?
+								</Link>
+							</div>
+						</div>
+
+						<div className="pt-2">
+							<SubmitButton
+								text="Iniciar Sesión"
+								className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-500/30 active:scale-[0.98] disabled:opacity-70 disabled:active:scale-100"
+							/>
+						</div>
+
+						{state?.server_validation_error && (
+							<div className="bg-red-50 dark:bg-red-900/10 py-3 px-4 rounded-xl border border-red-100 dark:border-red-900/30 animate-in fade-in" role="alert" aria-live="polite">
+								<p className="text-sm font-semibold text-red-600 dark:text-red-400 text-center">
+									{state.server_validation_error}
+								</p>
+							</div>
+						)}
+
+						{state?.server_error && (
+							<div className="bg-red-50 dark:bg-red-900/10 py-3 px-4 rounded-xl border border-red-100 dark:border-red-900/30 animate-in fade-in" role="alert" aria-live="polite">
+								<p className="text-sm font-semibold text-red-600 dark:text-red-400 text-center">
+									{state.server_error}
+								</p>
+							</div>
+						)}
+
+						<div className="text-center text-sm pt-2">
+							<span className="text-gray-500 dark:text-gray-400">
+								¿No tenés cuenta?{" "}
+							</span>
+							<Link
+								href="/register"
+								className="text-blue-600 dark:text-blue-400 font-bold hover:underline decoration-2 underline-offset-4 transition-all"
+							>
+								Registrate
+							</Link>
+						</div>
+					</form>
+				</CardContent>
+			</Card>
+		</div>
+	);
 }

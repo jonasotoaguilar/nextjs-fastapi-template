@@ -2,6 +2,8 @@ import re
 import uuid
 from typing import AsyncGenerator, Optional
 
+from app.models import User
+from app.schemas import UserCreate
 from fastapi import Depends, Request
 from fastapi_users import (
     BaseUserManager,
@@ -15,9 +17,6 @@ from fastapi_users.authentication import (
     JWTStrategy,
 )
 from fastapi_users.db import SQLAlchemyUserDatabase
-
-from app.models import User
-from app.schemas import UserCreate
 
 from .config import settings
 from .database import get_user_db
@@ -58,7 +57,7 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
             errors.append("Password should not contain e-mail.")
         if not any(char.isupper() for char in password):
             errors.append("Password should contain at least one uppercase letter.")
-        if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+        if not re.search(r'[!@#$%^&*(),.?":{}|<>_-]', password):
             errors.append("Password should contain at least one special character.")
 
         if errors:
