@@ -1,19 +1,24 @@
 "use client";
 
-import { KeyRound } from "lucide-react";
-import Link from "next/link";
-import { startTransition, useActionState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { passwordReset } from "@/components/actions/password-reset-action";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SubmitButton } from "@/components/ui/submitButton";
 import { passwordResetSchema } from "@/lib/definitions";
 import { cn } from "@/lib/utils";
-import { Mail } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { KeyRound, Mail } from "lucide-react";
+import Link from "next/link";
+import { startTransition, useActionState } from "react";
+import { useForm } from "react-hook-form";
+import type { z } from "zod";
 
 type PasswordResetInputs = z.infer<typeof passwordResetSchema>;
 
@@ -74,7 +79,8 @@ export default function Page() {
 									autoComplete="email"
 									className={cn(
 										"pl-11 h-12 bg-gray-50/50 dark:bg-gray-900/50 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-blue-500/20 transition-all rounded-xl",
-										errors.email && "border-red-500 focus:ring-red-500/20 bg-red-50/30",
+										errors.email &&
+											"border-red-500 focus:ring-red-500/20 bg-red-50/30",
 									)}
 								/>
 							</div>
