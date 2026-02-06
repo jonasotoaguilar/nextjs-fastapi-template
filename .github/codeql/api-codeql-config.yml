@@ -5,6 +5,7 @@ paths:
 paths-ignore:
   - "api/tests/**"
   - "api/**/__pycache__/**"
+  - "api/alembic_migrations/**"
   - "api/**/migrations/**"
   - "api/**/*.md"
 

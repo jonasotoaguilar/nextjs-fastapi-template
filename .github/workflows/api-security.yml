@@ -40,7 +40,7 @@ jobs:
 
       - name: Bandit (Static Analysis)
         working-directory: ./api
-        run: uvx bandit -r . -lll -x "**/tests/*,**/migrations/*"
+        run: uvx bandit -r . -lll -x "**/tests/*,**/migrations/*,**/alembic_migrations/*"
         # Bandit encuentra vulnerabilidades comunes (hardcoded passwords, insecure functions, etc.)
         # -lll: Reporta solo problemas de alta severidad.
 
@@ -54,5 +54,5 @@ jobs:
 
       - name: Vulture (Dead Code)
         working-directory: ./api
-        run: uvx vulture --min-confidence 100 --exclude "**/tests/*,**/migrations/*" .
+        run: uvx vulture --min-confidence 100 --exclude "**/tests/*,**/migrations/*,**/alembic_migrations/*" .
         # Vulture detecta código muerto o sin usar. Menos código = menor superficie de ataque.
