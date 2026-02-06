@@ -1,35 +1,35 @@
-# Política de Seguridad
+# Security Policy
 
-## Versiones Soportadas
+## Supported Versions
 
-Actualmente, solo la última versión del template recibe actualizaciones de seguridad.
+Currently, only the latest version of the template receives security updates.
 
-| Versión | Soportada |
+| Version | Supported |
 | ------- | --------- |
-| > 0.0.1 | ✅ Sí     |
+| > 0.0.1 | ✅ Yes    |
 | < 0.0.1 | ❌ No     |
 
-## Reportar una vulnerabilidad
+## Reporting a Vulnerability
 
-Valoramos mucho la seguridad de este proyecto. Si descubres una vulnerabilidad de seguridad, por favor **NO** abras un issue público. En su lugar, sigue estos pasos:
+We highly value the security of this project. If you discover a security vulnerability, please **DO NOT** open a public issue. Instead, follow these steps:
 
-1. Envía un reporte detallado a través de los canales de contacto del mantenedor (Jonas Oto Aguilar). Si no hay un correo electrónico específico configurado, puedes intentar contactar a través de su perfil de GitHub.
-2. Alternativamente, puedes utilizar la función de **"Report a vulnerability"** directamente en la pestaña de Seguridad de este repositorio de GitHub si está habilitada.
+1. Send a detailed report via the maintainer's contact channels (Jonas Oto Aguilar). If no specific email is configured, you can try contacting via their GitHub profile.
+2. Alternatively, you can use the **"Report a vulnerability"** feature directly on the Security tab of this GitHub repository if it is enabled.
 
-### Qué incluir en el reporte
+### What to include in the report
 
-Para ayudarnos a resolver el problema lo antes posible, por favor incluye:
+To help us resolve the issue as soon as possible, please include:
 
-- Una descripción detallada de la vulnerabilidad.
-- Pasos para reproducir el problema (un "proof of concept" es ideal).
-- El impacto potencial si la vulnerabilidad es explotada.
+- A detailed description of the vulnerability.
+- Steps to reproduce the issue (a "proof of concept" is ideal).
+- The potential impact if the vulnerability is exploited.
 
-### Nuestro compromiso
+### Our Commitment
 
-- Reconoceremos la recepción de tu reporte en un plazo de 48-72 horas hábiles.
-- Mantendremos una comunicación fluida sobre el progreso de la solución.
-- Una vez resuelta la vulnerabilidad, se publicará una nueva versión y se dará crédito al investigador si así lo desea.
+- We will acknowledge receipt of your report within 48-72 business hours.
+- We will maintain fluid communication regarding the progress of the solution.
+- Once the vulnerability is resolved, a new version will be published, and credit will be given to the researcher if desired.
 
 ---
 
-_Gracias por ayudarnos a mantener este template seguro para todos._
+_Thank you for helping us keep this template secure for everyone._

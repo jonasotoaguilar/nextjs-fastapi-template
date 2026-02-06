@@ -1,8 +1,8 @@
-# Frontend - Instrucciones Específicas
+# Frontend - Specific Instructions
 
-Reglas y convenciones específicas para el frontend Next.js.
+Specific rules and conventions for the Next.js frontend.
 
-## Stack y Versiones
+## Stack and Versions
 
 - **Next.js**: 16.1.6 (App Router)
 - **React**: 19.2.4
@@ -14,62 +14,63 @@ Reglas y convenciones específicas para el frontend Next.js.
 - **Biome**: 2.3.14
 - **pnpm**: 10.7.1
 
-## Comandos
+## Commands
 
 ```bash
-pnpm dev                  # Desarrollo (http://localhost:3000)
-pnpm build                # Build producción
-pnpm start                # Servidor producción
+pnpm dev                  # Development (http://localhost:3000)
+pnpm build                # Production build
+pnpm start                # Production server
 pnpm lint                 # Linter (Biome)
 pnpm lint:fix             # Auto-fix linting
-pnpm format               # Formatear código
+pnpm format               # Format code
 pnpm check                # Lint + format
 pnpm tsc                  # Type checking
 pnpm test                 # Tests
-pnpm coverage             # Tests con coverage
-pnpm generate-client      # Regenerar cliente API
+pnpm coverage             # Tests with coverage
+pnpm generate-client      # Regenerate API client
 ```
 
-## Arquitectura
+## Architecture
 
 ### App Router (Next.js 16)
 
-Estructura de rutas:
+Route structure:
 
 ```
 app/
-├── (auth)/              # Grupo de rutas de autenticación
+├── (auth)/              # Authentication route group
 │   ├── login/          # /login
 │   └── register/       # /register
-├── (dashboard)/        # Grupo de rutas protegidas
+├── (dashboard)/        # Protected route group
 │   └── profile/        # /profile
-├── layout.tsx          # Layout raíz
-└── page.tsx            # Página principal (/)
+├── layout.tsx          # Root layout
+└── page.tsx            # Home page (/)
 ```
 
-**Convenciones:**
-- Carpetas entre paréntesis `(name)` son grupos de rutas (no afectan URL)
-- `layout.tsx` define layouts compartidos
-- `page.tsx` define páginas
-- `loading.tsx` para estados de carga
-- `error.tsx` para manejo de errores
+**Conventions:**
+
+- Folders in parentheses `(name)` are route groups (do not affect URL)
+- `layout.tsx` defines shared layouts
+- `page.tsx` defines pages
+- `loading.tsx` for loading states
+- `error.tsx` for error handling
 
 ### Server vs Client Components
 
-**Por defecto: Server Components**
+**Default: Server Components**
 
 ```typescript
-// Server Component (por defecto)
+// Server Component (default)
 export default function ServerPage() {
-  // Se ejecuta en el servidor
+  // Executes on the server
   return <div>Server Component</div>;
 }
 ```
 
-**Client Components solo cuando sea necesario:**
+**Client Components only when necessary:**
 
 ```typescript
-'use client'; // Directiva obligatoria
+'use client'; // Mandatory directive
 
 import { useState } from 'react';
 
@@ -79,48 +80,49 @@ export function ClientComponent() {
 }
 ```
 
-**Usar Client Components para:**
-- Hooks de React (useState, useEffect, etc.)
+**Use Client Components for:**
+
+- React hooks (useState, useEffect, etc.)
 - Event handlers (onClick, onChange, etc.)
 - Browser APIs (localStorage, window, etc.)
-- Componentes de terceros que usan hooks
+- Third-party components that use hooks
 
-### Cliente API Tipado
+### Typed API Client
 
-**Ubicación**: `lib/openapi-client/` (generado automáticamente)
+**Location**: `lib/openapi-client/` (automatically generated)
 
-**NO EDITAR** archivos en `lib/openapi-client/` - se regeneran automáticamente.
+**DO NOT EDIT** files in `lib/openapi-client/` - they are automatically regenerated.
 
-**Uso:**
+**Usage:**
 
 ```typescript
-import { client } from '@/lib/api-client';
+import { client } from "@/lib/api-client";
 
 // GET request
-const { data, error } = await client.GET('/api/users/me');
+const { data, error } = await client.GET("/api/users/me");
 
 // POST request
-const { data, error } = await client.POST('/api/users/', {
+const { data, error } = await client.POST("/api/users/", {
   body: {
-    email: 'user@example.com',
-    password: 'securepass',
+    email: "user@example.com",
+    password: "securepass",
   },
 });
 
-// TypeScript conoce los tipos automáticamente
+// TypeScript automatically knows the types
 if (data) {
-  console.log(data.id, data.email); // ✅ Tipado
+  console.log(data.id, data.email); // ✅ Typed
 }
 ```
 
-## Convenciones de Código
+## Code Conventions
 
 ### TypeScript
 
-**Type Safety estricto:**
+**Strict Type Safety:**
 
 ```typescript
-// ✅ BIEN: Props tipadas explícitamente
+// ✅ GOOD: Explicitly typed props
 interface ButtonProps {
   label: string;
   onClick: () => void;
@@ -131,40 +133,40 @@ export function Button({ label, onClick, variant = 'primary' }: ButtonProps) {
   return <button onClick={onClick}>{label}</button>;
 }
 
-// ❌ MAL: Props sin tipar
+// ❌ BAD: Untyped props
 export function Button({ label, onClick, variant }) {
   return <button onClick={onClick}>{label}</button>;
 }
 ```
 
-**Evitar `any`:**
+**Avoid `any`:**
 
 ```typescript
-// ❌ MAL
+// ❌ BAD
 function processData(data: any) {
   return data.value;
 }
 
-// ✅ BIEN
+// ✅ GOOD
 function processData(data: unknown) {
-  if (typeof data === 'object' && data !== null && 'value' in data) {
+  if (typeof data === "object" && data !== null && "value" in data) {
     return data.value;
   }
-  throw new Error('Invalid data');
+  throw new Error("Invalid data");
 }
 ```
 
 ### React Components
 
-**Componentes funcionales:**
+**Functional Components:**
 
 ```typescript
-// ✅ BIEN: Componente funcional
+// ✅ GOOD: Functional component
 export function MyComponent({ title }: { title: string }) {
   return <h1>{title}</h1>;
 }
 
-// ❌ MAL: Componente de clase
+// ❌ BAD: Class component
 export class MyComponent extends React.Component {
   render() {
     return <h1>{this.props.title}</h1>;
@@ -185,7 +187,7 @@ export function Counter() {
   useEffect(() => {
     // Cleanup function
     return () => {
-      // Limpiar efectos
+      // Clean up effects
     };
   }, [count]);
 
@@ -193,12 +195,12 @@ export function Counter() {
 }
 ```
 
-### Estilos con Tailwind
+### Styling with Tailwind
 
-**Usar Tailwind CSS:**
+**Use Tailwind CSS:**
 
 ```typescript
-// ✅ BIEN: Tailwind classes
+// ✅ GOOD: Tailwind classes
 export function Card({ children }: { children: React.ReactNode }) {
   return (
     <div className="rounded-lg border bg-card p-6 shadow-sm">
@@ -207,7 +209,7 @@ export function Card({ children }: { children: React.ReactNode }) {
   );
 }
 
-// ❌ MAL: Inline styles
+// ❌ BAD: Inline styles
 export function Card({ children }: { children: React.ReactNode }) {
   return (
     <div style={{ borderRadius: '8px', padding: '24px' }}>
@@ -217,7 +219,7 @@ export function Card({ children }: { children: React.ReactNode }) {
 }
 ```
 
-**Clases condicionales con `cn()`:**
+**Conditional Classes with `cn()`:**
 
 ```typescript
 import { cn } from '@/lib/utils';
@@ -243,7 +245,7 @@ export function Button({ variant = 'primary', className }: ButtonProps) {
 }
 ```
 
-### Formularios
+### Forms
 
 **React Hook Form + Zod:**
 
@@ -255,8 +257,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 const schema = z.object({
-  email: z.string().email('Email inválido'),
-  password: z.string().min(8, 'Mínimo 8 caracteres'),
+  email: z.string().email('Invalid email'),
+  password: z.string().min(8, 'Minimum 8 characters'),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -271,7 +273,7 @@ export function LoginForm() {
   });
 
   const onSubmit = async (data: FormData) => {
-    // Enviar datos
+    // Submit data
   };
 
   return (
@@ -288,9 +290,9 @@ export function LoginForm() {
 }
 ```
 
-### Componentes shadcn/ui
+### shadcn/ui Components
 
-**Instalación:**
+**Installation:**
 
 ```bash
 npx shadcn@latest add button
@@ -298,7 +300,7 @@ npx shadcn@latest add card
 npx shadcn@latest add form
 ```
 
-**Uso:**
+**Usage:**
 
 ```typescript
 import { Button } from '@/components/ui/button';
@@ -308,7 +310,7 @@ export function MyPage() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Título</CardTitle>
+        <CardTitle>Title</CardTitle>
       </CardHeader>
       <CardContent>
         <Button>Click me</Button>
@@ -318,15 +320,15 @@ export function MyPage() {
 }
 ```
 
-**Personalización:**
+**Customization:**
 
-Los componentes shadcn/ui se copian a `components/ui/` y pueden editarse.
+shadcn/ui components are copied to `components/ui/` and can be edited.
 
 ## Testing
 
 ### Vitest + React Testing Library
 
-**Estructura de tests:**
+**Test Structure:**
 
 ```typescript
 import { render, screen } from '@testing-library/react';
@@ -351,13 +353,13 @@ describe('MyComponent', () => {
 **Mocking:**
 
 ```typescript
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
-// Mock de función
+// Function mock
 const mockFn = vi.fn();
 
-// Mock de módulo
-vi.mock('@/lib/api-client', () => ({
+// Module mock
+vi.mock("@/lib/api-client", () => ({
   client: {
     GET: vi.fn(),
     POST: vi.fn(),
@@ -365,9 +367,9 @@ vi.mock('@/lib/api-client', () => ({
 }));
 ```
 
-## Estructura de Archivos
+## File Structure
 
-### Organización
+### Organization
 
 ```
 app/
@@ -384,73 +386,74 @@ components/
 │   ├── button.tsx
 │   ├── card.tsx
 │   └── ...
-├── forms/                 # Formularios custom
+├── forms/                 # Custom forms
 │   └── login-form.tsx
-└── layout/                # Componentes de layout
+└── layout/                # Layout components
     ├── header.tsx
     └── footer.tsx
 
 lib/
-├── api-client.ts          # Cliente API wrapper
-├── clientService.ts       # Servicios del cliente
-├── utils.ts               # Utilidades
-└── openapi-client/        # Cliente generado (NO EDITAR)
+├── api-client.ts          # API client wrapper
+├── clientService.ts       # Client services
+├── utils.ts               # Utilities
+└── openapi-client/        # Generated client (DO NOT EDIT)
 ```
 
 ### Naming Conventions
 
-- **Componentes**: PascalCase (`MyComponent.tsx`)
-- **Utilidades**: camelCase (`utils.ts`)
-- **Constantes**: UPPER_SNAKE_CASE (`const API_URL = '...'`)
+- **Components**: PascalCase (`MyComponent.tsx`)
+- **Utilities**: camelCase (`utils.ts`)
+- **Constants**: UPPER_SNAKE_CASE (`const API_URL = '...'`)
 - **Types/Interfaces**: PascalCase (`interface UserProps {}`)
 
-## Configuración
+## Configuration
 
 ### Environment Variables
 
-**Archivo**: `.env.local`
+**File**: `.env.local`
 
 ```bash
 NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
-**Uso:**
+**Usage:**
 
 ```typescript
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 ```
 
-**Reglas:**
-- Variables públicas: Prefijo `NEXT_PUBLIC_`
-- Variables privadas: Sin prefijo (solo server-side)
-- Nunca commitear `.env.local`
+**Rules:**
+
+- Public variables: `NEXT_PUBLIC_` prefix
+- Private variables: No prefix (server-side only)
+- Never commit `.env.local`
 
 ### next.config.mjs
 
-Configuración de Next.js:
+Next.js Configuration:
 
 ```javascript
 const nextConfig = {
-  output: 'standalone',  // Para Docker
-  // ... otras opciones
+  output: "standalone", // For Docker
+  // ... other options
 };
 ```
 
 ### tailwind.config.ts
 
-Configuración de Tailwind:
+Tailwind Configuration:
 
 ```typescript
-import type { Config } from 'tailwindcss';
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
-      // Personalizaciones
+      // Customizations
     },
   },
   plugins: [],
@@ -459,49 +462,49 @@ const config: Config = {
 export default config;
 ```
 
-## Límites de Seguridad
+## Security Limits
 
-### NO hacer:
+### DO NOT:
 
-- ❌ Editar archivos en `lib/openapi-client/` (generados automáticamente)
-- ❌ Usar `any` en TypeScript
-- ❌ Deshabilitar ESLint/Biome rules sin justificación
-- ❌ Commitear `.env.local` o secrets
-- ❌ Usar `dangerouslySetInnerHTML` sin sanitización
-- ❌ Fetch directo a APIs externas desde Client Components (usar Server Actions)
+- ❌ Edit files in `lib/openapi-client/` (automatically generated)
+- ❌ Use `any` in TypeScript
+- ❌ Disable ESLint/Biome rules without justification
+- ❌ Commit `.env.local` or secrets
+- ❌ Use `dangerouslySetInnerHTML` without sanitization
+- ❌ Direct fetch to external APIs from Client Components (use Server Actions)
 
-### SÍ hacer:
+### DO:
 
-- ✅ Usar el cliente API tipado (`@/lib/api-client`)
-- ✅ Validar formularios con Zod
-- ✅ Usar Server Components por defecto
-- ✅ Type safety estricto
-- ✅ Tests para componentes críticos
-- ✅ Seguir convenciones de shadcn/ui
+- ✅ Use the typed API client (`@/lib/api-client`)
+- ✅ Validate forms with Zod
+- ✅ Use Server Components by default
+- ✅ Strict type safety
+- ✅ Tests for critical components
+- ✅ Follow shadcn/ui conventions
 
 ## Performance
 
-### Optimizaciones
+### Optimizations
 
-**Imágenes:**
+**Images:**
 
 ```typescript
 import Image from 'next/image';
 
-// ✅ BIEN: Next.js Image
+// ✅ GOOD: Next.js Image
 <Image
   src="/photo.jpg"
   alt="Description"
   width={500}
   height={300}
-  priority  // Para above-the-fold images
+  priority  // For above-the-fold images
 />
 
-// ❌ MAL: img tag
+// ❌ BAD: img tag
 <img src="/photo.jpg" alt="Description" />
 ```
 
-**Fuentes:**
+**Fonts:**
 
 ```typescript
 import { Inter } from 'next/font/google';
@@ -510,7 +513,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="es" className={inter.className}>
+    <html lang="en" className={inter.className}>
       <body>{children}</body>
     </html>
   );
@@ -527,7 +530,7 @@ const HeavyComponent = dynamic(() => import('./heavy-component'), {
 });
 ```
 
-## Referencias
+## References
 
 - **README**: `ui/README.md`
 - **Next.js Docs**: https://nextjs.org/docs

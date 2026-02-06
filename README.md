@@ -1,7 +1,7 @@
 ## Next.js FastAPI Template
 
 <p align="center">
-    <em>Template Next.js + FastAPI: Stack moderno con Python y TypeScript, validación con Zod.</em>
+    <em>Next.js + FastAPI Template: Modern stack with Python and TypeScript, validation with Zod.</em>
 </p>
 <p align="center">
 <a href="https://coveralls.io/github/jonasotoaguilar/nextjs-fastapi-template?branch=main" target="_blank">
@@ -17,153 +17,152 @@
 
 ---
 
-**Documentación**: <a href="https://jonasotoaguilar.github.io/nextjs-fastapi-template/" target="_blank">https://jonasotoaguilar.github.io/nextjs-fastapi-template/</a>
+**Documentation**: <a href="https://jonasotoaguilar.github.io/nextjs-fastapi-template/" target="_blank">https://jonasotoaguilar.github.io/nextjs-fastapi-template/</a>
 
-**Código Fuente**: <a href="https://github.com/jonasotoaguilar/nextjs-fastapi-template/" target="_blank">https://github.com/jonasotoaguilar/nextjs-fastapi-template/</a>
+**Source Code**: <a href="https://github.com/jonasotoaguilar/nextjs-fastapi-template/" target="_blank">https://github.com/jonasotoaguilar/nextjs-fastapi-template/</a>
 
-**Template Original**: <a href="https://github.com/vintasoftware/nextjs-fastapi-template/" target="_blank">Vinta Software - Next.js FastAPI Template</a>
+**Original Template**: <a href="https://github.com/vintasoftware/nextjs-fastapi-template/" target="_blank">Vinta Software - Next.js FastAPI Template</a>
 
 ---
 
-Este template proporciona una base sólida para aplicaciones web escalables y de alto rendimiento, siguiendo arquitectura limpia y mejores prácticas. Simplifica el desarrollo integrando FastAPI, Pydantic y Next.js con TypeScript y Zod, asegurando type safety de extremo a extremo y validación de schemas entre frontend y backend.
+This template provides a solid foundation for scalable and high-performance web applications, following clean architecture and best practices. It simplifies development by integrating FastAPI, Pydantic, and Next.js with TypeScript and Zod, ensuring end-to-end type safety and schema validation between frontend and backend.
 
-El backend FastAPI soporta operaciones completamente asíncronas, optimizando consultas a base de datos, rutas de API y ejecución de tests para mejor rendimiento. El despliegue es simple, con backend y frontend completamente desplegables en Vercel, permitiendo lanzamientos rápidos con configuración mínima.
+The FastAPI backend supports fully asynchronous operations, optimizing database queries, API routes, and test execution for better performance. Deployment is simple, with both backend and frontend fully deployable on Vercel, allowing for quick launches with minimal configuration.
 
-## 🚀 Inicio Rápido
+## 🚀 Quick Start
 
-### Prerrequisitos
+### Prerequisites
 
-- **Docker** y **Docker Compose** (recomendado)
-- O bien:
-  - **Node.js 18+** y **pnpm 10+**
+- **Docker** and **Docker Compose** (recommended)
+- Or:
+  - **Node.js 18+** and **pnpm 10+**
   - **Python 3.12**
   - **PostgreSQL 15+**
 
-### Instalación Rápida con Docker
+### Quick Installation with Docker
 
 ```bash
-# 1. Clonar el repositorio
+# 1. Clone the repository
 git clone https://github.com/jonasotoaguilar/nextjs-fastapi-template.git
 cd nextjs-fastapi-template
 
-# 2. Inicializar variables de entorno
+# 2. Initialize environment variables
 make init-env
 
-# 3. Construir e iniciar servicios
+# 3. Build and start services
 make docker-build
 make docker-up
 
-# 4. Aplicar migraciones
+# 4. Apply migrations
 make docker-migrate-db
 
-# 5. Abrir en el navegador
+# 5. Open in browser
 # Frontend: http://localhost:3000
 # Backend API: http://localhost:8000
 # API Docs: http://localhost:8000/docs
 ```
 
-### Instalación sin Docker
+### Installation without Docker
 
 ```bash
-# 1. Clonar el repositorio
+# 1. Clone the repository
 git clone https://github.com/jonasotoaguilar/nextjs-fastapi-template.git
 cd nextjs-fastapi-template
 
-# 2. Inicializar variables de entorno
+# 2. Initialize environment variables
 make init-env
 
-# 3. Instalar dependencias
+# 3. Install dependencies
 make install
 
-# 4. Configurar base de datos PostgreSQL
-# Editar api/.env con tu DATABASE_URL
+# 4. Configure PostgreSQL database
+# Edit api/.env with your DATABASE_URL
 
-# 5. Aplicar migraciones
+# 5. Apply migrations
 cd api && uv run alembic upgrade head
 
-# 6. Iniciar servicios (en terminales separadas)
-make start-api    # Terminal 1 - Backend en :8000
-make start-ui     # Terminal 2 - Frontend en :3000
+# 6. Start services (in separate terminals)
+make start-api    # Terminal 1 - Backend on :8000
+make start-ui     # Terminal 2 - Frontend on :3000
 ```
 
-### Características principales
+### Key Features
 
-✔ **Type safety de extremo a extremo** – Clientes tipados generados automáticamente desde el schema OpenAPI aseguran contratos de API sin fricción entre frontend y backend.
+✔ **End-to-end type safety** – Typed clients automatically generated from the OpenAPI schema ensure frictionless API contracts between frontend and backend.
 
-✔ **Actualizaciones con hot-reload** – El cliente se actualiza automáticamente cuando cambian las rutas del backend, manteniendo FastAPI y Next.js sincronizados.
+✔ **Hot-reload updates** – The client updates automatically when backend routes change, keeping FastAPI and Next.js synchronized.
 
-✔ **Base versátil** – Diseñado para MVPs y aplicaciones production-ready, con sistema de autenticación preconfigurado y capa de API.
+✔ **Versatile foundation** – Designed for MVPs and production-ready applications, with a pre-configured authentication system and API layer.
 
-✔ **Despliegue rápido** – Despliega una aplicación full-stack—incluyendo flujo de autenticación—en Vercel en pocos pasos.
+✔ **Quick deployment** – Deploy a full-stack application—including authentication flow—on Vercel in a few steps.
 
-✔ **Autenticación lista para producción** – Incluye sistema de autenticación preconfigurado, permitiendo comenzar el desarrollo inmediatamente con funcionalidades de gestión de usuarios.
+✔ **Production-ready authentication** – Includes a pre-configured authentication system, allowing you to start development immediately with user management features.
 
-## Stack tecnológico
+## Tech Stack
 
-Este template incluye un conjunto cuidadosamente seleccionado de tecnologías para asegurar eficiencia, escalabilidad y facilidad de uso:
+This template includes a carefully selected set of technologies to ensure efficiency, scalability, and ease of use:
 
-- **Zod + TypeScript** – Type safety y validación de schemas en todo el stack.
-- **fastapi-users** – Sistema completo de autenticación con:
-  - Hash seguro de contraseñas
-  - Autenticación JWT
-  - Recuperación de contraseña por email
-- **shadcn/ui** – Componentes React preconstruidos con Tailwind CSS.
-- **OpenAPI-fetch** – Generación de cliente completamente tipado desde el schema OpenAPI.
-- **UV** – Gestión simplificada de dependencias y empaquetado.
-- **Docker Compose** – Entornos consistentes para desarrollo y producción.
-- **Pre-commit hooks** – Linting, formateo y validación automática de código antes de commits.
-- **Vercel Deployment** – Backend serverless y frontend escalable, desplegable con configuración mínima.
+- **Zod + TypeScript** – Type safety and schema validation across the stack.
+- **fastapi-users** – Complete authentication system with:
+  - Secure password hashing
+  - JWT authentication
+  - Password recovery via email
+- **shadcn/ui** – Pre-built React components with Tailwind CSS.
+- **OpenAPI-fetch** – Fully typed client generation from the OpenAPI schema.
+- **UV** – Simplified dependency management and packaging.
+- **Docker Compose** – Consistent environments for development and production.
+- **Pre-commit hooks** – Automatic linting, formatting, and code validation before commits.
+- **Vercel Deployment** – Serverless backend and scalable frontend, deployable with minimal configuration.
 
-Esta es una lista parcial de las tecnologías incluidas en el template. Para una descripción completa, visita nuestra página de [Selección de tecnologías](https://jonasotoaguilar.github.io/nextjs-fastapi-template/technology-selection/).
+This is a partial list of technologies included in the template. For a full description, visit our [Technology Selection](https://jonasotoaguilar.github.io/nextjs-fastapi-template/technology-selection/) page.
 
-## Comenzar
+## Getting Started
 
-Para usar este template, visita nuestra guía [Get Started](https://jonasotoaguilar.github.io/nextjs-fastapi-template/get-started/) y sigue los pasos.
+To use this template, visit our [Get Started](https://jonasotoaguilar.github.io/nextjs-fastapi-template/get-started/) guide and follow the steps.
 
-## Estructura del proyecto
+## Project Structure
 
 ```
 nextjs-fastapi-template/
-├── api                      # Backend FastAPI
-│   ├── app/                 # Código de la aplicación
-│   │   ├── api/             # Endpoints de la API
-│   │   ├── core/            # Configuración y utilidades
-│   │   ├── db/              # Modelos y configuración de base de datos
-│   │   └── schemas/         # Schemas Pydantic
-│   ├── alembic/             # Migraciones de base de datos
-│   ├── commands/            # Scripts de utilidad
-│   └── tests/               # Tests del backend
-├── ui/         # Frontend Next.js
-│   ├── app/                 # App Router de Next.js
-│   ├── components/          # Componentes React
-│   ├── lib/                 # Utilidades y configuración
-│   └── public/              # Assets estáticos
-├── docs/                    # Documentación MkDocs
-└── docker-compose.yml       # Configuración Docker
+├── api                      # FastAPI Backend
+│   ├── app/                 # Application code
+│   │   ├── api/             # API Endpoints
+│   │   ├── core/            # Configuration and utilities
+│   │   ├── db/              # Models and database configuration
+│   │   └── schemas/         # Pydantic schemas
+│   ├── alembic/             # Database migrations
+│   ├── commands/            # Utility scripts
+│   └── tests/               # Backend tests
+├── ui/         # Next.js Frontend
+│   ├── app/                 # Next.js App Router
+│   ├── components/          # React components
+│   ├── lib/                 # Utilities and configuration
+│   └── public/              # Static assets
+├── docs/                    # MkDocs Documentation
+└── docker-compose.yml       # Docker configuration
 ```
 
-## 📚 Documentación Específica
+## 📚 Specific Documentation
 
-Para información detallada sobre cada parte del proyecto:
+For detailed information about each part of the project:
 
-- **[Frontend (UI)](./ui/README.md)** - Documentación completa del frontend Next.js
-  - Estructura de componentes
-  - Cliente API tipado
-  - Testing con Vitest
-  - Configuración y despliegue
+- **[Frontend (UI)](./ui/README.md)** - Full Next.js frontend documentation
+  - Component structure
+  - Typed API client
+  - Testing with Vitest
+  - Configuration and deployment
 
-- **[Backend (API)](./api/README.md)** - Documentación completa del backend FastAPI
-  - Endpoints disponibles
-  - Modelos y schemas
-  - Migraciones de base de datos
-  - Testing con pytest
+- **[Backend (API)](./api/README.md)** - Full FastAPI backend documentation
+  - Available endpoints
+  - Models and schemas
+  - Database migrations
+  - Testing with pytest
 
+## Extending the template
 
-## Extender el template
+### Adding new models
 
-### Agregar nuevos modelos
-
-1. **Crear el modelo en el backend** (`api/app/db/models/`):
+1. **Create the model in the backend** (`api/app/db/models/`):
 
 ```python
 from sqlalchemy import Column, String, Integer
@@ -178,7 +177,7 @@ class Product(Base):
     price = Column(Integer, nullable=False)
 ```
 
-2. **Crear schemas Pydantic** (`api/app/schemas/`):
+2. **Create Pydantic schemas** (`api/app/schemas/`):
 
 ```python
 from pydantic import BaseModel
@@ -198,16 +197,16 @@ class ProductRead(ProductBase):
         from_attributes = True
 ```
 
-3. **Crear migración de base de datos**:
+3. **Create database migration**:
 
 ```bash
 make docker-db-schema migration_name="add products table"
 make docker-migrate-db
 ```
 
-### Agregar nuevos endpoints
+### Adding new endpoints
 
-1. **Crear router** (`api/app/api/routes/`):
+1. **Create router** (`api/app/api/routes/`):
 
 ```python
 from fastapi import APIRouter, Depends
@@ -222,72 +221,72 @@ async def create_product(
     product: ProductCreate,
     session: AsyncSession = Depends(get_async_session)
 ):
-    # Implementación
+    # Implementation
     pass
 ```
 
-2. **Registrar el router** (`api/app/api/routes/__init__.py`):
+2. **Register the router** (`api/app/api/routes/__init__.py`):
 
 ```python
 from app.api.routes import products
 
-# En la función que configura los routers
+# In the function that configures routers
 api_router.include_router(products.router)
 ```
 
-3. **Regenerar el cliente del frontend**:
+3. **Regenerate frontend client**:
 
 ```bash
-# El hot-reload lo hace automáticamente, o manualmente:
+# Hot-reload does it automatically, or manually:
 cd ui && pnpm run generate-client
 ```
 
-### Usar el cliente tipado en el frontend
+### Using the typed client in the frontend
 
 ```typescript
 import { client } from "@/lib/api-client";
 
-// El cliente está completamente tipado
+// The client is fully typed
 const { data, error } = await client.POST("/api/products/", {
   body: {
-    name: "Producto nuevo",
-    description: "Descripción",
+    name: "New Product",
+    description: "Description",
     price: 1000,
   },
 });
 
-// TypeScript conoce la estructura de 'data' y 'error'
+// TypeScript knows the structure of 'data' and 'error'
 if (data) {
   console.log(data.id, data.name);
 }
 ```
 
-## Comandos útiles
+## Useful Commands
 
-El proyecto incluye un `Makefile` con comandos para simplificar tareas comunes:
+The project includes a `Makefile` with commands to simplify common tasks:
 
 ```bash
-make help                    # Ver todos los comandos disponibles
-make docker-build           # Construir contenedores
-make docker-start-api       # Iniciar api
-make docker-start-ui        # Iniciar ui
-make docker-migrate-db      # Aplicar migraciones
-make test-api               # Ejecutar tests de la api
-make test-ui                # Ejecutar tests del ui
+make help                    # See all available commands
+make docker-build           # Build containers
+make docker-start-api       # Start api
+make docker-start-ui        # Start ui
+make docker-migrate-db      # Apply migrations
+make test-api               # Run api tests
+make test-ui                # Run ui tests
 ```
 
-## Contribuir
+## Contributing
 
-¿Usas este template? ¡Nos encantaría saber cómo lo estás usando!
+Are you using this template? We'd love to hear how you're using it!
 
-- Únete a la conversación en [GitHub Discussions](https://github.com/jonasotoaguilar/nextjs-fastapi-template/discussions)
-- Reporta bugs o sugiere mejoras vía [issues](https://github.com/jonasotoaguilar/nextjs-fastapi-template/issues)
-- Consulta la guía de [Contributing](https://jonasotoaguilar.github.io/nextjs-fastapi-template/contributing/) para involucrarte
+- Join the conversation on [GitHub Discussions](https://github.com/jonasotoaguilar/nextjs-fastapi-template/discussions)
+- Report bugs or suggest improvements via [issues](https://github.com/jonasotoaguilar/nextjs-fastapi-template/issues)
+- Check the [Contributing](https://jonasotoaguilar.github.io/nextjs-fastapi-template/contributing/) guide to get involved
 
-## Créditos
+## Credits
 
-Este proyecto es un fork del template original creado y mantenido por [Vinta Software](https://www.vinta.com.br/). El template original es usado activamente en sistemas de producción que construyen para sus clientes.
+This project is a fork of the original template created and maintained by [Vinta Software](https://www.vinta.com.br/). The original template is actively used in production systems they build for their clients.
 
-**Template Original**: [vintasoftware/nextjs-fastapi-template](https://github.com/vintasoftware/nextjs-fastapi-template/)
+**Original Template**: [vintasoftware/nextjs-fastapi-template](https://github.com/vintasoftware/nextjs-fastapi-template/)
 
-_Disclaimer: Este proyecto no está afiliado con Vercel._
+_Disclaimer: This project is not affiliated with Vercel._

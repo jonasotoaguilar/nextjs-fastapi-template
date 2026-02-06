@@ -1,12 +1,12 @@
-# Extender el Template
+# Extending the Template
 
-Esta guía te muestra cómo extender el template con nuevas funcionalidades, modelos y endpoints.
+This guide shows you how to extend the template with new features, models, and endpoints.
 
-## Agregar nuevos modelos de base de datos
+## Adding New Database Models
 
-### 1. Crear el modelo SQLAlchemy
+### 1. Create the SQLAlchemy Model
 
-Crea un nuevo archivo en `api/app/db/models/` o agrega tu modelo a un archivo existente:
+Create a new file in `api/app/db/models/` or add your model to an existing file:
 
 ```python
 # api/app/db/models/product.py
@@ -25,27 +25,27 @@ class Product(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    # Relaciones (ejemplo)
+    # Relationships (example)
     # user_id = Column(Integer, ForeignKey("user.id"))
     # user = relationship("User", back_populates="products")
 ```
 
-### 2. Registrar el modelo
+### 2. Register the Model
 
-Asegúrate de que tu modelo sea importado en `api/app/db/base.py`:
+Ensure your model is imported in `api/app/db/base.py`:
 
 ```python
 # api/app/db/base.py
 from app.db.base_class import Base
 from app.db.models.user import User
-from app.db.models.product import Product  # Agregar esta línea
+from app.db.models.product import Product  # Add this line
 
 __all__ = ["Base", "User", "Product"]
 ```
 
-### 3. Crear schemas Pydantic
+### 3. Create Pydantic Schemas
 
-Crea schemas para validación y serialización en `api/app/schemas/`:
+Create schemas for validation and serialization in `api/app/schemas/`:
 
 ```python
 # api/app/schemas/product.py
@@ -53,50 +53,50 @@ from pydantic import BaseModel, Field
 from datetime import datetime
 
 class ProductBase(BaseModel):
-    """Schema base con campos comunes"""
+    """Base schema with common fields"""
     name: str = Field(..., min_length=1, max_length=255)
     description: str | None = None
     price: int = Field(..., gt=0)
 
 class ProductCreate(ProductBase):
-    """Schema para crear un producto"""
+    """Schema for creating a product"""
     pass
 
 class ProductUpdate(BaseModel):
-    """Schema para actualizar un producto (todos los campos opcionales)"""
+    """Schema for updating a product (all fields optional)"""
     name: str | None = Field(None, min_length=1, max_length=255)
     description: str | None = None
     price: int | None = Field(None, gt=0)
 
 class ProductRead(ProductBase):
-    """Schema para leer un producto"""
+    """Schema for reading a product"""
     id: int
     created_at: datetime
     updated_at: datetime
 
     class Config:
-        from_attributes = True  # Permite crear desde modelos SQLAlchemy
+        from_attributes = True  # Allows creation from SQLAlchemy models
 ```
 
-### 4. Crear migración de base de datos
+### 4. Create Database Migration
 
-Genera y aplica la migración:
+Generate and apply the migration:
 
 ```bash
-# Generar migración
+# Generate migration
 make docker-db-schema migration_name="add products table"
 
-# Revisar el archivo generado en api/alembic/versions/
+# Review the generated file in api/alembic/versions/
 
-# Aplicar migración
+# Apply migration
 make docker-migrate-db
 ```
 
-## Agregar nuevos endpoints
+## Adding New Endpoints
 
-### 1. Crear el router
+### 1. Create the Router
 
-Crea un nuevo archivo en `api/app/api/routes/`:
+Create a new file in `api/app/api/routes/`:
 
 ```python
 # api/app/api/routes/products.py
@@ -116,7 +116,7 @@ async def list_products(
     limit: int = 100,
     session: AsyncSession = Depends(get_async_session)
 ):
-    """Listar todos los productos"""
+    """List all products"""
     result = await session.execute(
         select(Product).offset(skip).limit(limit)
     )
@@ -128,7 +128,7 @@ async def get_product(
     product_id: int,
     session: AsyncSession = Depends(get_async_session)
 ):
-    """Obtener un producto por ID"""
+    """Get a product by ID"""
     result = await session.execute(
         select(Product).where(Product.id == product_id)
     )
@@ -147,7 +147,7 @@ async def create_product(
     product_in: ProductCreate,
     session: AsyncSession = Depends(get_async_session)
 ):
-    """Crear un nuevo producto"""
+    """Create a new product"""
     product = Product(**product_in.model_dump())
     session.add(product)
     await session.commit()
@@ -160,7 +160,7 @@ async def update_product(
     product_in: ProductUpdate,
     session: AsyncSession = Depends(get_async_session)
 ):
-    """Actualizar un producto existente"""
+    """Update an existing product"""
     result = await session.execute(
         select(Product).where(Product.id == product_id)
     )
@@ -172,7 +172,7 @@ async def update_product(
             detail="Product not found"
         )
 
-    # Actualizar solo los campos proporcionados
+    # Update only the fields provided
     update_data = product_in.model_dump(exclude_unset=True)
     for field, value in update_data.items():
         setattr(product, field, value)
@@ -186,7 +186,7 @@ async def delete_product(
     product_id: int,
     session: AsyncSession = Depends(get_async_session)
 ):
-    """Eliminar un producto"""
+    """Delete a product"""
     result = await session.execute(
         select(Product).where(Product.id == product_id)
     )
@@ -202,34 +202,34 @@ async def delete_product(
     await session.commit()
 ```
 
-### 2. Registrar el router
+### 2. Register the Router
 
-Agrega el router en `api/app/api/routes/__init__.py`:
+Add the router in `api/app/api/routes/__init__.py`:
 
 ```python
 from fastapi import APIRouter
-from app.api.routes import auth, users, products  # Agregar products
+from app.api.routes import auth, users, products  # Add products
 
 api_router = APIRouter()
 
-# Incluir routers
+# Include routers
 api_router.include_router(auth.router)
 api_router.include_router(users.router)
-api_router.include_router(products.router)  # Agregar esta línea
+api_router.include_router(products.router)  # Add this line
 ```
 
-### 3. Regenerar el cliente del frontend
+### 3. Regenerate the Frontend Client
 
-El hot-reload regenera automáticamente el cliente cuando detecta cambios en el schema OpenAPI. También puedes hacerlo manualmente:
+Hot-reload automatically regenerates the client when it detects changes in the OpenAPI schema. You can also do it manually:
 
 ```bash
-# Desde el directorio raíz
+# From the root directory
 cd ui && pnpm run generate-client
 ```
 
-## Usar el cliente tipado en el frontend
+## Using the Typed Client in the Frontend
 
-### Ejemplo básico
+### Basic Example
 
 ```typescript
 // app/products/page.tsx
@@ -264,11 +264,11 @@ export default function ProductsPage() {
     fetchProducts();
   }, []);
 
-  if (loading) return <div>Cargando...</div>;
+  if (loading) return <div>Loading...</div>;
 
   return (
     <div>
-      <h1>Productos</h1>
+      <h1>Products</h1>
       <ul>
         {products.map((product) => (
           <li key={product.id}>
@@ -281,7 +281,7 @@ export default function ProductsPage() {
 }
 ```
 
-### Crear un producto
+### Create a Product
 
 ```typescript
 "use client";
@@ -312,7 +312,7 @@ export default function CreateProductForm() {
 
     if (data) {
       console.log("Product created:", data);
-      // Resetear formulario o redirigir
+      // Reset form or redirect
     }
   }
 
@@ -322,30 +322,30 @@ export default function CreateProductForm() {
         type="text"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        placeholder="Nombre del producto"
+        placeholder="Product name"
         required
       />
       <input
         type="number"
         value={price}
         onChange={(e) => setPrice(Number(e.target.value))}
-        placeholder="Precio"
+        placeholder="Price"
         required
       />
       <textarea
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        placeholder="Descripción (opcional)"
+        placeholder="Description (optional)"
       />
-      <button type="submit">Crear Producto</button>
+      <button type="submit">Create Product</button>
     </form>
   );
 }
 ```
 
-## Agregar autenticación a endpoints
+## Adding Authentication to Endpoints
 
-### Proteger endpoints con autenticación
+### Protecting Endpoints with Authentication
 
 ```python
 from fastapi import Depends
@@ -356,9 +356,9 @@ from app.api.deps import current_active_user
 async def create_product(
     product_in: ProductCreate,
     session: AsyncSession = Depends(get_async_session),
-    user: User = Depends(current_active_user)  # Requiere usuario autenticado
+    user: User = Depends(current_active_user)  # Requires authenticated user
 ):
-    """Crear un producto (requiere autenticación)"""
+    """Create a product (requires authentication)"""
     product = Product(**product_in.model_dump(), user_id=user.id)
     session.add(product)
     await session.commit()
@@ -366,23 +366,23 @@ async def create_product(
     return product
 ```
 
-### Usar el cliente autenticado en el frontend
+### Using the Authenticated Client in the Frontend
 
 ```typescript
 import { authenticatedClient } from "@/lib/api-client";
 
-// El cliente autenticado incluye automáticamente el token JWT
+// The authenticated client automatically includes the JWT token
 const { data, error } = await authenticatedClient.POST("/api/products/", {
   body: {
-    name: "Producto nuevo",
+    name: "New Product",
     price: 1000,
   },
 });
 ```
 
-## Agregar tests
+## Adding Tests
 
-### Tests del backend
+### Backend Tests
 
 ```python
 # api/tests/api/test_products.py
@@ -394,7 +394,7 @@ from app.db.models.product import Product
 
 @pytest.mark.asyncio
 async def test_create_product(client: AsyncClient, session: AsyncSession):
-    """Test crear un producto"""
+    """Test creating a product"""
     response = await client.post(
         "/api/products/",
         json={
@@ -411,8 +411,8 @@ async def test_create_product(client: AsyncClient, session: AsyncSession):
 
 @pytest.mark.asyncio
 async def test_list_products(client: AsyncClient, session: AsyncSession):
-    """Test listar productos"""
-    # Crear productos de prueba
+    """Test listing products"""
+    # Create test products
     product1 = Product(name="Product 1", price=100)
     product2 = Product(name="Product 2", price=200)
     session.add_all([product1, product2])
@@ -425,7 +425,7 @@ async def test_list_products(client: AsyncClient, session: AsyncSession):
     assert len(data) >= 2
 ```
 
-### Tests del frontend
+### Frontend Tests
 
 ```typescript
 // ui/__tests__/products.test.tsx
@@ -457,38 +457,38 @@ describe("ProductsPage", () => {
 });
 ```
 
-## Mejores prácticas
+## Best Practices
 
-### 1. Mantén la separación de responsabilidades
+### 1. Maintain Separation of Concerns
 
-- **Modelos**: Solo definición de tablas y relaciones
-- **Schemas**: Validación y serialización
-- **Routers**: Lógica de endpoints
-- **Services** (opcional): Lógica de negocio compleja
+- **Models**: Only table and relationship definitions
+- **Schemas**: Validation and serialization
+- **Routers**: Endpoint logic
+- **Services** (optional): Complex business logic
 
-### 2. Usa transacciones para operaciones complejas
+### 2. Use Transactions for Complex Operations
 
 ```python
 async def create_order_with_items(
     order_data: OrderCreate,
     session: AsyncSession
 ):
-    async with session.begin():  # Transacción automática
+    async with session.begin():  # Automatic transaction
         order = Order(**order_data.model_dump(exclude={"items"}))
         session.add(order)
-        await session.flush()  # Obtener el ID sin commit
+        await session.flush()  # Get ID without commit
 
         for item_data in order_data.items:
             item = OrderItem(**item_data.model_dump(), order_id=order.id)
             session.add(item)
 
-        # Commit automático al salir del bloque
+        # Automatic commit upon exiting block
 
     await session.refresh(order)
     return order
 ```
 
-### 3. Maneja errores apropiadamente
+### 3. Handle Errors Appropriately
 
 ```python
 from fastapi import HTTPException, status
@@ -507,19 +507,19 @@ async def get_product(product_id: int, session: AsyncSession = Depends(get_async
     return product
 ```
 
-### 4. Documenta tus endpoints
+### 4. Document Your Endpoints
 
 ```python
 @router.post(
     "/",
     response_model=ProductRead,
     status_code=status.HTTP_201_CREATED,
-    summary="Crear un nuevo producto",
-    description="Crea un nuevo producto en la base de datos con los datos proporcionados.",
+    summary="Create a new product",
+    description="Creates a new product in the database with the provided data.",
     responses={
-        201: {"description": "Producto creado exitosamente"},
-        400: {"description": "Datos de entrada inválidos"},
-        401: {"description": "No autenticado"},
+        201: {"description": "Product successfully created"},
+        400: {"description": "Invalid input data"},
+        401: {"description": "Not authenticated"},
     }
 )
 async def create_product(
@@ -528,16 +528,16 @@ async def create_product(
     user: User = Depends(current_active_user)
 ):
     """
-    Crear un nuevo producto.
+    Create a new product.
 
-    - **name**: Nombre del producto (requerido)
-    - **price**: Precio en centavos (requerido)
-    - **description**: Descripción del producto (opcional)
+    - **name**: Product name (required)
+    - **price**: Price in cents (required)
+    - **description**: Product description (optional)
     """
     pass
 ```
 
-## Recursos adicionales
+## Additional Resources
 
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
 - [SQLAlchemy 2.0 Documentation](https://docs.sqlalchemy.org/en/20/)

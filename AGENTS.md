@@ -1,239 +1,245 @@
-# Instrucciones del Proyecto
+# Project Instructions
 
-Este documento contiene reglas y convenciones específicas del proyecto Next.js FastAPI Template.
+This document contains rules and conventions specific to the Next.js FastAPI Template project.
 
-## Stack Tecnológico
+## Tech Stack
 
 ### Frontend (ui/)
-- **Next.js 16** con App Router
-- **React 19** con Server Components
+
+- **Next.js 16** with App Router
+- **React 19** with Server Components
 - **TypeScript 5**
 - **Tailwind CSS 4**
-- **shadcn/ui** para componentes
-- **Zod 4** para validación
-- **Vitest** para testing
-- **Biome** para linting y formateo
-- **pnpm** como gestor de paquetes
+- **shadcn/ui** for components
+- **Zod 4** for validation
+- **Vitest** for testing
+- **Biome** for linting and formatting
+- **pnpm** as package manager
 
 ### Backend (api/)
+
 - **FastAPI 0.128**
 - **Python 3.12**
 - **SQLAlchemy 2** (async)
-- **PostgreSQL** como base de datos
-- **Alembic** para migraciones
-- **fastapi-users** para autenticación
-- **pytest** para testing
-- **Ruff** para linting y formateo
-- **UV** como gestor de dependencias
+- **PostgreSQL** as database
+- **Alembic** for migrations
+- **fastapi-users** for authentication
+- **pytest** for testing
+- **Ruff** for linting and formatting
+- **UV** as dependency manager
 
-## Comandos Principales
+## Main Commands
 
-### Desarrollo
+### Development
 
 ```bash
-# Inicializar proyecto
-make init-env                # Copiar archivos .env
-make install                 # Instalar dependencias (host)
-make install-pre-commit      # Instalar pre-commit hooks
+# Initialize project
+make init-env                # Copy .env files
+make install                 # Install dependencies (host)
+make install-pre-commit      # Install pre-commit hooks
 
 # Docker
-make docker-build            # Construir imágenes
-make docker-up               # Iniciar todos los servicios
-make docker-down             # Detener servicios
-make docker-start-api        # Iniciar solo API
-make docker-start-ui         # Iniciar solo UI
+make docker-build            # Build images
+make docker-up               # Start all services
+make docker-down             # Stop services
+make docker-start-api        # Start only API
+make docker-start-ui         # Start only UI
 
-# Sin Docker
-make start-api               # Iniciar API (host)
-make start-ui                # Iniciar UI (host)
+# Without Docker
+make start-api               # Start API (host)
+make start-ui                # Start UI (host)
 ```
 
-### Base de Datos
+### Database
 
 ```bash
-make docker-migrate-db                              # Aplicar migraciones
-make docker-db-schema migration_name="descripción"  # Crear migración
+make docker-migrate-db                              # Apply migrations
+make docker-db-schema migration_name="description"  # Create migration
 ```
 
 ### Testing
 
 ```bash
-make test-api                # Tests API (host)
-make test-ui                 # Tests UI (host)
-make docker-test-api         # Tests API (docker)
-make docker-test-ui          # Tests UI (docker)
+make test-api                # API tests (host)
+make test-ui                 # UI tests (host)
+make docker-test-api         # API tests (docker)
+make docker-test-ui          # UI tests (docker)
 ```
 
-### Calidad de Código
+### Code Quality
 
 ```bash
-make lint                    # Ejecutar pre-commit en todos los archivos
+make lint                    # Run pre-commit on all files
 ```
 
-## Arquitectura
+## Architecture
 
-### Type Safety de Extremo a Extremo
+### End-to-End Type Safety
 
-El proyecto mantiene type safety completo entre frontend y backend:
+The project maintains full type safety between frontend and backend:
 
-1. **Backend**: Define schemas con Pydantic
-2. **OpenAPI**: FastAPI genera schema OpenAPI automáticamente
-3. **Frontend**: Cliente tipado generado desde OpenAPI con `@hey-api/openapi-ts`
-4. **Validación**: Zod valida datos en el frontend
+1. **Backend**: Defines schemas with Pydantic
+2. **OpenAPI**: FastAPI generates OpenAPI schema automatically
+3. **Frontend**: Typed client generated from OpenAPI with `@hey-api/openapi-ts`
+4. **Validation**: Zod validates data on the frontend
 
-### Cliente API Tipado
+### Typed API Client
 
-El cliente API se regenera automáticamente:
+The API client is automatically regenerated:
 
-- **Watcher**: `ui/watcher.js` detecta cambios en `openapi.json`
-- **Generación**: Ejecuta `pnpm generate-client` automáticamente
-- **Ubicación**: Cliente generado en `ui/lib/openapi-client/`
+- **Watcher**: `ui/watcher.js` detects changes in `openapi.json`
+- **Generation**: Runs `pnpm generate-client` automatically
+- **Location**: Generated client in `ui/lib/openapi-client/`
 
-**No editar manualmente** los archivos en `ui/lib/openapi-client/`.
+**Do not manually edit** the files in `ui/lib/openapi-client/`.
 
-### Autenticación
+### Authentication
 
-Sistema completo con `fastapi-users`:
+Complete system with `fastapi-users`:
 
-- **JWT tokens** para autenticación
-- **Hash seguro** de contraseñas con bcrypt
-- **Recuperación de contraseña** por email
-- **Verificación de email** (opcional)
+- **JWT tokens** for authentication
+- **Secure hashing** of passwords with bcrypt
+- **Password recovery** via email
+- **Email verification** (optional)
 
 Endpoints:
-- `POST /api/auth/register` - Registro
+
+- `POST /api/auth/register` - Registration
 - `POST /api/auth/login` - Login
 - `POST /api/auth/logout` - Logout
-- `POST /api/auth/forgot-password` - Solicitar reset
-- `POST /api/auth/reset-password` - Resetear contraseña
+- `POST /api/auth/forgot-password` - Request reset
+- `POST /api/auth/reset-password` - Reset password
 
-## Convenciones de Código
+## Code Conventions
 
 ### General
 
-- **Commits**: Usar Conventional Commits (enforced por pre-commit)
-- **Branches**: Feature branches desde `main`
-- **PRs**: Todos los tests y linters deben pasar
+- **Commits**: Use Conventional Commits (enforced by pre-commit)
+- **Branches**: Feature branches from `main`
+- **PRs**: All tests and linters must pass
 
 ### Frontend (TypeScript/React)
 
-- **Componentes**: Funcionales con hooks
-- **Server Components**: Por defecto, usar Client Components solo cuando sea necesario
-- **Type Safety**: Type hints explícitos para props
-- **Estilos**: Tailwind CSS, usar `cn()` para clases condicionales
-- **Formularios**: React Hook Form + Zod para validación
+- **Components**: Functional with hooks
+- **Server Components**: By default, use Client Components only when necessary
+- **Type Safety**: Explicit type hints for props
+- **Styling**: Tailwind CSS, use `cn()` for conditional classes
+- **Forms**: React Hook Form + Zod for validation
 - **Testing**: Vitest + React Testing Library
 
-Ver `ui/AGENTS.md` para más detalles.
+See `ui/AGENTS.md` for more details.
 
 ### Backend (Python/FastAPI)
 
-- **Type Hints**: Obligatorios en todas las funciones
-- **Async**: Usar async/await para operaciones I/O
-- **Dependency Injection**: Para sesiones de DB y dependencias
-- **Response Models**: Definir en todos los endpoints
-- **Migraciones**: Crear para todos los cambios de schema
-- **Testing**: pytest con pytest-asyncio
+- **Type Hints**: Mandatory for all functions
+- **Async**: Use async/await for I/O operations
+- **Dependency Injection**: For DB sessions and dependencies
+- **Response Models**: Define in all endpoints
+- **Migrations**: Create for all schema changes
+- **Testing**: pytest with pytest-asyncio
 
-Ver `api/AGENTS.md` para más detalles.
+See `api/AGENTS.md` for more details.
 
-## Estructura de Archivos
+## Project Structure
 
-### Agregar Nuevos Modelos
+### Adding New Models
 
-1. Crear modelo en `api/app/db/models/`
-2. Importar en `api/app/db/base.py`
-3. Crear schemas en `api/app/schemas/`
-4. Crear migración: `make docker-db-schema migration_name="descripción"`
-5. Aplicar migración: `make docker-migrate-db`
+1. Create model in `api/app/db/models/`
+2. Import in `api/app/db/base.py`
+3. Create schemas in `api/app/schemas/`
+4. Create migration: `make docker-db-schema migration_name="description"`
+5. Apply migration: `make docker-migrate-db`
 
-### Agregar Nuevos Endpoints
+### Adding New Endpoints
 
-1. Crear router en `api/app/api/routes/`
-2. Registrar router en `api/app/main.py`
-3. El cliente del frontend se regenerará automáticamente
+1. Create router in `api/app/api/routes/`
+2. Register router in `api/app/main.py`
+3. The frontend client will regenerate automatically
 
-### Agregar Nuevos Componentes
+### Adding New Components
 
-1. Componentes shadcn/ui: `npx shadcn@latest add <component>`
-2. Componentes custom: Crear en `ui/components/`
-3. Seguir convenciones de shadcn/ui para props y estilos
+1. shadcn/ui components: `npx shadcn@latest add <component>`
+2. Custom components: Create in `ui/components/`
+3. Follow shadcn/ui conventions for props and styles
 
 ## Testing
 
-### Cobertura Mínima
+### Minimum Coverage
 
 - **Backend**: > 80% coverage
 - **Frontend**: > 70% coverage
 
-### Estrategia
+### Strategy
 
-- **Unit tests**: Funciones y utilidades
-- **Integration tests**: Endpoints API completos
-- **Component tests**: Componentes React
+- **Unit tests**: Functions and utilities
+- **Integration tests**: Full API endpoints
+- **Component tests**: React components
 
-## Despliegue
+## Deployment
 
 ### Docker
 
-Dockerfiles multi-stage optimizados:
-- `api/Dockerfile` - Backend FastAPI
-- `ui/Dockerfile` - Frontend Next.js
+Optimized multi-stage Dockerfiles:
+
+- `api/Dockerfile` - FastAPI Backend
+- `ui/Dockerfile` - Next.js Frontend
 
 ### Vercel
 
-Configuración lista para Vercel:
-- `api/vercel.json` - Backend serverless
+Vercel-ready configuration:
+
+- `api/vercel.json` - Serverless backend
 - `ui/vercel.json` - Frontend
 
-Variables de entorno requeridas en Vercel:
-- Ver `api/.env.example` para backend
-- Ver `ui/.env.example` para frontend
+Required environment variables on Vercel:
+
+- See `api/.env.example` for backend
+- See `ui/.env.example` for frontend
 
 ## CI/CD
 
 GitHub Actions workflows:
 
-- `.github/workflows/ci.yml` - Tests y linting
+- `.github/workflows/ci.yml` - Tests and linting
 - `.github/workflows/api-container-build-push.yml` - Build API Docker
 - `.github/workflows/ui-container-build-push.yml` - Build UI Docker
 
-## Seguridad
+## Security
 
 ### Secrets
 
-- **Nunca** commitear archivos `.env`
-- Usar `.env.example` como template
-- Rotar secrets regularmente en producción
+- **Never** commit `.env` files
+- Use `.env.example` as a template
+- Rotate secrets regularly in production
 
-### Dependencias
+### Dependencies
 
-- Pre-commit hooks verifican dependencias
-- Actualizar dependencias regularmente
-- Revisar security advisories
+- Pre-commit hooks verify dependencies
+- Update dependencies regularly
+- Review security advisories
 
-## Límites de Seguridad
+## Security Limits
 
-### NO hacer:
+### DO NOT:
 
-- ❌ Commitear secrets o API keys
-- ❌ Deshabilitar pre-commit hooks
-- ❌ Hacer commits directos a `main` (usar PRs)
-- ❌ Editar archivos generados automáticamente
-- ❌ Modificar migraciones ya aplicadas en producción
+- ❌ Commit secrets or API keys
+- ❌ Disable pre-commit hooks
+- ❌ Make direct commits to `main` (use PRs)
+- ❌ Edit automatically generated files
+- ❌ Modify already applied migrations in production
 
-### SÍ hacer:
+### DO:
 
-- ✅ Usar variables de entorno para configuración
-- ✅ Ejecutar tests antes de hacer push
-- ✅ Crear migraciones para cambios de schema
-- ✅ Documentar cambios importantes
-- ✅ Seguir Conventional Commits
+- ✅ Use environment variables for configuration
+- ✅ Run tests before pushing
+- ✅ Create migrations for schema changes
+- ✅ Document important changes
+- ✅ Follow Conventional Commits
 
-## Referencias
+## References
 
-- **Documentación completa**: https://jonasotoaguilar.github.io/nextjs-fastapi-template/
-- **Frontend específico**: `ui/README.md` y `ui/AGENTS.md`
-- **Backend específico**: `api/README.md` y `api/AGENTS.md`
-- **Makefile**: Ver `make help` para todos los comandos
-- **Template original**: https://github.com/vintasoftware/nextjs-fastapi-template/
+- **Full Documentation**: https://jonasotoaguilar.github.io/nextjs-fastapi-template/
+- **Frontend specific**: `ui/README.md` and `ui/AGENTS.md`
+- **Backend specific**: `api/README.md` and `api/AGENTS.md`
+- **Makefile**: See `make help` for all commands
+- **Original Template**: https://github.com/vintasoftware/nextjs-fastapi-template/

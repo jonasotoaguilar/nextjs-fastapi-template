@@ -1,161 +1,161 @@
-### Descripción general
+### General Description
 
-Se admite el despliegue en **Vercel**, con botones dedicados para las aplicaciones de **Frontend** y **Backend**. Ambas requieren configuraciones específicas durante y después del despliegue para asegurar un funcionamiento correcto.
+Deployment on **Vercel** is supported, with dedicated buttons for the **Frontend** and **Backend** applications. Both require specific configurations during and after deployment to ensure correct operation.
 
 ---
 
-### Despliegue del Frontend
+### Frontend Deployment
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fjonasotoaguilar%2Fnextjs-fastapi-template%2Ftree%2Fmain%2Fui&env=API_BASE_URL&envDescription=The%20API_BASE_URL%20is%20the%20backend%20URL%20where%20the%20frontend%20sends%20requests.)
 
-- Haz clic en el botón **Frontend** de arriba para iniciar el proceso de despliegue.
-- Durante el despliegue, se te pedirá que configures `API_BASE_URL`. Usa un valor provisional (por ejemplo, `https://`) por ahora, ya que se actualizará con la URL del backend más adelante.
-- Completa el proceso de despliegue [aquí](#configuracion-post-despliegue).
+- Click the **Frontend** button above to start the deployment process.
+- During deployment, you will be asked to configure `API_BASE_URL`. Use a provisional value (e.g., `https://`) for now, as it will be updated with the backend URL later.
+- Complete the deployment process [here](#post-deployment-configuration).
 
-### Despliegue del Backend
+### Backend Deployment
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fjonasotoaguilar%2Fnextjs-fastapi-template%2Ftree%2Fmain%2Fapi&env=CORS_ORIGINS,ACCESS_SECRET_KEY,RESET_PASSWORD_SECRET_KEY,VERIFICATION_SECRET_KEY&stores=%5B%7B%22type%22%3A%22postgres%22%7D%5D)
 
-- Haz clic en el botón **Backend** de arriba para comenzar el despliegue.
-- Primero, configura la base de datos. La conexión se configura automáticamente, así que sigue los pasos y debería funcionar por defecto.
-- Durante el proceso de despliegue, se te pedirá que configures las siguientes variables de entorno:
+- Click the **Backend** button above to start deployment.
+- First, configure the database. The connection is automatically configured, so follow the steps and it should work by default.
+- During the deployment process, you will be asked to configure the following environment variables:
   - **CORS_ORIGINS**
-    - Configura esto a `["*"]` inicialmente para permitir todos los orígenes. Más adelante, puedes actualizar esto con la URL del frontend.
+    - Set this to `["*"]` initially to allow all origins. Later, you can update this with the frontend URL.
 
   - **ACCESS_SECRET_KEY**, **RESET_PASSWORD_SECRET_KEY**, **VERIFICATION_SECRET_KEY**
-    - Durante el despliegue, puedes configurar temporalmente estas claves secretas como cadenas de texto simples (por ejemplo, `claveejemplo`). Sin embargo, debes generar claves seguras y actualizarlas después del despliegue en la sección de **Configuración Post-Despliegue**.
+    - During deployment, you can temporarily set these secret keys to simple text strings (e.g., `examplesecret`). However, you must generate secure keys and update them after deployment in the **Post-Deployment Configuration** section.
 
-- Completa el proceso de despliegue [aquí](#configuracion-post-despliegue).
+- Complete the deployment process [here](#post-deployment-configuration).
 
-## Configuración de CI (GitHub Actions) para el Despliegue de Producción
+## CI Configuration (GitHub Actions) for Production Deployment
 
-Proporcionamos los archivos **prod-api-deploy.yml** y **prod-ui-deploy.yml** para habilitar la integración continua a través de GitHub Actions. Para conectarlos a GitHub, simplemente muévelos al directorio `.github/workflows/`.
+We provide the **prod-api-deploy.yml** and **prod-ui-deploy.yml** files to enable continuous integration through GitHub Actions. To connect them to GitHub, simply move them to the `.github/workflows/` directory.
 
-Puedes hacerlo con los siguientes comandos:
+You can do this with the following commands:
 
 ```bash
  mv prod-api-deploy.yml .github/workflows/prod-api-deploy.yml
  mv prod-ui-deploy.yml .github/workflows/prod-ui-deploy.yml
 ```
 
-### Prerrequisitos
+### Prerequisites
 
-1. **Crear un Token de Vercel**:
-   - Genera tu [Token de Acceso de Vercel](https://vercel.com/account/tokens).
-   - Guarda el token como `VERCEL_TOKEN` en tus secretos de GitHub.
+1. **Create a Vercel Token**:
+   - Generate your [Vercel Access Token](https://vercel.com/account/tokens).
+   - Save the token as `VERCEL_TOKEN` in your GitHub secrets.
 
-2. **Instalar Vercel CLI**:
+2. **Install Vercel CLI**:
    ```bash
    pnpm i -g vercel@latest
    ```
-3. Autentica tu cuenta:
+3. Authenticate your account:
    ```bash
    vercel login
    ```
 
-### Creación de la Base de Datos (Requerido)
+### Database Creation (Required)
 
-1. **Elegir una Base de Datos**
-   - Puedes usar tu base de datos alojada en un servicio diferente o optar por la base de datos [Neon](https://neon.tech/docs/introduction), que se integra perfectamente con Vercel.
+1. **Choose a Database**
+   - You can use your hosted database on a different service or opt for the [Neon](https://neon.tech/docs/introduction) database, which integrates perfectly with Vercel.
 
-2. **Configurar una Base de Datos Neon a través de Vercel**
-   - En la página del **Panel de Proyectos** en Vercel, navega a la sección **Storage**.
-   - Selecciona la opción **Create a Database** para provisionar una base de datos Neon.
+2. **Configure a Neon Database through Vercel**
+   - On your **Project Dashboard** page in Vercel, navigate to the **Storage** section.
+   - Select the **Create a Database** option to provision a Neon database.
 
-3. **Configurar la URL de la Base de Datos**
-   - Después de crear la base de datos, obtén la **Database URL** proporcionada por Neon.
-   - Incluye esta URL en tus **Variables de Entorno** bajo `DATABASE_URL`.
+3. **Configure Database URL**
+   - After creating the database, get the **Database URL** provided by Neon.
+   - Include this URL in your **Environment Variables** under `DATABASE_URL`.
 
-4. **Migrar la Base de Datos**
-   - La migración de la base de datos ocurrirá automáticamente durante el despliegue de la GitHub Action, configurando las tablas y el schema necesarios.
+4. **Migrate the Database**
+   - Database migration will occur automatically during the GitHub Action deployment, setting up the necessary tables and schema.
 
-### Configuración del Frontend
+### Frontend Configuration
 
-1. Vincula el proyecto `ui`.
+1. Link the `ui` project.
 
-2. Navega al directorio `ui` y ejecuta:
+2. Navigate to the `ui` directory and run:
    ```bash
    cd ui
    vercel link
    ```
-3. Sigue las instrucciones:
-   - ¿Vincular a un proyecto existente? No
-   - ¿Modificar ajustes? No
+3. Follow the instructions:
+   - Link to an existing project? No
+   - Modify settings? No
 
-4. Guarda los IDs del Proyecto y añade los Secretos de GitHub:
+4. Save Project IDs and add GitHub Secrets:
 
-- Abre `ui/.vercel/project.json` y añade lo siguiente a los secretos de tu repositorio de GitHub:
+- Open `ui/.vercel/project.json` and add the following to your GitHub repository secrets:
   - `projectId` → `VERCEL_PROJECT_ID_FRONTEND`
   - `orgId` → `VERCEL_ORG_ID`
 
-### Configuración del Backend
+### Backend Configuration
 
-1. Vincula el proyecto `api`.
+1. Link the `api` project.
 
-2. Navega al directorio `api` y ejecuta:
+2. Navigate to the `api` directory and run:
 
    ```bash
    cd api
    vercel link --local-config=vercel.prod.json
    ```
 
-   - Usamos un archivo de configuración específico para establecer el valor de `--local-config`.
+   - We use a specific configuration file to set the `--local-config` value.
 
-3. Sigue las instrucciones:
-   - ¿Vincular a un proyecto existente? No
-   - ¿Modificar ajustes? No
+3. Follow the instructions:
+   - Link to an existing project? No
+   - Modify settings? No
 
-4. Guarda los IDs del Proyecto y añade los Secretos de GitHub:
+4. Save Project IDs and add GitHub Secrets:
 
-- Abre `api/.vercel/project.json` y añade lo siguiente a los secretos de tu repositorio de GitHub:
+- Open `api/.vercel/project.json` and add the following to your GitHub repository secrets:
   - `projectId` → `VERCEL_PROJECT_ID_BACKEND`
-  - `orgId` → `VERCEL_ORG_ID` (Solo en caso de que no lo hayas añadido antes)
+  - `orgId` → `VERCEL_ORG_ID` (Only in case you haven't added it before)
 
-5. Actualiza el archivo requirements.txt:
+5. Update requirements.txt:
 
    ```bash
    cd api
    uv export > requirements.txt
    ```
 
-   - Es necesario exportar un nuevo archivo `requirements.txt` para el despliegue en Vercel cuando se modifica el `uv.lock`.
+   - It is necessary to export a new `requirements.txt` file for Vercel deployment when `uv.lock` is modified.
 
-### Notas
+### Notes
 
-- Una vez que todo esté configurado, ejecuta `git push` y el despliegue ocurrirá automáticamente.
-- Por favor, asegúrate de completar la configuración tanto para el frontend como para el backend por separado.
-- Consulta la [Documentación de Vercel CLI](https://vercel.com/docs/cli) para más detalles.
-- Puedes encontrar el `project_id` en la configuración del proyecto en la web de Vercel.
-- Puedes encontrar el `organization_id` en la configuración de la organización en la web de Vercel.
+- Once everything is configured, run `git push` and deployment will happen automatically.
+- Please ensure you complete the setup for both frontend and backend separately.
+- See the [Vercel CLI Documentation](https://vercel.com/docs/cli) for more details.
+- You can find the `project_id` in the project settings on the Vercel web portal.
+- You can find the `organization_id` in the organization settings on the Vercel web portal.
 
-## Configuración Post-Despliegue
+## Post-Deployment Configuration
 
 ### Frontend
 
-- Navega a la página de **Settings** del proyecto de frontend desplegado.
-- Accede a la sección **Environment Variables**.
-- Actualiza la variable `API_BASE_URL` con la URL del backend una vez que el despliegue del backend se haya completado.
+- Navigate to the **Settings** page of the deployed frontend project.
+- Go to the **Environment Variables** section.
+- Update the `API_BASE_URL` variable with the backend URL once the backend deployment is complete.
 
 ### Backend
 
-- Accede a la página de **Settings** del proyecto de backend desplegado.
-- Navega a la sección **Environment Variables** y actualiza las siguientes variables con valores seguros:
+- Access the **Settings** page of the deployed backend project.
+- Navigate to the **Environment Variables** section and update the following variables with secure values:
   - **CORS_ORIGINS**
-    - Una vez que el frontend esté desplegado, reemplaza `["*"]` con la URL real del frontend.
+    - Once the frontend is deployed, replace `["*"]` with the actual frontend URL.
 
   - **ACCESS_SECRET_KEY**
-    - Genera una clave segura para el acceso a la API y confígurala aquí.
+    - Generate a secure key for API access and configure it here.
 
   - **RESET_PASSWORD_SECRET_KEY**
-    - Genera una clave segura para la funcionalidad de restablecimiento de contraseña y confígurala.
+    - Generate a secure key for password reset functionality and configure it.
 
   - **VERIFICATION_SECRET_KEY**
-    - Genera una clave segura para la verificación de usuarios y confígurala.
+    - Generate a secure key for user verification and configure it.
 
-- Para instrucciones detalladas sobre cómo configurar estas claves secretas, consulta la sección [Configuración de Variables de Entorno](get-started.md#configuracion-de-variables-de-entorno).
+- For detailed instructions on how to configure these secret keys, see the [Environment Variable Configuration](get-started.md#environment-variable-configuration) section.
 
-### Activación de serverless fluido
+### Enabling Fluid Serverless
 
-[Fluid](https://vercel.com/docs/functions/fluid-compute) es el nuevo modelo de concurrencia de Vercel para funciones serverless, que les permite manejar múltiples solicitudes por ejecución en lugar de iniciar una nueva instancia para cada solicitud. Esto mejora el rendimiento, reduce los arranques en frío (cold starts) y optimiza el uso de recursos, haciendo que las cargas de trabajo serverless sean más eficientes.
+[Fluid](https://vercel.com/docs/functions/fluid-compute) is Vercel's new concurrency model for serverless functions, allowing them to handle multiple requests per execution instead of starting a new instance for each request. This improves performance, reduces cold starts, and optimizes resource usage, making serverless workloads more efficient.
 
-Sigue esta [guía](https://vercel.com/docs/functions/fluid-compute#how-to-enable-fluid-compute) para activar Fluid.
+Follow this [guide](https://vercel.com/docs/functions/fluid-compute#how-to-enable-fluid-compute) to activate Fluid.

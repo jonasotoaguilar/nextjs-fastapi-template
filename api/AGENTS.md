@@ -1,8 +1,8 @@
-# Backend - Instrucciones Específicas
+# Backend - Specific Instructions
 
-Reglas y convenciones específicas para el backend FastAPI.
+Specific rules and conventions for the FastAPI backend.
 
-## Stack y Versiones
+## Stack and Versions
 
 - **FastAPI**: 0.128.1
 - **Python**: 3.12
@@ -15,71 +15,71 @@ Reglas y convenciones específicas para el backend FastAPI.
 - **Ruff**: 0.15.0
 - **UV**: Latest
 
-## Comandos
+## Commands
 
 ```bash
-# Desarrollo
-./start.sh                           # Iniciar servidor (http://localhost:8000)
-uv run fastapi dev app/main.py      # Alternativa con hot reload
+# Development
+./start.sh                           # Start server (http://localhost:8000)
+uv run fastapi dev app/main.py      # Alternative with hot reload
 
-# Base de datos
-uv run alembic revision --autogenerate -m "descripción"  # Nueva migración
-uv run alembic upgrade head          # Aplicar migraciones
-uv run alembic downgrade -1          # Revertir última migración
-uv run alembic history               # Ver historial
-uv run alembic current               # Ver versión actual
+# Database
+uv run alembic revision --autogenerate -m "description"  # New migration
+uv run alembic upgrade head          # Apply migrations
+uv run alembic downgrade -1          # Revert last migration
+uv run alembic history               # View history
+uv run alembic current               # View current version
 
 # Testing
-uv run pytest                        # Ejecutar tests
-uv run pytest --cov=app             # Con coverage
+uv run pytest                        # Run tests
+uv run pytest --cov=app             # With coverage
 uv run pytest -v                     # Verbose
-uv run pytest tests/test_users.py   # Test específico
+uv run pytest tests/test_users.py   # Specific test
 
-# Calidad de código
+# Code Quality
 uv run ruff check .                  # Linting
 uv run ruff check --fix .            # Auto-fix
-uv run ruff format .                 # Formateo
+uv run ruff format .                 # Formatting
 uv run mypy app                      # Type checking
 
-# Utilidades
-uv run python -m commands.create_superuser  # Crear superusuario
+# Utilities
+uv run python -m commands.create_superuser  # Create superuser
 ```
 
-## Arquitectura
+## Architecture
 
-### Estructura de Carpetas
+### Folder Structure
 
 ```
 app/
-├── api/                    # Endpoints de la API
-│   ├── routes/            # Routers por recurso
-│   │   ├── __init__.py   # Registro de routers
-│   │   ├── users.py      # Rutas de usuarios
+├── api/                    # API Endpoints
+│   ├── routes/            # Routers by resource
+│   │   ├── __init__.py   # Router registration
+│   │   ├── users.py      # User routes
 │   │   └── ...
-│   └── deps.py           # Dependencias compartidas
-├── core/                  # Configuración y utilidades
+│   └── deps.py           # Shared dependencies
+├── core/                  # Configuration and utilities
 │   ├── config.py         # Settings (Pydantic)
-│   ├── security.py       # Utilidades de seguridad
+│   ├── security.py       # Security utilities
 │   └── ...
-├── db/                    # Base de datos
-│   ├── models/           # Modelos SQLAlchemy
-│   │   ├── base.py      # Clase base
-│   │   ├── user.py      # Modelo de usuario
+├── db/                    # Database
+│   ├── models/           # SQLAlchemy models
+│   │   ├── base.py      # Base class
+│   │   ├── user.py      # User model
 │   │   └── ...
-│   ├── session.py        # Configuración de sesión
-│   └── base.py           # Importaciones de modelos
-├── schemas/               # Schemas Pydantic
-│   ├── user.py           # Schemas de usuario
+│   ├── session.py        # Session configuration
+│   └── base.py           # Model imports
+├── schemas/               # Pydantic schemas
+│   ├── user.py           # User schemas
 │   └── ...
-└── main.py                # Punto de entrada
+└── main.py                # Entry point
 ```
 
 ### Async/Await
 
-**TODO debe ser asíncrono:**
+**EVERYTHING must be asynchronous:**
 
 ```python
-# ✅ BIEN: Async
+# ✅ GOOD: Async
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import Depends
 
@@ -90,7 +90,7 @@ async def get_users(
     result = await session.execute(select(User))
     return result.scalars().all()
 
-# ❌ MAL: Sync
+# ❌ BAD: Sync
 @router.get("/users/")
 def get_users(session: Session = Depends(get_session)):
     return session.query(User).all()
@@ -98,7 +98,7 @@ def get_users(session: Session = Depends(get_session)):
 
 ### Dependency Injection
 
-**Usar Depends para dependencias:**
+**Use Depends for dependencies:**
 
 ```python
 from fastapi import Depends
@@ -110,7 +110,7 @@ async def get_current_user(
     session: AsyncSession = Depends(get_async_session),
     # ... auth logic
 ) -> User:
-    # Obtener usuario actual
+    # Get current user
     return user
 
 @router.get("/me")
@@ -120,14 +120,14 @@ async def read_users_me(
     return current_user
 ```
 
-## Convenciones de Código
+## Code Conventions
 
 ### Type Hints
 
-**Obligatorios en todas las funciones:**
+**Mandatory for all functions:**
 
 ```python
-# ✅ BIEN: Type hints completos
+# ✅ GOOD: Full type hints
 async def create_user(
     user_data: UserCreate,
     session: AsyncSession
@@ -137,7 +137,7 @@ async def create_user(
     await session.commit()
     return user
 
-# ❌ MAL: Sin type hints
+# ❌ BAD: No type hints
 async def create_user(user_data, session):
     user = User(**user_data.dict())
     session.add(user)
@@ -145,7 +145,7 @@ async def create_user(user_data, session):
     return user
 ```
 
-**Tipos complejos:**
+**Complex types:**
 
 ```python
 from typing import Sequence, Optional
@@ -161,9 +161,9 @@ async def get_users(
     return result.scalars().all()
 ```
 
-### Modelos SQLAlchemy
+### SQLAlchemy Models
 
-**Usar SQLAlchemy 2.0 style:**
+**Use SQLAlchemy 2.0 style:**
 
 ```python
 from sqlalchemy import Column, Integer, String, ForeignKey
@@ -183,52 +183,54 @@ class User(Base):
     posts = relationship("Post", back_populates="author")
 ```
 
-**Convenciones:**
-- `__tablename__` en snake_case
+**Conventions:**
+
+- `__tablename__` in snake_case
 - Primary key: `id` (Integer)
-- Índices en columnas de búsqueda frecuente
-- `nullable=False` para campos requeridos
-- Defaults para valores opcionales
+- Indexes on frequently searched columns
+- `nullable=False` for required fields
+- Defaults for optional values
 
-### Schemas Pydantic
+### Pydantic Schemas
 
-**Estructura de schemas:**
+**Schema structure:**
 
 ```python
 from pydantic import BaseModel, EmailStr, ConfigDict
 
-# Base schema (campos compartidos)
+# Base schema (shared fields)
 class UserBase(BaseModel):
     email: EmailStr
     is_active: bool = True
 
-# Create schema (para POST)
+# Create schema (for POST)
 class UserCreate(UserBase):
     password: str
 
-# Update schema (para PATCH)
+# Update schema (for PATCH)
 class UserUpdate(BaseModel):
     email: EmailStr | None = None
     password: str | None = None
     is_active: bool | None = None
 
-# Read schema (para respuestas)
+# Read schema (for responses)
 class UserRead(UserBase):
     id: int
 
     model_config = ConfigDict(from_attributes=True)
 ```
 
-**Convenciones:**
-- `Base`: Campos compartidos
-- `Create`: Campos para crear
-- `Update`: Campos opcionales para actualizar
-- `Read`: Campos para respuestas (incluye `id`)
-- Usar `model_config = ConfigDict(from_attributes=True)` para ORM
+**Conventions:**
+
+- `Base`: Shared fields
+- `Create`: Fields for creation
+- `Update`: Optional fields for update
+- `Read`: Response fields (includes `id`)
+- Use `model_config = ConfigDict(from_attributes=True)` for ORM
 
 ### Routers
 
-**Estructura de router:**
+**Router structure:**
 
 ```python
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -248,12 +250,12 @@ async def create_user(
     session: AsyncSession = Depends(get_async_session)
 ) -> User:
     """
-    Crear nuevo usuario.
+    Create a new user.
 
-    - **email**: Email único del usuario
-    - **password**: Contraseña (será hasheada)
+    - **email**: Unique user email
+    - **password**: Password (will be hashed)
     """
-    # Verificar si existe
+    # Check if exists
     result = await session.execute(
         select(User).where(User.email == user.email)
     )
@@ -263,7 +265,7 @@ async def create_user(
             detail="Email already registered"
         )
 
-    # Crear usuario
+    # Create user
     db_user = User(
         email=user.email,
         hashed_password=hash_password(user.password)
@@ -278,7 +280,7 @@ async def get_user(
     user_id: int,
     session: AsyncSession = Depends(get_async_session)
 ) -> User:
-    """Obtener usuario por ID."""
+    """Get user by ID."""
     result = await session.execute(
         select(User).where(User.id == user_id)
     )
@@ -291,23 +293,24 @@ async def get_user(
     return user
 ```
 
-**Convenciones:**
-- `prefix` y `tags` en el router
-- `response_model` en todos los endpoints
-- `status_code` explícito cuando no es 200
-- Docstrings para documentación OpenAPI
-- Validar existencia antes de crear
-- Usar HTTPException para errores
+**Conventions:**
 
-### Migraciones Alembic
+- `prefix` and `tags` in the router
+- `response_model` on all endpoints
+- Explicit `status_code` when not 200
+- Docstrings for OpenAPI documentation
+- Validate existence before creating
+- Use HTTPException for errors
 
-**Crear migración:**
+### Alembic Migrations
+
+**Create migration:**
 
 ```bash
 uv run alembic revision --autogenerate -m "add users table"
 ```
 
-**Revisar migración generada:**
+**Review generated migration:**
 
 ```python
 # alembic_migrations/versions/xxx_add_users_table.py
@@ -327,15 +330,16 @@ def downgrade() -> None:
     op.drop_table('users')
 ```
 
-**Convenciones:**
-- Revisar SIEMPRE la migración generada
-- Asegurar que `downgrade()` revierte `upgrade()`
-- Nombres descriptivos para migraciones
-- No modificar migraciones ya aplicadas en producción
+**Conventions:**
+
+- ALWAYS review the generated migration
+- Ensure `downgrade()` reverses `upgrade()`
+- Descriptive names for migrations
+- Do not modify migrations already applied in production
 
 ## Testing
 
-### Estructura de Tests
+### Test Structure
 
 ```python
 import pytest
@@ -346,7 +350,7 @@ from app.models.user import User
 
 @pytest.mark.asyncio
 async def test_create_user(client: AsyncClient):
-    """Test crear usuario."""
+    """Test creating a user."""
     response = await client.post(
         "/api/users/",
         json={
@@ -361,7 +365,7 @@ async def test_create_user(client: AsyncClient):
 
 @pytest.mark.asyncio
 async def test_get_user(client: AsyncClient, test_user: User):
-    """Test obtener usuario."""
+    """Test getting a user."""
     response = await client.get(f"/api/users/{test_user.id}")
     assert response.status_code == 200
     data = response.json()
@@ -370,14 +374,14 @@ async def test_get_user(client: AsyncClient, test_user: User):
 
 @pytest.mark.asyncio
 async def test_user_not_found(client: AsyncClient):
-    """Test usuario no encontrado."""
+    """Test user not found."""
     response = await client.get("/api/users/99999")
     assert response.status_code == 404
 ```
 
 ### Fixtures
 
-**Definir en `conftest.py`:**
+**Define in `conftest.py`:**
 
 ```python
 import pytest
@@ -389,7 +393,7 @@ from app.models.user import User
 
 @pytest.fixture
 async def client():
-    """Cliente HTTP async."""
+    """Async HTTP client."""
     async with AsyncClient(
         transport=ASGITransport(app=app),
         base_url="http://test"
@@ -398,7 +402,7 @@ async def client():
 
 @pytest.fixture
 async def test_user(session: AsyncSession) -> User:
-    """Usuario de prueba."""
+    """Test user."""
     user = User(
         email="test@example.com",
         hashed_password="hashed_password"
@@ -416,7 +420,7 @@ from unittest.mock import AsyncMock, patch
 
 @pytest.mark.asyncio
 async def test_send_email(client: AsyncClient):
-    """Test envío de email."""
+    """Test sending an email."""
     with patch('app.core.email.send_email') as mock_send:
         mock_send.return_value = AsyncMock()
 
@@ -429,11 +433,11 @@ async def test_send_email(client: AsyncClient):
         mock_send.assert_called_once()
 ```
 
-## Configuración
+## Configuration
 
 ### Settings (Pydantic)
 
-**Archivo**: `app/core/config.py`
+**File**: `app/core/config.py`
 
 ```python
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -468,7 +472,7 @@ class Settings(BaseSettings):
 settings = Settings()
 ```
 
-**Uso:**
+**Usage:**
 
 ```python
 from app.core.config import settings
@@ -478,7 +482,7 @@ DATABASE_URL = settings.DATABASE_URL
 
 ### Environment Variables
 
-**Archivo**: `.env`
+**File**: `.env`
 
 ```bash
 # Database
@@ -504,11 +508,11 @@ FRONTEND_URL=http://localhost:3000
 CORS_ORIGINS=["http://localhost:3000"]
 ```
 
-## Autenticación
+## Authentication
 
 ### fastapi-users
 
-**Configuración en `app/core/users.py`:**
+**Configuration in `app/core/users.py`:**
 
 ```python
 from fastapi_users import FastAPIUsers
@@ -530,7 +534,7 @@ auth_backend = AuthenticationBackend(
     name="jwt",
     transport=bearer_transport,
     get_strategy=get_jwt_strategy,
-)
+    )
 
 fastapi_users = FastAPIUsers[User, int](
     get_user_manager,
@@ -540,7 +544,7 @@ fastapi_users = FastAPIUsers[User, int](
 current_active_user = fastapi_users.current_user(active=True)
 ```
 
-**Uso en endpoints:**
+**Endpoint usage:**
 
 ```python
 from app.core.users import current_active_user
@@ -550,40 +554,40 @@ from app.models.user import User
 async def read_users_me(
     user: User = Depends(current_active_user)
 ):
-    """Obtener usuario actual."""
+    """Get current user."""
     return user
 ```
 
-## Límites de Seguridad
+## Security Limits
 
-### NO hacer:
+### DO NOT:
 
-- ❌ Usar sync en lugar de async
-- ❌ Omitir type hints
-- ❌ Modificar migraciones ya aplicadas
-- ❌ Commitear `.env` con secrets
-- ❌ Exponer información sensible en logs
-- ❌ Usar `SELECT *` en queries
-- ❌ Deshabilitar validación de Pydantic
-- ❌ Hardcodear secrets en código
+- ❌ Use sync instead of async
+- ❌ Omit type hints
+- ❌ Modify already applied migrations
+- ❌ Commit `.env` with secrets
+- ❌ Expose sensitive information in logs
+- ❌ Use `SELECT *` in queries
+- ❌ Disable Pydantic validation
+- ❌ Hardcode secrets in code
 
-### SÍ hacer:
+### DO:
 
-- ✅ Usar async/await para I/O
-- ✅ Type hints en todas las funciones
-- ✅ Validar input con Pydantic
-- ✅ Usar dependency injection
-- ✅ Crear migraciones para cambios de schema
-- ✅ Hash de passwords (nunca plain text)
-- ✅ Validar permisos en endpoints protegidos
-- ✅ Tests para todos los endpoints
+- ✅ Use async/await for I/O
+- ✅ Type hints in all functions
+- ✅ Validate input with Pydantic
+- ✅ Use dependency injection
+- ✅ Create migrations for schema changes
+- ✅ Hash passwords (never plain text)
+- ✅ Validate permissions in protected endpoints
+- ✅ Tests for all endpoints
 
 ## Performance
 
-### Queries Eficientes
+### Efficient Queries
 
 ```python
-# ✅ BIEN: Select específico con join
+# ✅ GOOD: Specific select with join
 result = await session.execute(
     select(User.id, User.email)
     .join(Post)
@@ -591,9 +595,9 @@ result = await session.execute(
     .limit(100)
 )
 
-# ❌ MAL: Select * sin límite
+# ❌ BAD: Select * without limit
 result = await session.execute(select(User))
-users = result.scalars().all()  # Puede ser miles de registros
+users = result.scalars().all()  # Could be thousands of records
 ```
 
 ### Eager Loading
@@ -601,7 +605,7 @@ users = result.scalars().all()  # Puede ser miles de registros
 ```python
 from sqlalchemy.orm import selectinload
 
-# ✅ BIEN: Eager loading
+# ✅ GOOD: Eager loading
 result = await session.execute(
     select(User)
     .options(selectinload(User.posts))
@@ -609,53 +613,53 @@ result = await session.execute(
 )
 user = result.scalar_one()
 
-# ❌ MAL: N+1 queries
+# ❌ BAD: N+1 queries
 user = await session.get(User, user_id)
-posts = user.posts  # Lazy loading - query adicional
+posts = user.posts  # Lazy loading - additional query
 ```
 
-### Índices
+### Indexes
 
 ```python
-# Agregar índices en modelos
+# Add indexes in models
 class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
-    email = Column(String, unique=True, index=True)  # Índice
-    created_at = Column(DateTime, index=True)  # Índice para ordenamiento
+    email = Column(String, unique=True, index=True)  # Index
+    created_at = Column(DateTime, index=True)  # Index for ordering
 ```
 
 ## Troubleshooting
 
-### Errores Comunes
+### Common Errors
 
-**Migración no detecta cambios:**
+**Migration doesn't detect changes:**
 
 ```bash
-# Verificar que el modelo está importado en app/db/base.py
+# Verify the model is imported in app/db/base.py
 from app.db.models.user import User  # noqa
 ```
 
-**Error de conexión a DB:**
+**DB connection error:**
 
 ```bash
-# Verificar DATABASE_URL
+# Verify DATABASE_URL
 echo $DATABASE_URL
 
-# Verificar que PostgreSQL está corriendo
+# Verify PostgreSQL is running
 docker compose -f docker-compose-dev.yml ps
 ```
 
-**Tests fallan:**
+**Tests fail:**
 
 ```bash
-# Usar base de datos de test
+# Use test database
 export TEST_DATABASE_URL="postgresql+asyncpg://..."
 uv run pytest
 ```
 
-## Referencias
+## References
 
 - **README**: `api/README.md`
 - **FastAPI Docs**: https://fastapi.tiangolo.com/

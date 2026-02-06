@@ -1,13 +1,13 @@
-# Soporte
+# Support
 
-Si tienes alguna pregunta o necesitas ayuda, no dudes en crear un hilo en [GitHub Discussions](https://github.com/jonasotoaguilar/nextjs-fastapi-template/discussions).
+If you have any questions or need help, feel free to start a thread in [GitHub Discussions](https://github.com/jonasotoaguilar/nextjs-fastapi-template/discussions).
 
-En caso de que encuentres un error, por favor [revisa los issues existentes](https://github.com/jonasotoaguilar/nextjs-fastapi-template/issues) y crea uno nuevo si es necesario.
+In case you find a bug, please [check existing issues](https://github.com/jonasotoaguilar/nextjs-fastapi-template/issues) and create a new one if necessary.
 
-## Créditos y Soporte Original
+## Credits and Original Support
 
-Este proyecto es un fork del trabajo realizado por [Vinta Software](https://www.vintasoftware.com/). Si necesitas soporte comercial o consultoría especializada, puedes ponerte en contacto con ellos: contact@vinta.com.br.
+This project is a fork of the work done by [Vinta Software](https://www.vintasoftware.com/). If you need commercial support or specialized consulting, you can contact them at: contact@vinta.com.br.
 
 ---
 
-_Proyecto mantenido por Jonas Oto Aguilar._
+_Project maintained by Jonas Oto Aguilar._

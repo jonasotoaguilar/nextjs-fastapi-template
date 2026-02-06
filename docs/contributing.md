@@ -1,55 +1,55 @@
-# Contribuir
+# Contributing
 
-¡Toda ayuda es bienvenida para mejorar el template Next.js FastAPI! Por favor, siéntete libre de abordar los [issues existentes](https://github.com/jonasotoaguilar/nextjs-fastapi-template/issues). Si tienes una nueva idea, crea un hilo en [Discussions](https://github.com/jonasotoaguilar/nextjs-fastapi-template/discussions).
+All help is welcome to improve the Next.js FastAPI template! Please feel free to address [existing issues](https://github.com/jonasotoaguilar/nextjs-fastapi-template/issues). If you have a new idea, start a thread in [Discussions](https://github.com/jonasotoaguilar/nextjs-fastapi-template/discussions).
 
-Sigue esta guía para aprender más sobre cómo desarrollar y probar el proyecto localmente antes de abrir un pull request.
+Follow this guide to learn more about how to develop and test the project locally before opening a pull request.
 
-## Configuración de desarrollo local
+## Local Development Setup
 
-### Clonar el repositorio
+### Clone the Repository
 
 ```bash
 git clone https://github.com/jonasotoaguilar/nextjs-fastapi-template.git
 ```
 
-Consulta la página [Get Started](get-started.md#setup) para completar la configuración.
+See the [Get Started](get-started.md#setup) page to complete the setup.
 
-## Instalar hooks de pre-commit
+## Install Pre-Commit Hooks
 
-Consulta la sección [Configuración de Pre-Commit](additional-settings.md#configuracion-de-pre-commit) para completar la configuración.
+See the [Pre-Commit Configuration](additional-settings.md#pre-commit-configuration) section to complete the setup.
 
-Es fundamental ejecutar los hooks de pre-commit antes de subir tu código para seguir el estilo de código del proyecto y evitar errores de linting.
+It is essential to run pre-commit hooks before pushing your code to follow the project's code style and avoid linting errors.
 
-## Actualización del schema OpenAPI
+## Updating the OpenAPI Schema
 
-Es fundamental actualizar el schema OpenAPI cuando realices cambios en las rutas de FastAPI o archivos relacionados:
+It is essential to update the OpenAPI schema when you make changes to FastAPI routes or related files:
 
-Consulta la sección [Ejecución manual de comandos de Hot Reload](additional-settings.md#ejecucion-manual-de-comandos-de-hot-reload) para ejecutar el comando.
+See the [Manual Execution of Hot Reload Commands](additional-settings.md#manual-execution-of-hot-reload-commands) section to run the command.
 
-## Pruebas (Tests)
+## Testing
 
-Consulta la sección [Pruebas (Testing)](additional-settings.md#pruebas-testing) para ejecutar las pruebas.
+See the [Testing](additional-settings.md#testing) section to run the tests.
 
-## Documentación
+## Documentation
 
-Utilizamos [mkdocs-material](https://squidfunk.github.io/mkdocs-material/) para generar la documentación a partir de archivos markdown.
-Revisa los archivos en el directorio `docs`.
+We use [mkdocs-material](https://squidfunk.github.io/mkdocs-material/) to generate documentation from markdown files.
+Review the files in the `docs` directory.
 
-Para ejecutar la documentación localmente, necesitas ejecutar:
+To run the documentation locally, you need to run:
 
 ```bash
 uv run mkdocs serve
 ```
 
-## Lanzamiento (Release)
+## Release
 
 !!! info
-El backend y el frontend están versionados juntos, es decir, deben tener el mismo número de versión.
+The backend and frontend are versioned together, meaning they must have the same version number.
 
-Para lanzar y publicar una nueva versión, sigue estos pasos:
+To launch and publish a new version, follow these steps:
 
-1. Actualiza la versión en `api/pyproject.toml` y `ui/package.json`.
-2. Actualiza el historial de cambios en `CHANGELOG.md`.
-3. Abre un PR con los cambios.
-4. Una vez que el PR se haya fusionado, ejecuta la [GitHub Action de Lanzamiento](https://github.com/jonasotoaguilar/nextjs-fastapi-template/actions/workflows/release.yml) para crear un borrador de lanzamiento.
-5. Revisa el borrador de lanzamiento, asegúrate de que la descripción tenga al menos la entrada correspondiente del changelog y publícalo.
+1. Update the version in `api/pyproject.toml` and `ui/package.json`.
+2. Update the changelog in `CHANGELOG.md`.
+3. Open a PR with the changes.
+4. Once the PR is merged, run the [Release GitHub Action](https://github.com/jonasotoaguilar/nextjs-fastapi-template/actions/workflows/release.yml) to create a draft release.
+5. Review the draft release, ensure the description has at least the corresponding changelog entry, and publish it.

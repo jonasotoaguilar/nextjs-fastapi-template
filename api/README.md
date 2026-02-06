@@ -1,67 +1,67 @@
 # Backend - FastAPI
 
-Backend del template Next.js + FastAPI construido con FastAPI, SQLAlchemy y PostgreSQL.
+Next.js + FastAPI template backend built with FastAPI, SQLAlchemy, and PostgreSQL.
 
-## Stack Tecnológico
+## Tech Stack
 
-- **FastAPI 0.128** - Framework web moderno y rápido
-- **Python 3.12** - Lenguaje de programación
-- **SQLAlchemy 2** - ORM con soporte async
-- **Alembic** - Migraciones de base de datos
-- **PostgreSQL** - Base de datos relacional
-- **asyncpg** - Driver PostgreSQL asíncrono
-- **fastapi-users** - Sistema de autenticación completo
-- **Pydantic 2** - Validación de datos y settings
-- **pytest** - Framework de testing
-- **UV** - Gestor de dependencias moderno
-- **Ruff** - Linter y formateador ultra-rápido
+- **FastAPI 0.128** - Modern and fast web framework
+- **Python 3.12** - Programming language
+- **SQLAlchemy 2** - ORM with async support
+- **Alembic** - Database migrations
+- **PostgreSQL** - Relational database
+- **asyncpg** - Asynchronous PostgreSQL driver
+- **fastapi-users** - Complete authentication system
+- **Pydantic 2** - Data validation and settings
+- **pytest** - Testing framework
+- **UV** - Modern dependency manager
+- **Ruff** - Ultra-fast linter and formatter
 
-## Estructura del Proyecto
+## Project Structure
 
 ```
 api/
-├── app/                        # Código de la aplicación
-│   ├── api/                    # Endpoints de la API
-│   │   ├── routes/            # Routers por recurso
-│   │   │   ├── users.py       # Rutas de usuarios
+├── app/                        # Application code
+│   ├── api/                    # API Endpoints
+│   │   ├── routes/            # Routers by resource
+│   │   │   ├── users.py       # User routes
 │   │   │   └── ...
-│   │   └── deps.py            # Dependencias compartidas
-│   ├── core/                  # Configuración y utilidades
-│   │   ├── config.py          # Settings de la aplicación
-│   │   ├── security.py        # Utilidades de seguridad
+│   │   └── deps.py            # Shared dependencies
+│   ├── core/                  # Configuration and utilities
+│   │   ├── config.py          # Application settings
+│   │   ├── security.py        # Security utilities
 │   │   └── ...
-│   ├── db/                    # Base de datos
-│   │   ├── models/            # Modelos SQLAlchemy
-│   │   │   ├── base.py        # Clase base
-│   │   │   ├── user.py        # Modelo de usuario
+│   ├── db/                    # Database
+│   │   ├── models/            # SQLAlchemy models
+│   │   │   ├── base.py        # Base class
+│   │   │   ├── user.py        # User model
 │   │   │   └── ...
-│   │   ├── session.py         # Configuración de sesión
-│   │   └── base.py            # Importaciones de modelos
-│   ├── schemas/               # Schemas Pydantic
-│   │   ├── user.py            # Schemas de usuario
+│   │   ├── session.py         # Session configuration
+│   │   └── base.py            # Model imports
+│   ├── schemas/               # Pydantic schemas
+│   │   ├── user.py            # User schemas
 │   │   └── ...
-│   └── main.py                # Punto de entrada de la aplicación
-├── alembic_migrations/        # Migraciones de base de datos
-│   └── versions/              # Archivos de migración
-├── commands/                  # Scripts de utilidad
-│   ├── create_superuser.py    # Crear superusuario
+│   └── main.py                # Application entry point
+├── alembic_migrations/        # Database migrations
+│   └── versions/              # Migration files
+├── commands/                  # Utility scripts
+│   ├── create_superuser.py    # Create superuser
 │   └── ...
 ├── tests/                     # Tests
-│   ├── conftest.py           # Configuración de pytest
-│   ├── test_users.py         # Tests de usuarios
+│   ├── conftest.py           # Pytest configuration
+│   ├── test_users.py         # User tests
 │   └── ...
-├── Dockerfile                 # Configuración Docker
-├── pyproject.toml            # Dependencias y configuración
-├── alembic.ini               # Configuración Alembic
-├── pytest.ini                # Configuración pytest
-└── start.sh                  # Script de inicio
+├── Dockerfile                 # Docker configuration
+├── pyproject.toml            # Dependencies and configuration
+├── alembic.ini               # Alembic configuration
+├── pytest.ini                # Pytest configuration
+└── start.sh                  # Start script
 ```
 
-## Configuración
+## Configuration
 
-### Variables de Entorno
+### Environment Variables
 
-Crea un archivo `.env` basado en `.env.example`:
+Create a `.env` file based on `.env.example`:
 
 ```bash
 # Database
@@ -75,7 +75,7 @@ VERIFICATION_SECRET_KEY=your-verification-secret
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_SECONDS=3600
 
-# Email (opcional para desarrollo)
+# Email (optional for development)
 MAIL_USERNAME=your-email@example.com
 MAIL_PASSWORD=your-email-password
 MAIL_FROM=noreply@example.com
@@ -89,110 +89,111 @@ FRONTEND_URL=http://localhost:3000
 CORS_ORIGINS=["http://localhost:3000"]
 ```
 
-### Instalación de Dependencias
+### Dependency Installation
 
 ```bash
-# Instalar dependencias con UV
+# Install dependencies with UV
 uv sync
 
-# Activar entorno virtual
+# Activate virtual environment
 source .venv/bin/activate  # Linux/Mac
-# o
+# or
 .venv\Scripts\activate     # Windows
 ```
 
-## Desarrollo
+## Development
 
-### Iniciar el Backend
+### Start the Backend
 
-**Con Docker:**
+**With Docker:**
 
 ```bash
-# Desde la raíz del proyecto
+# From project root
 make docker-start-api
 ```
 
-**Sin Docker:**
+**Without Docker:**
 
 ```bash
-# Desde la carpeta api/
+# From api/ folder
 ./start.sh
 ```
 
-El servidor estará disponible en:
+The server will be available at:
+
 - API: `http://localhost:8000`
-- Documentación interactiva: `http://localhost:8000/docs`
+- Interactive Documentation: `http://localhost:8000/docs`
 - OpenAPI Schema: `http://localhost:8000/openapi.json`
 
-### Base de Datos
+### Database
 
-#### Migraciones
+#### Migrations
 
-**Crear una nueva migración:**
+**Create a new migration:**
 
 ```bash
-# Con Docker
+# With Docker
 make docker-db-schema migration_name="add products table"
 
-# Sin Docker
+# Without Docker
 cd api
 uv run alembic revision --autogenerate -m "add products table"
 ```
 
-**Aplicar migraciones:**
+**Apply migrations:**
 
 ```bash
-# Con Docker
+# With Docker
 make docker-migrate-db
 
-# Sin Docker
+# Without Docker
 cd api
 uv run alembic upgrade head
 ```
 
-**Revertir migración:**
+**Revert migration:**
 
 ```bash
 cd api
 uv run alembic downgrade -1
 ```
 
-#### Crear Superusuario
+#### Create Superuser
 
 ```bash
-# Con Docker
+# With Docker
 docker compose -f docker-compose-dev.yml run --rm api python -m commands.create_superuser
 
-# Sin Docker
+# Without Docker
 cd api
 uv run python -m commands.create_superuser
 ```
 
 ## API Endpoints
 
-### Autenticación
+### Authentication
 
 ```
-POST   /api/auth/register          # Registrar nuevo usuario
-POST   /api/auth/login             # Login (obtener JWT)
+POST   /api/auth/register          # Register new user
+POST   /api/auth/login             # Login (get JWT)
 POST   /api/auth/logout            # Logout
-POST   /api/auth/forgot-password   # Solicitar reset de contraseña
-POST   /api/auth/reset-password    # Resetear contraseña
+POST   /api/auth/forgot-password   # Request password reset
+POST   /api/auth/reset-password    # Reset password
 ```
 
-### Usuarios
+### Users
 
 ```
-GET    /api/users/me               # Obtener usuario actual
-PATCH  /api/users/me               # Actualizar usuario actual
-GET    /api/users/{id}             # Obtener usuario por ID
+GET    /api/users/me               # Get current user
+PATCH  /api/users/me               # Update current user
+GET    /api/users/{id}             # Get user by ID
 ```
 
-## Desarrollo
+## Development Guide
 
-### Agregar Nuevos Modelos
+### Adding New Models
 
-1. **Crear el modelo** en `app/db/models/`:
+1. **Create the model** in `app/db/models/`:
 
 ```python
 from sqlalchemy import Column, String, Integer
@@ -207,13 +208,13 @@ class Product(Base):
     price = Column(Integer, nullable=False)
 ```
 
-2. **Importar en** `app/db/base.py`:
+2. **Import in** `app/db/base.py`:
 
 ```python
 from app.db.models.product import Product  # noqa
 ```
 
-3. **Crear schemas** en `app/schemas/`:
+3. **Create schemas** in `app/schemas/`:
 
 ```python
 from pydantic import BaseModel
@@ -232,16 +233,16 @@ class ProductRead(ProductBase):
     model_config = {"from_attributes": True}
 ```
 
-4. **Crear migración**:
+4. **Create migration**:
 
 ```bash
 make docker-db-schema migration_name="add products table"
 make docker-migrate-db
 ```
 
-### Agregar Nuevos Endpoints
+### Adding New Endpoints
 
-1. **Crear router** en `app/api/routes/`:
+1. **Create router** in `app/api/routes/`:
 
 ```python
 from fastapi import APIRouter, Depends
@@ -256,11 +257,11 @@ async def create_product(
     product: ProductCreate,
     session: AsyncSession = Depends(get_async_session)
 ):
-    # Implementación
+    # Implementation
     pass
 ```
 
-2. **Registrar el router** en `app/main.py`:
+2. **Register the router** in `app/main.py`:
 
 ```python
 from app.api.routes import products
@@ -270,23 +271,23 @@ app.include_router(products.router, prefix="/api")
 
 ## Testing
 
-### Ejecutar Tests
+### Run Tests
 
 ```bash
-# Con Docker
+# With Docker
 make docker-test-api
 
-# Sin Docker
+# Without Docker
 cd api
 uv run pytest
 
-# Con coverage
+# With coverage
 uv run pytest --cov=app --cov-report=html
 ```
 
-### Escribir Tests
+### Writing Tests
 
-Los tests se escriben con pytest y pytest-asyncio:
+Tests are written with pytest and pytest-asyncio:
 
 ```python
 import pytest
@@ -308,124 +309,124 @@ async def test_create_product(client: AsyncClient):
     assert data["name"] == "Test Product"
 ```
 
-## Calidad de Código
+## Code Quality
 
-### Linting y Formateo
+### Linting and Formatting
 
 ```bash
-# Ejecutar Ruff (linter)
+# Run Ruff (linter)
 uv run ruff check .
 
-# Auto-corregir con Ruff
+# Auto-fix with Ruff
 uv run ruff check --fix .
 
-# Formatear código
+# Format code
 uv run ruff format .
 ```
 
 ### Type Checking
 
 ```bash
-# Ejecutar mypy
+# Run mypy
 uv run mypy app
 ```
 
-## Despliegue
+## Deployment
 
 ### Docker
 
-El proyecto incluye un Dockerfile multi-stage optimizado:
+The project includes an optimized multi-stage Dockerfile:
 
 ```bash
-# Construir imagen
+# Build image
 docker build -t fastapi-backend .
 
-# Ejecutar contenedor
+# Run container
 docker run -p 8000:8000 fastapi-backend
 ```
 
 ### Vercel
 
-El proyecto está optimizado para despliegue serverless en Vercel:
+The project is optimized for serverless deployment on Vercel:
 
-1. Configura las variables de entorno en Vercel
-2. Vercel detectará automáticamente FastAPI usando `vercel.json`
+1. Configure environment variables in Vercel.
+2. Vercel will automatically detect FastAPI using `vercel.json`.
 
-**Variables de entorno en Vercel:**
+**Vercel Environment Variables:**
 
-- `DATABASE_URL`: URL de PostgreSQL
-- `ACCESS_SECRET_KEY`: Secret key para JWT
-- `RESET_PASSWORD_SECRET_KEY`: Secret key para reset
-- `VERIFICATION_SECRET_KEY`: Secret key para verificación
-- `CORS_ORIGINS`: Orígenes permitidos (JSON array)
-- `FRONTEND_URL`: URL del frontend
+- `DATABASE_URL`: PostgreSQL URL
+- `ACCESS_SECRET_KEY`: JWT secret key
+- `RESET_PASSWORD_SECRET_KEY`: Reset secret key
+- `VERIFICATION_SECRET_KEY`: Verification secret key
+- `CORS_ORIGINS`: Allowed origins (JSON array)
+- `FRONTEND_URL`: Frontend URL
 
-## Convenciones de Código
+## Code Conventions
 
 ### Python
 
-- Usar type hints en todas las funciones
-- Seguir PEP 8 (enforced por Ruff)
-- Usar async/await para operaciones I/O
-- Documentar funciones complejas con docstrings
+- Use type hints in all functions.
+- Follow PEP 8 (enforced by Ruff).
+- Use async/await for I/O operations.
+- Document complex functions with docstrings.
 
 ### FastAPI
 
-- Usar dependency injection para sesiones de DB
-- Definir response_model en endpoints
-- Usar Pydantic para validación
-- Agrupar endpoints relacionados en routers
+- Use dependency injection for DB sessions.
+- Define `response_model` in endpoints.
+- Use Pydantic for validation.
+- Group related endpoints in routers.
 
-### Base de Datos
+### Database
 
-- Usar operaciones asíncronas
-- Definir índices apropiados
-- Usar constraints para integridad
-- Crear migraciones para todos los cambios
+- Use asynchronous operations.
+- Define appropriate indexes.
+- Use constraints for integrity.
+- Create migrations for all changes.
 
 ### Testing
 
-- Escribir tests para todos los endpoints
-- Usar fixtures para datos de prueba
-- Mockear servicios externos
-- Mantener coverage > 80%
+- Write tests for all endpoints.
+- Use fixtures for test data.
+- Mock external services.
+- Maintain coverage > 80%.
 
 ## Troubleshooting
 
-### Problemas con migraciones
+### Migration Issues
 
 ```bash
-# Ver estado de migraciones
+# See migration status
 uv run alembic current
 
-# Ver historial
+# See history
 uv run alembic history
 
-# Regenerar migración
+# Regenerate migration
 uv run alembic revision --autogenerate -m "description"
 ```
 
-### Errores de conexión a base de datos
+### Database Connection Errors
 
 ```bash
-# Verificar que PostgreSQL está corriendo
+# Verify PostgreSQL is running
 docker compose -f docker-compose-dev.yml ps
 
-# Ver logs de la base de datos
+# View database logs
 docker compose -f docker-compose-dev.yml logs db
 ```
 
-### Problemas con dependencias
+### Dependency Issues
 
 ```bash
-# Limpiar e instalar
+# Clean and install
 rm -rf .venv uv.lock
 uv sync
 ```
 
-## Recursos
+## Resources
 
-- [Documentación del Proyecto](https://jonasotoaguilar.github.io/nextjs-fastapi-template/)
+- [Project Documentation](https://jonasotoaguilar.github.io/nextjs-fastapi-template/)
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
 - [SQLAlchemy Documentation](https://docs.sqlalchemy.org/)
 - [Alembic Documentation](https://alembic.sqlalchemy.org/)

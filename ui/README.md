@@ -1,106 +1,106 @@
 # Frontend - Next.js
 
-Frontend del template Next.js + FastAPI construido con Next.js 16, React 19, TypeScript y Tailwind CSS.
+Next.js + FastAPI template frontend built with Next.js 16, React 19, TypeScript, and Tailwind CSS.
 
-## Stack Tecnológico
+## Tech Stack
 
-- **Next.js 16.1.6** - Framework React con App Router
-- **React 19.2.4** - Biblioteca UI con Server Components
-- **TypeScript 5** - Type safety de extremo a extremo
-- **Tailwind CSS 4** - Framework de utilidades CSS
-- **shadcn/ui** - Componentes React preconstruidos
-- **Zod 4** - Validación de schemas y type safety
-- **React Hook Form 7** - Gestión de formularios
-- **Vitest** - Framework de testing
-- **Biome** - Linter y formateador moderno
-- **OpenAPI-TS** - Generación de cliente tipado desde OpenAPI
+- **Next.js 16.1.6** - React Framework with App Router
+- **React 19.2.4** - UI Library with Server Components
+- **TypeScript 5** - End-to-end type safety
+- **Tailwind CSS 4** - Utility-first CSS framework
+- **shadcn/ui** - Pre-built React components
+- **Zod 4** - Schema validation and type safety
+- **React Hook Form 7** - Form management
+- **Vitest** - Testing framework
+- **Biome** - Modern linter and formatter
+- **OpenAPI-TS** - Typed client generation from OpenAPI
 
-## Estructura del Proyecto
+## Project Structure
 
 ```
 ui/
-├── app/                    # App Router de Next.js
-│   ├── (auth)/            # Rutas de autenticación
-│   │   ├── login/         # Página de login
-│   │   └── register/      # Página de registro
-│   ├── (dashboard)/       # Rutas protegidas
-│   │   └── profile/       # Perfil de usuario
-│   ├── layout.tsx         # Layout raíz
-│   └── page.tsx           # Página principal
-├── components/            # Componentes React
-│   ├── ui/               # Componentes shadcn/ui
-│   └── ...               # Componentes personalizados
-├── lib/                  # Utilidades y configuración
-│   ├── api-client.ts     # Cliente API tipado
-│   ├── clientService.ts  # Servicios del cliente
-│   └── utils.ts          # Funciones de utilidad
-├── public/               # Assets estáticos
-├── Dockerfile            # Configuración Docker
-├── next.config.mjs       # Configuración Next.js
-├── tailwind.config.ts    # Configuración Tailwind
-├── tsconfig.json         # Configuración TypeScript
-├── biome.json            # Configuración Biome
-├── vitest.config.ts      # Configuración Vitest
-└── package.json          # Dependencias y scripts
+├── app/                    # Next.js App Router
+│   ├── (auth)/            # Authentication routes
+│   │   ├── login/         # Login page
+│   │   └── register/      # Register page
+│   ├── (dashboard)/       # Protected routes
+│   │   └── profile/       # User profile
+│   ├── layout.tsx         # Root layout
+│   └── page.tsx           # Home page
+├── components/            # React components
+│   ├── ui/               # shadcn/ui components
+│   └── ...               # Custom components
+├── lib/                  # Utilities and configuration
+│   ├── api-client.ts     # Typed API client
+│   ├── clientService.ts  # Client services
+│   └── utils.ts          # Utility functions
+├── public/               # Static assets
+├── Dockerfile            # Docker configuration
+├── next.config.mjs       # Next.js configuration
+├── tailwind.config.ts    # Tailwind configuration
+├── tsconfig.json         # TypeScript configuration
+├── biome.json            # Biome configuration
+├── vitest.config.ts      # Vitest configuration
+└── package.json          # Dependencies and scripts
 ```
 
-## Scripts Disponibles
+## Available Scripts
 
-### Desarrollo
+### Development
 
 ```bash
-pnpm dev                  # Iniciar servidor de desarrollo (puerto 3000)
-pnpm build                # Construir para producción
-pnpm start                # Iniciar servidor de producción
+pnpm dev                  # Start development server (port 3000)
+pnpm build                # Build for production
+pnpm start                # Start production server
 ```
 
-### Calidad de Código
+### Code Quality
 
 ```bash
-pnpm lint                 # Ejecutar linter (Biome)
-pnpm lint:fix             # Ejecutar linter y auto-corregir
-pnpm format               # Formatear código con Biome
-pnpm check                # Ejecutar linter y formatear
-pnpm tsc                  # Verificar tipos TypeScript
+pnpm lint                 # Run linter (Biome)
+pnpm lint:fix             # Run linter and auto-fix
+pnpm format               # Format code with Biome
+pnpm check                # Run linter and format
+pnpm tsc                  # Verify TypeScript types
 ```
 
 ### Testing
 
 ```bash
-pnpm test                 # Ejecutar tests
-pnpm coverage             # Ejecutar tests con coverage
+pnpm test                 # Run tests
+pnpm coverage             # Run tests with coverage
 ```
 
-### Cliente API
+### API Client
 
 ```bash
-pnpm generate-client      # Regenerar cliente API desde OpenAPI
+pnpm generate-client      # Regenerate API client from OpenAPI
 ```
 
-## Configuración
+## Configuration
 
-### Variables de Entorno
+### Environment Variables
 
-Crea un archivo `.env.local` basado en `.env.example`:
+Create a `.env.local` file based on `.env.example`:
 
 ```bash
-# API Backend URL
+# Backend API URL
 NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
-### Cliente API Tipado
+### Typed API Client
 
-El cliente API se genera automáticamente desde el schema OpenAPI del backend:
+The API client is automatically generated from the backend's OpenAPI schema:
 
-1. **Generación automática**: El watcher detecta cambios en `openapi.json` y regenera el cliente
-2. **Generación manual**: Ejecuta `pnpm generate-client`
+1. **Automatic generation**: The watcher detects changes in `openapi.json` and regenerates the client.
+2. **Manual generation**: Run `pnpm generate-client`.
 
-**Uso del cliente:**
+**Client Usage:**
 
 ```typescript
 import { client } from "@/lib/api-client";
 
-// El cliente está completamente tipado
+// The client is fully typed
 const { data, error } = await client.POST("/api/users/", {
   body: {
     email: "user@example.com",
@@ -108,51 +108,51 @@ const { data, error } = await client.POST("/api/users/", {
   },
 });
 
-// TypeScript conoce la estructura de 'data' y 'error'
+// TypeScript knows the structure of 'data' and 'error'
 if (data) {
   console.log(data.id, data.email);
 }
 ```
 
-## Desarrollo
+## Development
 
-### Iniciar el Frontend
+### Start the Frontend
 
-**Con Docker:**
+**With Docker:**
 
 ```bash
-# Desde la raíz del proyecto
+# From project root
 make docker-start-ui
 ```
 
-**Sin Docker:**
+**Without Docker:**
 
 ```bash
-# Desde la carpeta ui/
+# From ui/ folder
 pnpm dev
 ```
 
-El servidor estará disponible en `http://localhost:3000`.
+The server will be available at `http://localhost:3000`.
 
 ### Hot Reload
 
-El proyecto incluye hot reload para:
+The project includes hot reload for:
 
-- **Código fuente**: Next.js recarga automáticamente los cambios
-- **Cliente API**: El watcher regenera el cliente cuando cambia `openapi.json`
+- **Source code**: Next.js automatically reloads changes.
+- **API Client**: The watcher regenerates the client when `openapi.json` changes.
 
-### Agregar Nuevos Componentes
+### Adding New Components
 
-**Componentes shadcn/ui:**
+**shadcn/ui components:**
 
 ```bash
-# Instalar componente desde shadcn/ui
+# Install component from shadcn/ui
 npx shadcn@latest add button
 ```
 
-**Componentes personalizados:**
+**Custom components:**
 
-Crea componentes en `components/` siguiendo las convenciones:
+Create components in `components/` following conventions:
 
 ```typescript
 // components/my-component.tsx
@@ -160,13 +160,13 @@ import { cn } from "@/lib/utils";
 
 interface MyComponentProps {
   className?: string;
-  // ... otras props
+  // ... other props
 }
 
 export function MyComponent({ className, ...props }: MyComponentProps) {
   return (
     <div className={cn("base-styles", className)} {...props}>
-      {/* contenido */}
+      {/* content */}
     </div>
   );
 }
@@ -174,22 +174,22 @@ export function MyComponent({ className, ...props }: MyComponentProps) {
 
 ## Testing
 
-### Ejecutar Tests
+### Run Tests
 
 ```bash
-# Ejecutar todos los tests
+# Run all tests
 pnpm test
 
-# Ejecutar con coverage
+# Run with coverage
 pnpm coverage
 
-# Ejecutar en modo watch
+# Run in watch mode
 pnpm vitest
 ```
 
-### Escribir Tests
+### Writing Tests
 
-Los tests se escriben con Vitest y React Testing Library:
+Tests are written with Vitest and React Testing Library:
 
 ```typescript
 import { render, screen } from "@testing-library/react";
@@ -204,92 +204,92 @@ describe("MyComponent", () => {
 });
 ```
 
-## Despliegue
+## Deployment
 
 ### Docker
 
-El proyecto incluye un Dockerfile multi-stage optimizado:
+The project includes an optimized multi-stage Dockerfile:
 
 ```bash
-# Construir imagen
+# Build image
 docker build -t nextjs-frontend .
 
-# Ejecutar contenedor
+# Run container
 docker run -p 3000:3000 nextjs-frontend
 ```
 
 ### Vercel
 
-El proyecto está optimizado para despliegue en Vercel:
+The project is optimized for Vercel deployment:
 
-1. Conecta tu repositorio en Vercel
-2. Configura las variables de entorno
-3. Vercel detectará automáticamente Next.js y lo desplegará
+1. Connect your repository to Vercel.
+2. Configure environment variables.
+3. Vercel will automatically detect Next.js and deploy it.
 
-**Variables de entorno en Vercel:**
+**Vercel Environment Variables:**
 
-- `NEXT_PUBLIC_API_URL`: URL del backend API
+- `NEXT_PUBLIC_API_URL`: Backend API URL
 
-## Convenciones de Código
+## Code Conventions
 
 ### TypeScript
 
-- Usar tipos explícitos para props de componentes
-- Evitar `any`, usar `unknown` si es necesario
-- Definir interfaces para objetos complejos
+- Use explicit types for component props.
+- Avoid `any`, use `unknown` if necessary.
+- Define interfaces for complex objects.
 
 ### React
 
-- Preferir Server Components cuando sea posible
-- Usar Client Components solo cuando sea necesario (`'use client'`)
-- Componentes funcionales con hooks
+- Prefer Server Components when possible.
+- Use Client Components only when necessary (`'use client'`).
+- Functional components with hooks.
 
-### Estilos
+### Styling
 
-- Usar Tailwind CSS para estilos
-- Seguir el sistema de diseño de shadcn/ui
-- Usar `cn()` para combinar clases condicionales
+- Use Tailwind CSS for styling.
+- Follow shadcn/ui design system.
+- Use `cn()` to combine conditional classes.
 
-### Estructura de Archivos
+### File Structure
 
-- Componentes en `components/`
-- Páginas en `app/`
-- Utilidades en `lib/`
-- Tipos compartidos en archivos `.types.ts`
+- Components in `components/`.
+- Pages in `app/`.
+- Utilities in `lib/`.
+- Shared types in `.types.ts` files.
 
 ## Troubleshooting
 
-### El cliente API no se actualiza
+### API Client Not Updating
 
 ```bash
-# Regenerar manualmente
+# Regenerate manually
 pnpm generate-client
 
-# Verificar que openapi.json existe
+# Verify that openapi.json exists
 ls -la openapi.json
 ```
 
-### Errores de TypeScript
+### TypeScript Errors
 
 ```bash
-# Limpiar caché de TypeScript
+# Clear Next.js cache
 rm -rf .next tsconfig.tsbuildinfo
 
-# Verificar tipos
+# Verify types
 pnpm tsc
 ```
 
-### Problemas con dependencias
+### Dependency Issues
 
 ```bash
-# Limpiar e instalar
+# Clean and install
 rm -rf node_modules pnpm-lock.yaml
 pnpm install
 ```
 
-## Recursos
+## Resources
 
-- [Documentación del Proyecto](https://jonasotoaguilar.github.io/nextjs-fastapi-template/)
+- [Project Documentation](https://jonasotoaguilar.github.io/nextjs-fastapi-template/)
 - [Next.js Documentation](https://nextjs.org/docs)
 - [shadcn/ui Documentation](https://ui.shadcn.com/)
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
