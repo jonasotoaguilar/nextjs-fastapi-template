@@ -40,4 +40,4 @@ next-env.d.ts
 
 !/lib/
 .env.*
-! .env.example
+!.env.example

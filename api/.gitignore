@@ -9,4 +9,4 @@ env
 .mypy_cache/
 .env
 .env.*
-! .env.example
+!.env.example
