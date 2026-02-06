@@ -17,7 +17,7 @@ help:
 init-env: ## Copy .env.example to .env in both ui and api
 	@echo "Initializing environment variables..."
 	@if [ ! -f $(API_DIR)/.env ]; then cp $(API_DIR)/.env.example $(API_DIR)/.env; echo "Created api .env"; else echo "API .env already exists"; fi
-	@if [ ! -f $(UI_DIR)/.env ]; then cp $(UI_DIR)/.env.example $(UI_DIR)/.env.local; echo "Created ui .env.local"; else echo "UI .env already exists"; fi
+	@if [ ! -f $(UI_DIR)/.env.local ]; then cp $(UI_DIR)/.env.example $(UI_DIR)/.env.local; echo "Created ui .env.local"; else echo "UI .env already exists"; fi
 
 install: ## Install dependencies for both api (uv) and ui (pnpm) on host
 	@echo "Installing api dependencies (uv)..."
