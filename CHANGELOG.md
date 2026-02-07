@@ -10,6 +10,3 @@ This changelog records the initial versions and updates of the Next.js + FastAPI
 - **Community Health**: Added CODE_OF_CONDUCT.md and SECURITY.md.
 
 ---
-
-!!! info
-Since this is a **template**, users are encouraged to clean this file or restart it once they begin their own development based on this foundation.
