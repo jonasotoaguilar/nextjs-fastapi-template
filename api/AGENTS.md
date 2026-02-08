@@ -4,12 +4,13 @@
 
 When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 
-| Action                                                                                                                                                                 | Skill                             |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
-| Creating, modifying, organizing, or running Python tests, including unit, integration, async, database, or API test scenarios.                                         | `pytest`                          |
-| Creating, structuring, or refactoring FastAPI services, including async architecture, dependency injection, routing, validation, or production-ready backend patterns. | `fastapi-templates`               |
-| Designing or writing PostgreSQL schemas                                                                                                                                | `postgresql-table-design`         |
-| Writing, modifying, profiling, or reviewing Python code where execution time, memory usage, concurrency, or scalability may be affected.                               | `python-performance-optimization` |
+| Action                                                                                                                                                                                        | Skill                             |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| Creating, modifying, organizing, or running Python tests, including unit, integration, async, database, or API test scenarios.                                                                | `pytest`                          |
+| Creating, structuring, or refactoring FastAPI services, including async architecture, dependency injection, routing, validation, or production-ready backend patterns.                        | `fastapi-templates`               |
+| Designing or writing PostgreSQL schemas                                                                                                                                                       | `postgresql-table-design`         |
+| Designing, reviewing, versioning, or refactoring REST or GraphQL APIs, including resource modeling, schema design, error handling, authentication, pagination, and long-term maintainability. | `api-design-principles`           |
+| Writing, modifying, profiling, or reviewing Python code where execution time, memory usage, concurrency, or scalability may be affected.                                                      | `python-performance-optimization` |
 
 ## Stack and Versions
 
