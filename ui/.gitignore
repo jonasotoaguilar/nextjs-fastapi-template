@@ -41,3 +41,8 @@ next-env.d.ts
 !/lib/
 .env.*
 !.env.example
+
+# AI Rules (auto-generated)
+.agent/
+.claude/
+.gemini/

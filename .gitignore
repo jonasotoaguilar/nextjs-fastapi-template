@@ -158,6 +158,7 @@ cython_debug/
 .biome_cache
 *.log
 
-# Snyk Security Extension - AI Rules (auto-generated)
+# AI Rules (auto-generated)
 .agent/
-ui/.pnpm-store
+.claude/
+.gemini/
