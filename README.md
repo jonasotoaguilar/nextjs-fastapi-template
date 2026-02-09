@@ -108,7 +108,7 @@ This template includes a carefully selected set of technologies to ensure effici
   - JWT authentication
   - Password recovery via email
 - **shadcn/ui** – Pre-built React components with Tailwind CSS.
-- **OpenAPI-fetch** – Fully typed client generation from the OpenAPI schema.
+- **@hey-api/openapi-ts** – Fully typed client generation from the OpenAPI schema.
 - **UV** – Simplified dependency management and packaging.
 - **Docker Compose** – Consistent environments for development and production.
 - **Pre-commit hooks** – Automatic linting, formatting, and code validation before commits.
@@ -126,17 +126,15 @@ To use this template, visit our [Get Started](https://jonasotoaguilar.github.io/
 nextjs-fastapi-template/
 ├── api                      # FastAPI Backend
 │   ├── app/                 # Application code
-│   │   ├── api/             # API Endpoints
-│   │   ├── core/            # Configuration and utilities
-│   │   ├── db/              # Models and database configuration
-│   │   └── schemas/         # Pydantic schemas
-│   ├── alembic/             # Database migrations
+│   │   ├── core/            # Core infrastructure (shared)
+│   │   └── modules/         # Domain-driven modules
+│   ├── alembic_migrations/  # Database migrations
 │   ├── commands/            # Utility scripts
-│   └── tests/               # Backend tests
-├── ui/         # Next.js Frontend
-│   ├── app/                 # Next.js App Router
-│   ├── components/          # React components
-│   ├── lib/                 # Utilities and configuration
+│   └── tests/               # Backend tests (Core & Modules)
+├── ui/                      # Next.js Frontend
+│   ├── app/                 # Routes & Server Actions
+│   ├── components/          # UI Components
+│   ├── lib/                 # Config, Utilities & API Client
 │   └── public/              # Static assets
 ├── docs/                    # MkDocs Documentation
 └── docker-compose.yml       # Docker configuration
@@ -162,39 +160,29 @@ For detailed information about each part of the project:
 
 ### Adding new models
 
-1. **Create the model in the backend** (`api/app/db/models/`):
+1. **Define the model** in the backend (`api/app/modules/<module>/models.py`):
 
 ```python
 from sqlalchemy import Column, String, Integer
-from app.db.base import Base
+from app.core.base import Base
 
 class Product(Base):
     __tablename__ = "products"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
-    description = Column(String)
-    price = Column(Integer, nullable=False)
 ```
 
-2. **Create Pydantic schemas** (`api/app/schemas/`):
+2. **Create Pydantic schemas** (`api/app/modules/<module>/schemas.py`):
 
 ```python
 from pydantic import BaseModel
 
-class ProductBase(BaseModel):
-    name: str
-    description: str | None = None
-    price: int
-
-class ProductCreate(ProductBase):
-    pass
-
-class ProductRead(ProductBase):
+class ProductRead(BaseModel):
     id: int
+    name: str
 
-    class Config:
-        from_attributes = True
+    model_config = {"from_attributes": True}
 ```
 
 3. **Create database migration**:
@@ -206,32 +194,30 @@ make docker-migrate-db
 
 ### Adding new endpoints
 
-1. **Create router** (`api/app/api/routes/`):
+1. **Create/Update router** (`api/app/modules/<module>/router.py`):
 
 ```python
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.db.session import get_async_session
-from app.schemas.product import ProductCreate, ProductRead
+from app.core.database import get_async_session
+from .schemas import ProductRead
 
 router = APIRouter(prefix="/products", tags=["products"])
 
-@router.post("/", response_model=ProductRead)
-async def create_product(
-    product: ProductCreate,
+@router.get("/", response_model=list[ProductRead])
+async def get_products(
     session: AsyncSession = Depends(get_async_session)
 ):
     # Implementation
     pass
 ```
 
-2. **Register the router** (`api/app/api/routes/__init__.py`):
+2. **Register the router** (`api/app/main.py`):
 
 ```python
-from app.api.routes import products
+from app.modules.product.router import router as product_router
 
-# In the function that configures routers
-api_router.include_router(products.router)
+app.include_router(product_router)
 ```
 
 3. **Regenerate frontend client**:
@@ -244,20 +230,18 @@ cd ui && pnpm run generate-client
 ### Using the typed client in the frontend
 
 ```typescript
-import { client } from "@/lib/api-client";
+import { authJwtLogin } from "@/lib/clientService";
 
-// The client is fully typed
-const { data, error } = await client.POST("/api/products/", {
+// The client is fully typed and categorized by tags
+const { data, error } = await authJwtLogin({
   body: {
-    name: "New Product",
-    description: "Description",
-    price: 1000,
+    username: "user@example.com",
+    password: "securepassword",
   },
 });
 
-// TypeScript knows the structure of 'data' and 'error'
 if (data) {
-  console.log(data.id, data.name);
+  console.log(data.access_token);
 }
 ```
 

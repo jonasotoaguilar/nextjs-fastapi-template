@@ -11,7 +11,7 @@ This template streamlines building APIs with [FastAPI](https://fastapi.tiangolo.
   - JWT (JSON Web Token) authentication.
   - Email-based password recovery.
 - [Shadcn/ui](https://ui.shadcn.com/): Beautiful and customizable React components.
-- [OpenAPI-fetch](https://github.com/Hey-AI/openapi-fetch): Fully typed client generation from the OpenAPI schema.
+- [@hey-api/openapi-ts](https://github.com/hey-api/openapi-ts): Fully typed client generation from the OpenAPI schema.
 - [fastapi-mail](https://sabuhish.github.io/fastapi-mail/): Efficient email handling for FastAPI applications.
 - [uv](https://docs.astral.sh/uv/): An extremely fast Python package and project manager.
 - [Pytest](https://docs.pytest.org/): Powerful testing framework for Python.

@@ -6,14 +6,13 @@ This guide shows you how to extend the template with new features, models, and e
 
 ### 1. Create the SQLAlchemy Model
 
-Create a new file in `api/app/db/models/` or add your model to an existing file:
+Create a new file in `api/app/modules/products/models.py`:
 
 ```python
-# api/app/db/models/product.py
-from sqlalchemy import Column, String, Integer, DateTime, ForeignKey
-from sqlalchemy.orm import relationship
-from datetime import datetime
-from app.db.base import Base
+# api/app/modules/products/models.py
+from sqlalchemy import Column, String, Integer, DateTime
+from datetime import datetime, timezone
+from app.core.base import Base
 
 class Product(Base):
     __tablename__ = "products"
@@ -22,8 +21,8 @@ class Product(Base):
     name = Column(String, nullable=False, index=True)
     description = Column(String)
     price = Column(Integer, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 
     # Relationships (example)
     # user_id = Column(Integer, ForeignKey("user.id"))
@@ -32,23 +31,16 @@ class Product(Base):
 
 ### 2. Register the Model
 
-Ensure your model is imported in `api/app/db/base.py`:
+The template is configured to automatically discover models located in `api/app/modules/*/models.py`. Therefore, **no manual registration is required** if you follow this structure.
 
-```python
-# api/app/db/base.py
-from app.db.base_class import Base
-from app.db.models.user import User
-from app.db.models.product import Product  # Add this line
-
-__all__ = ["Base", "User", "Product"]
-```
+If you create models elsewhere, you must ensure they are imported before Alembic runs.
 
 ### 3. Create Pydantic Schemas
 
-Create schemas for validation and serialization in `api/app/schemas/`:
+Create schemas for validation and serialization in `api/app/modules/products/schemas.py`:
 
 ```python
-# api/app/schemas/product.py
+# api/app/modules/products/schemas.py
 from pydantic import BaseModel, Field
 from datetime import datetime
 
@@ -86,7 +78,7 @@ Generate and apply the migration:
 # Generate migration
 make docker-db-schema migration_name="add products table"
 
-# Review the generated file in api/alembic/versions/
+# Review the generated file in api/alembic_migrations/versions/
 
 # Apply migration
 make docker-migrate-db
@@ -96,17 +88,17 @@ make docker-migrate-db
 
 ### 1. Create the Router
 
-Create a new file in `api/app/api/routes/`:
+Create a new file in `api/app/modules/products/router.py`:
 
 ```python
-# api/app/api/routes/products.py
+# api/app/modules/products/router.py
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.db.session import get_async_session
-from app.db.models.product import Product
-from app.schemas.product import ProductCreate, ProductRead, ProductUpdate
+from app.core.database import get_async_session
+from app.modules.products.models import Product
+from app.modules.products.schemas import ProductCreate, ProductRead, ProductUpdate
 
 router = APIRouter(prefix="/products", tags=["products"])
 
@@ -204,18 +196,15 @@ async def delete_product(
 
 ### 2. Register the Router
 
-Add the router in `api/app/api/routes/__init__.py`:
+Add the router in `api/app/main.py`:
 
 ```python
-from fastapi import APIRouter
-from app.api.routes import auth, users, products  # Add products
+from app.modules.products.router import router as products_router  # Add this
 
-api_router = APIRouter()
+# ... existing imports and app definition ...
 
-# Include routers
-api_router.include_router(auth.router)
-api_router.include_router(users.router)
-api_router.include_router(products.router)  # Add this line
+app.include_router(users_router)
+app.include_router(products_router)  # Add this line
 ```
 
 ### 3. Regenerate the Frontend Client
@@ -236,18 +225,16 @@ cd ui && pnpm run generate-client
 "use client";
 
 import { useEffect, useState } from "react";
-import { client } from "@/lib/api-client";
-import type { components } from "@/lib/api-types";
-
-type Product = components["schemas"]["ProductRead"];
+import { productsListProducts } from "@/lib/clientService";
+import type { ProductRead } from "@/lib/openapi-client";
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductRead[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchProducts() {
-      const { data, error } = await client.GET("/api/products/");
+      const { data, error } = await productsListProducts();
 
       if (error) {
         console.error("Error fetching products:", error);
@@ -287,7 +274,7 @@ export default function ProductsPage() {
 "use client";
 
 import { useState } from "react";
-import { client } from "@/lib/api-client";
+import { productsCreateProduct } from "@/lib/clientService";
 
 export default function CreateProductForm() {
   const [name, setName] = useState("");
@@ -297,7 +284,7 @@ export default function CreateProductForm() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    const { data, error } = await client.POST("/api/products/", {
+    const { data, error } = await productsCreateProduct({
       body: {
         name,
         price,
@@ -366,13 +353,15 @@ async def create_product(
     return product
 ```
 
-### Using the Authenticated Client in the Frontend
+### Using the Client with Authentication
+
+The client automatically handles authentication cookies for requests made from the browser. For server-side requests (e.g., in Server Actions or Server Components), access tokens must be managed manually or via cookies forwarding.
 
 ```typescript
-import { authenticatedClient } from "@/lib/api-client";
+import { productsCreateProduct } from "@/lib/clientService";
 
-// The authenticated client automatically includes the JWT token
-const { data, error } = await authenticatedClient.POST("/api/products/", {
+// In a client component, cookies are sent automatically
+const { data, error } = await productsCreateProduct({
   body: {
     name: "New Product",
     price: 1000,
@@ -431,18 +420,18 @@ async def test_list_products(client: AsyncClient, session: AsyncSession):
 // ui/__tests__/products.test.tsx
 import { render, screen, waitFor } from "@testing-library/react";
 import ProductsPage from "@/app/products/page";
-import { client } from "@/lib/api-client";
+import { productsListProducts } from "@/lib/clientService";
 
-jest.mock("@/lib/api-client");
+jest.mock("@/lib/clientService");
 
 describe("ProductsPage", () => {
   it("renders products list", async () => {
     const mockProducts = [
-      { id: 1, name: "Product 1", price: 100, created_at: new Date(), updated_at: new Date() },
-      { id: 2, name: "Product 2", price: 200, created_at: new Date(), updated_at: new Date() },
+      { id: 1, name: "Product 1", price: 100, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+      { id: 2, name: "Product 2", price: 200, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
     ];
 
-    (client.GET as jest.Mock).mockResolvedValue({
+    (productsListProducts as jest.Mock).mockResolvedValue({
       data: mockProducts,
       error: null,
     });

@@ -100,6 +100,14 @@ Navigate to the `ui` directory and run:
 pnpm install
 ```
 
+### AI Agent Setup (Optional)
+
+To install the recommended AI skills for this project (e.g., for Cursor, Windsurf, or other AI coding assistants), run:
+
+```bash
+make install-skills
+```
+
 ### Build the Project (with Docker):
 
 Build the backend and frontend containers:

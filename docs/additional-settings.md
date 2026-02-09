@@ -146,8 +146,12 @@ This project includes a `Makefile` that provides a set of commands to simplify d
 
 ### Available Commands
 
-You can see all available commands and their descriptions by running the following command in your terminal:
-
 ```bash
 make help
 ```
+
+Some common commands:
+
+- `make install-skills`: Install AI skills for the project.
+- `make start-api`: Start the backend server.
+- `make start-ui`: Start the frontend server.
