@@ -59,25 +59,19 @@ uv run python -m commands.create_superuser  # Create superuser
 
 ```
 app/
-├── api/                    # API Endpoints
-│   ├── routes/            # Routers by resource
-│   │   ├── __init__.py   # Router registration
-│   │   ├── users.py      # User routes
-│   │   └── ...
-│   └── deps.py           # Shared dependencies
-├── core/                  # Configuration and utilities
-│   ├── config.py         # Settings (Pydantic)
-│   ├── security.py       # Security utilities
-│   └── ...
-├── db/                    # Database
-│   ├── models/           # SQLAlchemy models
-│   │   ├── base.py      # Base class
-│   │   ├── user.py      # User model
-│   │   └── ...
-│   ├── session.py        # Session configuration
-│   └── base.py           # Model imports
-├── schemas/               # Pydantic schemas
-│   ├── user.py           # User schemas
+├── core/                  # Core infrastructure (shared)
+│   ├── base.py           # Declarative base
+│   ├── database.py       # DB connections & session
+│   ├── config.py         # Settings & environment
+│   ├── security.py       # JWT & hashing
+│   └── email.py          # Email infrastructure
+├── modules/               # Domain-driven modules
+│   ├── users/            # Users module
+│   │   ├── models.py     # SQLAlchemy models
+│   │   ├── schemas.py    # Pydantic schemas
+│   │   ├── manager.py    # FastAPI-Users setup
+│   │   ├── service.py    # Domain logic (eg. email)
+│   │   └── router.py     # Unified router
 │   └── ...
 └── main.py                # Entry point
 ```

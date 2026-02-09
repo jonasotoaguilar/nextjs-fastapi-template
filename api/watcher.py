@@ -3,14 +3,13 @@ import re
 import subprocess
 import time
 from threading import Timer
+from typing import Any, Optional
 
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
-from typing import Any, Optional
-
-# Updated regex to include main.py, schemas.py, and all .py files in app/routes
-WATCHER_REGEX_PATTERN = re.compile(r"(main\.py|schemas\.py|routes/.*\.py)$")
+# Updated regex to include main.py and router.py/schemas.py in modules
+WATCHER_REGEX_PATTERN = re.compile(r"(main\.py|modules/.*/(router|schemas)\.py)$")
 APP_PATH = "app"
 
 

@@ -2,7 +2,8 @@ import uuid
 from typing import AsyncGenerator
 from urllib.parse import urlparse
 
-from app.models import Base, User
+from app.core.base import Base
+from app.modules.users.models import User
 from fastapi import Depends
 from fastapi_users.db import SQLAlchemyUserDatabase
 from sqlalchemy import NullPool

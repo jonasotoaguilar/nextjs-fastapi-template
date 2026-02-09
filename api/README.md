@@ -21,35 +21,25 @@ Next.js + FastAPI template backend built with FastAPI, SQLAlchemy, and PostgreSQ
 ```
 api/
 ├── app/                        # Application code
-│   ├── api/                    # API Endpoints
-│   │   ├── routes/            # Routers by resource
-│   │   │   ├── users.py       # User routes
-│   │   │   └── ...
-│   │   └── deps.py            # Shared dependencies
-│   ├── core/                  # Configuration and utilities
-│   │   ├── config.py          # Application settings
-│   │   ├── security.py        # Security utilities
+│   ├── core/                  # Core infrastructure (shared)
+│   │   ├── base.py           # Declarative base
+│   │   ├── database.py       # DB connections & session
+│   │   ├── config.py         # Application settings
 │   │   └── ...
-│   ├── db/                    # Database
-│   │   ├── models/            # SQLAlchemy models
-│   │   │   ├── base.py        # Base class
-│   │   │   ├── user.py        # User model
-│   │   │   └── ...
-│   │   ├── session.py         # Session configuration
-│   │   └── base.py            # Model imports
-│   ├── schemas/               # Pydantic schemas
-│   │   ├── user.py            # User schemas
+│   ├── modules/               # Domain-driven modules
+│   │   ├── users/            # Users module
+│   │   │   ├── models.py     # SQLAlchemy models
+│   │   │   ├── schemas.py    # Pydantic schemas
+│   │   │   ├── manager.py    # FastAPI-Users setup
+│   │   │   └── router.py     # Unified router
 │   │   └── ...
 │   └── main.py                # Application entry point
 ├── alembic_migrations/        # Database migrations
-│   └── versions/              # Migration files
 ├── commands/                  # Utility scripts
-│   ├── create_superuser.py    # Create superuser
-│   └── ...
-├── tests/                     # Tests
-│   ├── conftest.py           # Pytest configuration
-│   ├── test_users.py         # User tests
-│   └── ...
+├── tests/                     # Tests (Core & Modules)
+│   ├── core/                 # Shared logic tests
+│   ├── modules/              # Domain logic tests
+│   └── conftest.py           # Pytest configuration
 ├── Dockerfile                 # Docker configuration
 ├── pyproject.toml            # Dependencies and configuration
 ├── alembic.ini               # Alembic configuration
@@ -171,64 +161,44 @@ uv run python -m commands.create_superuser
 
 ## API Endpoints
 
-### Authentication
+### User Management
 
 ```
-POST   /api/auth/register          # Register new user
-POST   /api/auth/login             # Login (get JWT)
-POST   /api/auth/logout            # Logout
-POST   /api/auth/forgot-password   # Request password reset
-POST   /api/auth/reset-password    # Reset password
-```
-
-### Users
-
-```
-GET    /api/users/me               # Get current user
-PATCH  /api/users/me               # Update current user
-GET    /api/users/{id}             # Get user by ID
+POST   /auth/register          # Register new user
+POST   /auth/jwt/login         # Login (get JWT)
+POST   /auth/jwt/logout        # Logout
+POST   /auth/forgot-password   # Request password reset
+POST   /auth/reset-password    # Reset password
+GET    /users/me               # Get current user
+PATCH  /users/me               # Update current user
+GET    /users/{id}             # Get user by ID (Superuser only)
 ```
 
 ## Development Guide
 
-### Adding New Models
+1. **Create the module** (if it doesn't exist) under `app/modules/`.
 
-1. **Create the model** in `app/db/models/`:
+2. **Define the model** in `app/modules/product/models.py`:
 
 ```python
 from sqlalchemy import Column, String, Integer
-from app.db.base import Base
+from app.core.base import Base
 
 class Product(Base):
     __tablename__ = "products"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
-    description = Column(String)
-    price = Column(Integer, nullable=False)
 ```
 
-2. **Import in** `app/db/base.py`:
-
-```python
-from app.db.models.product import Product  # noqa
-```
-
-3. **Create schemas** in `app/schemas/`:
+3. **Define schemas** in `app/modules/product/schemas.py`:
 
 ```python
 from pydantic import BaseModel
 
-class ProductBase(BaseModel):
-    name: str
-    description: str | None = None
-    price: int
-
-class ProductCreate(ProductBase):
-    pass
-
-class ProductRead(ProductBase):
+class ProductRead(BaseModel):
     id: int
+    name: str
 
     model_config = {"from_attributes": True}
 ```
@@ -242,13 +212,13 @@ make docker-migrate-db
 
 ### Adding New Endpoints
 
-1. **Create router** in `app/api/routes/`:
+1. **Create router** in `app/modules/product/router.py`:
 
 ```python
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.db.session import get_async_session
-from app.schemas.product import ProductCreate, ProductRead
+from app.core.database import get_async_session
+from app.modules.product.schemas import ProductCreate, ProductRead
 
 router = APIRouter(prefix="/products", tags=["products"])
 
@@ -264,9 +234,10 @@ async def create_product(
 2. **Register the router** in `app/main.py`:
 
 ```python
-from app.api.routes import products
+from app.modules.product.router import router as product_router
 
-app.include_router(products.router, prefix="/api")
+# ...
+app.include_router(product_router)
 ```
 
 ## Testing

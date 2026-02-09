@@ -1,16 +1,16 @@
 import uuid
 
 import pytest_asyncio
+from app.core.base import Base
+from app.core.config import settings
+from app.core.database import get_async_session, get_user_db
+from app.main import app
+from app.modules.users.manager import get_jwt_strategy
+from app.modules.users.models import User
 from fastapi_users.db import SQLAlchemyUserDatabase
 from fastapi_users.password import PasswordHelper
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-
-from app.core.config import settings
-from app.core.database import get_async_session, get_user_db
-from app.core.users import get_jwt_strategy
-from app.main import app
-from app.models import Base, User
 
 
 @pytest_asyncio.fixture(scope="function")

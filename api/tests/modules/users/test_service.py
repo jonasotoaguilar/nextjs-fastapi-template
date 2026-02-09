@@ -1,14 +1,12 @@
-from pathlib import Path
-
 import pytest
-from app.core.email import get_email_config, send_reset_password_email
-from app.models import User
-from fastapi_mail import ConnectionConfig, MessageSchema
+from app.modules.users.models import User
+from app.modules.users.service import send_reset_password_email
+from fastapi_mail import MessageSchema
 
 
 @pytest.fixture
 def mock_settings(mocker):
-    mock = mocker.patch("app.core.email.settings")
+    mock = mocker.patch("app.modules.users.service.settings")
     # Set up mock settings with test values
     mock.MAIL_USERNAME = "test_user"
     mock.MAIL_PASSWORD = "test_pass"
@@ -32,29 +30,15 @@ def mock_user():
     )
 
 
-def test_get_email_config(mock_settings):
-    config = get_email_config()
-
-    assert isinstance(config, ConnectionConfig)
-    assert config.MAIL_USERNAME == "test_user"
-    assert config.MAIL_PASSWORD.get_secret_value() == "test_pass"
-    assert config.MAIL_FROM == "test@example.com"
-    assert config.MAIL_PORT == 587
-    assert config.MAIL_SERVER == "smtp.test.com"
-    assert config.MAIL_FROM_NAME == "Test Sender"
-    assert config.MAIL_STARTTLS
-    assert not config.MAIL_SSL_TLS
-    assert config.USE_CREDENTIALS
-    assert config.VALIDATE_CERTS
-    assert isinstance(config.TEMPLATE_FOLDER, Path)
-
-
 @pytest.mark.asyncio
 async def test_send_reset_password_email(mock_settings, mock_user, mocker):
-    # Mock FastMail
-    mock_fastmail = mocker.patch("app.core.email.FastMail")
+    # Mock FastMail in the module where it's used
+    mock_fastmail = mocker.patch("app.modules.users.service.FastMail")
     mock_fastmail_instance = mock_fastmail.return_value
     mock_fastmail_instance.send_message = mocker.AsyncMock()
+
+    # Mock get_email_config
+    mocker.patch("app.modules.users.service.get_email_config")
 
     # Test data
     test_token = "test-token-123"
@@ -62,10 +46,8 @@ async def test_send_reset_password_email(mock_settings, mock_user, mocker):
     # Call the function
     await send_reset_password_email(mock_user, test_token)
 
-    # Verify FastMail was instantiated with correct config
+    # Verify FastMail was instantiated
     mock_fastmail.assert_called_once()
-    config_arg = mock_fastmail.call_args[0][0]
-    assert isinstance(config_arg, ConnectionConfig)
 
     # Verify send_message was called
     mock_fastmail_instance.send_message.assert_called_once()

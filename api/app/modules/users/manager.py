@@ -2,8 +2,6 @@ import re
 import uuid
 from typing import AsyncGenerator, Optional
 
-from app.models import User
-from app.schemas import UserCreate
 from fastapi import Depends, Request
 from fastapi_users import (
     BaseUserManager,
@@ -18,9 +16,12 @@ from fastapi_users.authentication import (
 )
 from fastapi_users.db import SQLAlchemyUserDatabase
 
-from .config import settings
-from .database import get_user_db
-from .email import send_reset_password_email
+from app.core.config import settings
+from app.core.database import get_user_db
+from app.modules.users.models import User
+from app.modules.users.schemas import UserCreate
+
+from .service import send_reset_password_email
 
 AUTH_URL_PATH = "auth"
 

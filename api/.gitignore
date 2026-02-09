@@ -15,3 +15,5 @@ env
 .agent/
 .claude/
 .gemini/
+
+shared-data/

@@ -1,15 +1,24 @@
 import asyncio
+import importlib
 import os
+import pkgutil
 from logging.config import fileConfig
 from urllib.parse import urlparse
 
+import app.modules
 from alembic import context
+from app.core.base import Base
 from dotenv import load_dotenv
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
-from app.models import Base
+# Import models before accessing Base.metadata
+for _, module_name, _ in pkgutil.walk_packages(
+    app.modules.__path__, app.modules.__name__ + "."
+):
+    if module_name.endswith(".models"):
+        importlib.import_module(module_name)
 
 load_dotenv()
 
@@ -25,7 +34,6 @@ if config.config_file_name is not None:
 # add your model's MetaData object here
 # for 'autogenerate' support
 target_metadata = Base.metadata
-# target_metadata = None
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
