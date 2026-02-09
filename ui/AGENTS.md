@@ -50,28 +50,29 @@ pnpm generate-client      # Regenerate API client
 
 ```
 app/
-├── (auth)/
-│   ├── login/
-│   │   └── page.tsx
-│   └── register/
-│       └── page.tsx
-├── layout.tsx
-└── page.tsx
+├── login/                 # Login page
+├── register/              # Register page
+├── password-recovery/     # Password recovery flow
+├── layout.tsx             # Root layout
+└── page.tsx               # Home page
+
+actions/                   # Server Actions
+├── auth/                  # Authentication actions
+└── password/              # Password recovery actions
 
 components/
-├── ui/                    # shadcn/ui components
-│   ├── button.tsx
-│   ├── card.tsx
+├── ui/                    # shadcn/ui components (button, card, input, etc.)
 │   └── ...
-├── forms/                 # Custom forms
-│   └── login-form.tsx
-└── layout/                # Layout components
-    ├── header.tsx
-    └── footer.tsx
+├── layout/                # Layout components (header, footer)
+└── ...                    # Feature components (forms, etc.)
+
+config/
+└── fonts.ts              # Font configuration
 
 lib/
 ├── clientService.ts       # Unified API client (import from @/lib/clientService)
 ├── clientConfig.ts        # Client configuration (base URL)
+├── definitions.ts         # Type definitions
 ├── utils.ts               # Utility functions
 └── openapi-client/        # Generated client (DO NOT EDIT)
 ```
