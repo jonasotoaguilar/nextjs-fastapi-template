@@ -38,10 +38,9 @@ When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 ### Adding New Models
 
 1. Create model in `api/app/modules/<module>/models.py`
-2. Import in `api/app/core/base.py` (if new base is needed)
-3. Create schemas in `api/app/modules/<module>/schemas.py`
-4. Create migration: `make docker-db-schema migration_name="description"`
-5. Apply migration: `make docker-migrate-db`
+2. Create schemas in `api/app/modules/<module>/schemas.py`
+3. Create migration: `make docker-db-schema migration_name="description"`
+4. Apply migration: `make docker-migrate-db`
 
 ### Adding New Endpoints
 
