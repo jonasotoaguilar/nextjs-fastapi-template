@@ -800,10 +800,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#using-the-authenticated-client-in-the-frontend" class="md-nav__link">
+  <a href="#using-the-client-with-authentication" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Using the Authenticated Client in the Frontend
+        Using the Client with Authentication
       
     </span>
   </a>
@@ -1350,10 +1350,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#using-the-authenticated-client-in-the-frontend" class="md-nav__link">
+  <a href="#using-the-client-with-authentication" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Using the Authenticated Client in the Frontend
+        Using the Client with Authentication
       
     </span>
   </a>
@@ -1500,12 +1500,11 @@
 <p>This guide shows you how to extend the template with new features, models, and endpoints.</p>
 <h2 id="adding-new-database-models">Adding New Database Models<a class="headerlink" href="#adding-new-database-models" title="Permanent link">&para;</a></h2>
 <h3 id="1-create-the-sqlalchemy-model">1. Create the SQLAlchemy Model<a class="headerlink" href="#1-create-the-sqlalchemy-model" title="Permanent link">&para;</a></h3>
-<p>Create a new file in <code>api/app/db/models/</code> or add your model to an existing file:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># api/app/db/models/product.py</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">DateTime</span><span class="p">,</span> <span class="n">ForeignKey</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.orm</span><span class="w"> </span><span class="kn">import</span> <span class="n">relationship</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">app.db.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Base</span>
+<p>Create a new file in <code>api/app/modules/products/models.py</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># api/app/modules/products/models.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">DateTime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.core.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Base</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Product</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;products&quot;</span>
@@ -1514,25 +1513,19 @@
     <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">description</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
     <span class="n">price</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">created_at</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DateTime</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">)</span>
-    <span class="n">updated_at</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DateTime</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">,</span> <span class="n">onupdate</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">)</span>
+    <span class="n">created_at</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DateTime</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">))</span>
+    <span class="n">updated_at</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DateTime</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">),</span> <span class="n">onupdate</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">))</span>
 
     <span class="c1"># Relationships (example)</span>
     <span class="c1"># user_id = Column(Integer, ForeignKey(&quot;user.id&quot;))</span>
     <span class="c1"># user = relationship(&quot;User&quot;, back_populates=&quot;products&quot;)</span>
 </code></pre></div>
 <h3 id="2-register-the-model">2. Register the Model<a class="headerlink" href="#2-register-the-model" title="Permanent link">&para;</a></h3>
-<p>Ensure your model is imported in <code>api/app/db/base.py</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># api/app/db/base.py</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">app.db.base_class</span><span class="w"> </span><span class="kn">import</span> <span class="n">Base</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">app.db.models.user</span><span class="w"> </span><span class="kn">import</span> <span class="n">User</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">app.db.models.product</span><span class="w"> </span><span class="kn">import</span> <span class="n">Product</span>  <span class="c1"># Add this line</span>
-
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Base&quot;</span><span class="p">,</span> <span class="s2">&quot;User&quot;</span><span class="p">,</span> <span class="s2">&quot;Product&quot;</span><span class="p">]</span>
-</code></pre></div>
+<p>The template is configured to automatically discover models located in <code>api/app/modules/*/models.py</code>. Therefore, <strong>no manual registration is required</strong> if you follow this structure.</p>
+<p>If you create models elsewhere, you must ensure they are imported before Alembic runs.</p>
 <h3 id="3-create-pydantic-schemas">3. Create Pydantic Schemas<a class="headerlink" href="#3-create-pydantic-schemas" title="Permanent link">&para;</a></h3>
-<p>Create schemas for validation and serialization in <code>api/app/schemas/</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># api/app/schemas/product.py</span>
+<p>Create schemas for validation and serialization in <code>api/app/modules/products/schemas.py</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># api/app/modules/products/schemas.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
 
@@ -1566,22 +1559,22 @@
 <div class="highlight"><pre><span></span><code><span class="c1"># Generate migration</span>
 make<span class="w"> </span>docker-db-schema<span class="w"> </span><span class="nv">migration_name</span><span class="o">=</span><span class="s2">&quot;add products table&quot;</span>
 
-<span class="c1"># Review the generated file in api/alembic/versions/</span>
+<span class="c1"># Review the generated file in api/alembic_migrations/versions/</span>
 
 <span class="c1"># Apply migration</span>
 make<span class="w"> </span>docker-migrate-db
 </code></pre></div>
 <h2 id="adding-new-endpoints">Adding New Endpoints<a class="headerlink" href="#adding-new-endpoints" title="Permanent link">&para;</a></h2>
 <h3 id="1-create-the-router">1. Create the Router<a class="headerlink" href="#1-create-the-router" title="Permanent link">&para;</a></h3>
-<p>Create a new file in <code>api/app/api/routes/</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># api/app/api/routes/products.py</span>
+<p>Create a new file in <code>api/app/modules/products/router.py</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># api/app/modules/products/router.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">HTTPException</span><span class="p">,</span> <span class="n">status</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">select</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.ext.asyncio</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncSession</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">app.db.session</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_async_session</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">app.db.models.product</span><span class="w"> </span><span class="kn">import</span> <span class="n">Product</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">app.schemas.product</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProductCreate</span><span class="p">,</span> <span class="n">ProductRead</span><span class="p">,</span> <span class="n">ProductUpdate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.core.database</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_async_session</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.modules.products.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Product</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.modules.products.schemas</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProductCreate</span><span class="p">,</span> <span class="n">ProductRead</span><span class="p">,</span> <span class="n">ProductUpdate</span>
 
 <span class="n">router</span> <span class="o">=</span> <span class="n">APIRouter</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;/products&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;products&quot;</span><span class="p">])</span>
 
@@ -1677,16 +1670,13 @@ make<span class="w"> </span>docker-migrate-db
     <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 </code></pre></div>
 <h3 id="2-register-the-router">2. Register the Router<a class="headerlink" href="#2-register-the-router" title="Permanent link">&para;</a></h3>
-<p>Add the router in <code>api/app/api/routes/__init__.py</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIRouter</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">app.api.routes</span><span class="w"> </span><span class="kn">import</span> <span class="n">auth</span><span class="p">,</span> <span class="n">users</span><span class="p">,</span> <span class="n">products</span>  <span class="c1"># Add products</span>
+<p>Add the router in <code>api/app/main.py</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">app.modules.products.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">products_router</span>  <span class="c1"># Add this</span>
 
-<span class="n">api_router</span> <span class="o">=</span> <span class="n">APIRouter</span><span class="p">()</span>
+<span class="c1"># ... existing imports and app definition ...</span>
 
-<span class="c1"># Include routers</span>
-<span class="n">api_router</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">auth</span><span class="o">.</span><span class="n">router</span><span class="p">)</span>
-<span class="n">api_router</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">users</span><span class="o">.</span><span class="n">router</span><span class="p">)</span>
-<span class="n">api_router</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">products</span><span class="o">.</span><span class="n">router</span><span class="p">)</span>  <span class="c1"># Add this line</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">users_router</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">products_router</span><span class="p">)</span>  <span class="c1"># Add this line</span>
 </code></pre></div>
 <h3 id="3-regenerate-the-frontend-client">3. Regenerate the Frontend Client<a class="headerlink" href="#3-regenerate-the-frontend-client" title="Permanent link">&para;</a></h3>
 <p>Hot-reload automatically regenerates the client when it detects changes in the OpenAPI schema. You can also do it manually:</p>
@@ -1699,18 +1689,16 @@ make<span class="w"> </span>docker-migrate-db
 <span class="s2">&quot;use client&quot;</span><span class="p">;</span>
 
 <span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useEffect</span><span class="p">,</span><span class="w"> </span><span class="nx">useState</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;react&quot;</span><span class="p">;</span>
-<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">client</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;@/lib/api-client&quot;</span><span class="p">;</span>
-<span class="k">import</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">components</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;@/lib/api-types&quot;</span><span class="p">;</span>
-
-<span class="kr">type</span><span class="w"> </span><span class="nx">Product</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">components</span><span class="p">[</span><span class="s2">&quot;schemas&quot;</span><span class="p">][</span><span class="s2">&quot;ProductRead&quot;</span><span class="p">];</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">productsListProducts</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;@/lib/clientService&quot;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">ProductRead</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;@/lib/openapi-client&quot;</span><span class="p">;</span>
 
 <span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">ProductsPage</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">products</span><span class="p">,</span><span class="w"> </span><span class="nx">setProducts</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useState</span><span class="o">&lt;</span><span class="nx">Product</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">([]);</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">products</span><span class="p">,</span><span class="w"> </span><span class="nx">setProducts</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useState</span><span class="o">&lt;</span><span class="nx">ProductRead</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">([]);</span>
 <span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">loading</span><span class="p">,</span><span class="w"> </span><span class="nx">setLoading</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useState</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
 
 <span class="w">  </span><span class="nx">useEffect</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">fetchProducts</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">data</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">client</span><span class="p">.</span><span class="nx">GET</span><span class="p">(</span><span class="s2">&quot;/api/products/&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">data</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">productsListProducts</span><span class="p">();</span>
 
 <span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&quot;Error fetching products:&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="p">);</span>
@@ -1747,7 +1735,7 @@ make<span class="w"> </span>docker-migrate-db
 <div class="highlight"><pre><span></span><code><span class="s2">&quot;use client&quot;</span><span class="p">;</span>
 
 <span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useState</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;react&quot;</span><span class="p">;</span>
-<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">client</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;@/lib/api-client&quot;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">productsCreateProduct</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;@/lib/clientService&quot;</span><span class="p">;</span>
 
 <span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">CreateProductForm</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">name</span><span class="p">,</span><span class="w"> </span><span class="nx">setName</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useState</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">);</span>
@@ -1757,7 +1745,7 @@ make<span class="w"> </span>docker-migrate-db
 <span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">handleSubmit</span><span class="p">(</span><span class="nx">e</span><span class="o">:</span><span class="w"> </span><span class="kt">React.FormEvent</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
 
-<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">data</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">client</span><span class="p">.</span><span class="nx">POST</span><span class="p">(</span><span class="s2">&quot;/api/products/&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">data</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">productsCreateProduct</span><span class="p">({</span>
 <span class="w">      </span><span class="nx">body</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="nx">name</span><span class="p">,</span>
 <span class="w">        </span><span class="nx">price</span><span class="p">,</span>
@@ -1821,11 +1809,12 @@ make<span class="w"> </span>docker-migrate-db
     <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">product</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">product</span>
 </code></pre></div>
-<h3 id="using-the-authenticated-client-in-the-frontend">Using the Authenticated Client in the Frontend<a class="headerlink" href="#using-the-authenticated-client-in-the-frontend" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">authenticatedClient</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;@/lib/api-client&quot;</span><span class="p">;</span>
+<h3 id="using-the-client-with-authentication">Using the Client with Authentication<a class="headerlink" href="#using-the-client-with-authentication" title="Permanent link">&para;</a></h3>
+<p>The client automatically handles authentication cookies for requests made from the browser. For server-side requests (e.g., in Server Actions or Server Components), access tokens must be managed manually or via cookies forwarding.</p>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">productsCreateProduct</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;@/lib/clientService&quot;</span><span class="p">;</span>
 
-<span class="c1">// The authenticated client automatically includes the JWT token</span>
-<span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">data</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">authenticatedClient</span><span class="p">.</span><span class="nx">POST</span><span class="p">(</span><span class="s2">&quot;/api/products/&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="c1">// In a client component, cookies are sent automatically</span>
+<span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">data</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">productsCreateProduct</span><span class="p">({</span>
 <span class="w">  </span><span class="nx">body</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;New Product&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nx">price</span><span class="o">:</span><span class="w"> </span><span class="kt">1000</span><span class="p">,</span>
@@ -1877,18 +1866,18 @@ make<span class="w"> </span>docker-migrate-db
 <div class="highlight"><pre><span></span><code><span class="c1">// ui/__tests__/products.test.tsx</span>
 <span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">render</span><span class="p">,</span><span class="w"> </span><span class="nx">screen</span><span class="p">,</span><span class="w"> </span><span class="nx">waitFor</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;@testing-library/react&quot;</span><span class="p">;</span>
 <span class="k">import</span><span class="w"> </span><span class="nx">ProductsPage</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;@/app/products/page&quot;</span><span class="p">;</span>
-<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">client</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;@/lib/api-client&quot;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">productsListProducts</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;@/lib/clientService&quot;</span><span class="p">;</span>
 
-<span class="nx">jest</span><span class="p">.</span><span class="nx">mock</span><span class="p">(</span><span class="s2">&quot;@/lib/api-client&quot;</span><span class="p">);</span>
+<span class="nx">jest</span><span class="p">.</span><span class="nx">mock</span><span class="p">(</span><span class="s2">&quot;@/lib/clientService&quot;</span><span class="p">);</span>
 
 <span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;ProductsPage&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="nx">it</span><span class="p">(</span><span class="s2">&quot;renders products list&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">mockProducts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">1</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Product 1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">price</span><span class="o">:</span><span class="w"> </span><span class="kt">100</span><span class="p">,</span><span class="w"> </span><span class="nx">created_at</span><span class="o">:</span><span class="w"> </span><span class="kt">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">(),</span><span class="w"> </span><span class="nx">updated_at</span><span class="o">:</span><span class="w"> </span><span class="kt">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">()</span><span class="w"> </span><span class="p">},</span>
-<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">2</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Product 2&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">price</span><span class="o">:</span><span class="w"> </span><span class="kt">200</span><span class="p">,</span><span class="w"> </span><span class="nx">created_at</span><span class="o">:</span><span class="w"> </span><span class="kt">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">(),</span><span class="w"> </span><span class="nx">updated_at</span><span class="o">:</span><span class="w"> </span><span class="kt">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">()</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">1</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Product 1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">price</span><span class="o">:</span><span class="w"> </span><span class="kt">100</span><span class="p">,</span><span class="w"> </span><span class="nx">created_at</span><span class="o">:</span><span class="w"> </span><span class="kt">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">().</span><span class="nx">toISOString</span><span class="p">(),</span><span class="w"> </span><span class="nx">updated_at</span><span class="o">:</span><span class="w"> </span><span class="kt">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">().</span><span class="nx">toISOString</span><span class="p">()</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">2</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Product 2&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">price</span><span class="o">:</span><span class="w"> </span><span class="kt">200</span><span class="p">,</span><span class="w"> </span><span class="nx">created_at</span><span class="o">:</span><span class="w"> </span><span class="kt">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">().</span><span class="nx">toISOString</span><span class="p">(),</span><span class="w"> </span><span class="nx">updated_at</span><span class="o">:</span><span class="w"> </span><span class="kt">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">().</span><span class="nx">toISOString</span><span class="p">()</span><span class="w"> </span><span class="p">},</span>
 <span class="w">    </span><span class="p">];</span>
 
-<span class="w">    </span><span class="p">(</span><span class="nx">client</span><span class="p">.</span><span class="nx">GET</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="nx">jest</span><span class="p">.</span><span class="nx">Mock</span><span class="p">).</span><span class="nx">mockResolvedValue</span><span class="p">({</span>
+<span class="w">    </span><span class="p">(</span><span class="nx">productsListProducts</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="nx">jest</span><span class="p">.</span><span class="nx">Mock</span><span class="p">).</span><span class="nx">mockResolvedValue</span><span class="p">({</span>
 <span class="w">      </span><span class="nx">data</span><span class="o">:</span><span class="w"> </span><span class="kt">mockProducts</span><span class="p">,</span>
 <span class="w">      </span><span class="nx">error</span><span class="o">:</span><span class="w"> </span><span class="kt">null</span><span class="p">,</span>
 <span class="w">    </span><span class="p">});</span>

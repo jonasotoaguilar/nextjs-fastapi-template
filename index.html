@@ -1376,7 +1376,7 @@ make<span class="w"> </span>start-ui<span class="w">     </span><span class="c1"
 <li>JWT authentication</li>
 <li>Password recovery via email</li>
 <li><strong>shadcn/ui</strong> – Pre-built React components with Tailwind CSS.</li>
-<li><strong>OpenAPI-fetch</strong> – Fully typed client generation from the OpenAPI schema.</li>
+<li><strong>@hey-api/openapi-ts</strong> – Fully typed client generation from the OpenAPI schema.</li>
 <li><strong>UV</strong> – Simplified dependency management and packaging.</li>
 <li><strong>Docker Compose</strong> – Consistent environments for development and production.</li>
 <li><strong>Pre-commit hooks</strong> – Automatic linting, formatting, and code validation before commits.</li>
@@ -1389,17 +1389,15 @@ make<span class="w"> </span>start-ui<span class="w">     </span><span class="c1"
 <div class="highlight"><pre><span></span><code>nextjs-fastapi-template/
 ├── api                      # FastAPI Backend
 │   ├── app/                 # Application code
-│   │   ├── api/             # API Endpoints
-│   │   ├── core/            # Configuration and utilities
-│   │   ├── db/              # Models and database configuration
-│   │   └── schemas/         # Pydantic schemas
-│   ├── alembic/             # Database migrations
+│   │   ├── core/            # Core infrastructure (shared)
+│   │   └── modules/         # Domain-driven modules
+│   ├── alembic_migrations/  # Database migrations
 │   ├── commands/            # Utility scripts
-│   └── tests/               # Backend tests
-├── ui/         # Next.js Frontend
-│   ├── app/                 # Next.js App Router
-│   ├── components/          # React components
-│   ├── lib/                 # Utilities and configuration
+│   └── tests/               # Backend tests (Core &amp; Modules)
+├── ui/                      # Next.js Frontend
+│   ├── app/                 # Routes &amp; Server Actions
+│   ├── components/          # UI Components
+│   ├── lib/                 # Config, Utilities &amp; API Client
 │   └── public/              # Static assets
 ├── docs/                    # MkDocs Documentation
 └── docker-compose.yml       # Docker configuration
@@ -1425,37 +1423,27 @@ make<span class="w"> </span>start-ui<span class="w">     </span><span class="c1"
 <h2 id="extending-the-template">Extending the template<a class="headerlink" href="#extending-the-template" title="Permanent link">&para;</a></h2>
 <h3 id="adding-new-models">Adding new models<a class="headerlink" href="#adding-new-models" title="Permanent link">&para;</a></h3>
 <ol>
-<li><strong>Create the model in the backend</strong> (<code>api/app/db/models/</code>):</li>
+<li><strong>Define the model</strong> in the backend (<code>api/app/modules/&lt;module&gt;/models.py</code>):</li>
 </ol>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">Integer</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">app.db.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Base</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.core.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Base</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Product</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;products&quot;</span>
 
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">description</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
-    <span class="n">price</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
 <ol>
-<li><strong>Create Pydantic schemas</strong> (<code>api/app/schemas/</code>):</li>
+<li><strong>Create Pydantic schemas</strong> (<code>api/app/modules/&lt;module&gt;/schemas.py</code>):</li>
 </ol>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">ProductBase</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">price</span><span class="p">:</span> <span class="nb">int</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">ProductCreate</span><span class="p">(</span><span class="n">ProductBase</span><span class="p">):</span>
-    <span class="k">pass</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">ProductRead</span><span class="p">(</span><span class="n">ProductBase</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ProductRead</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
 
-    <span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">:</span>
-        <span class="n">from_attributes</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">model_config</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;from_attributes&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
 </code></pre></div>
 <ol>
 <li><strong>Create database migration</strong>:</li>
@@ -1465,30 +1453,28 @@ make<span class="w"> </span>docker-migrate-db
 </code></pre></div>
 <h3 id="adding-new-endpoints">Adding new endpoints<a class="headerlink" href="#adding-new-endpoints" title="Permanent link">&para;</a></h3>
 <ol>
-<li><strong>Create router</strong> (<code>api/app/api/routes/</code>):</li>
+<li><strong>Create/Update router</strong> (<code>api/app/modules/&lt;module&gt;/router.py</code>):</li>
 </ol>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">Depends</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.ext.asyncio</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncSession</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">app.db.session</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_async_session</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">app.schemas.product</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProductCreate</span><span class="p">,</span> <span class="n">ProductRead</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.core.database</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_async_session</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.schemas</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProductRead</span>
 
 <span class="n">router</span> <span class="o">=</span> <span class="n">APIRouter</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;/products&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;products&quot;</span><span class="p">])</span>
 
-<span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">ProductRead</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_product</span><span class="p">(</span>
-    <span class="n">product</span><span class="p">:</span> <span class="n">ProductCreate</span><span class="p">,</span>
+<span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="nb">list</span><span class="p">[</span><span class="n">ProductRead</span><span class="p">])</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_products</span><span class="p">(</span>
     <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_async_session</span><span class="p">)</span>
 <span class="p">):</span>
     <span class="c1"># Implementation</span>
     <span class="k">pass</span>
 </code></pre></div>
 <ol>
-<li><strong>Register the router</strong> (<code>api/app/api/routes/__init__.py</code>):</li>
+<li><strong>Register the router</strong> (<code>api/app/main.py</code>):</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">app.api.routes</span><span class="w"> </span><span class="kn">import</span> <span class="n">products</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">app.modules.product.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">product_router</span>
 
-<span class="c1"># In the function that configures routers</span>
-<span class="n">api_router</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">products</span><span class="o">.</span><span class="n">router</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">product_router</span><span class="p">)</span>
 </code></pre></div>
 <ol>
 <li><strong>Regenerate frontend client</strong>:</li>
@@ -1497,20 +1483,18 @@ make<span class="w"> </span>docker-migrate-db
 <span class="nb">cd</span><span class="w"> </span>ui<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pnpm<span class="w"> </span>run<span class="w"> </span>generate-client
 </code></pre></div>
 <h3 id="using-the-typed-client-in-the-frontend">Using the typed client in the frontend<a class="headerlink" href="#using-the-typed-client-in-the-frontend" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">client</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;@/lib/api-client&quot;</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">authJwtLogin</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;@/lib/clientService&quot;</span><span class="p">;</span>
 
-<span class="c1">// The client is fully typed</span>
-<span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">data</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">client</span><span class="p">.</span><span class="nx">POST</span><span class="p">(</span><span class="s2">&quot;/api/products/&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="c1">// The client is fully typed and categorized by tags</span>
+<span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">data</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">authJwtLogin</span><span class="p">({</span>
 <span class="w">  </span><span class="nx">body</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;New Product&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nx">description</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Description&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nx">price</span><span class="o">:</span><span class="w"> </span><span class="kt">1000</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">username</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;user@example.com&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">password</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;securepassword&quot;</span><span class="p">,</span>
 <span class="w">  </span><span class="p">},</span>
 <span class="p">});</span>
 
-<span class="c1">// TypeScript knows the structure of &#39;data&#39; and &#39;error&#39;</span>
 <span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">access_token</span><span class="p">);</span>
 <span class="p">}</span>
 </code></pre></div>
 <h2 id="useful-commands">Useful Commands<a class="headerlink" href="#useful-commands" title="Permanent link">&para;</a></h2>
