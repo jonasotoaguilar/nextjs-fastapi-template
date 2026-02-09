@@ -1,6 +1,6 @@
 "use client";
 
-import { register } from "@/components/actions/register-action";
+import { register } from "@/actions/auth/register-action";
 import {
 	Card,
 	CardContent,
@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { SubmitButton } from "@/components/ui/submitButton";
 import { PasswordInput } from "@/components/ui/password-input";
+import { SubmitButton } from "@/components/ui/submitButton";
 import { registerSchema } from "@/lib/definitions";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -101,8 +101,14 @@ export default function RegisterPage() {
 								/>
 							</div>
 							{errors.email && (
-								<p className="text-xs font-semibold text-red-500 ml-1 mt-1 flex items-center gap-1 animate-in slide-in-from-top-1" role="alert">
-									<span className="w-1 h-1 rounded-full bg-red-500" aria-hidden="true" />
+								<p
+									className="text-xs font-semibold text-red-500 ml-1 mt-1 flex items-center gap-1 animate-in slide-in-from-top-1"
+									role="alert"
+								>
+									<span
+										className="w-1 h-1 rounded-full bg-red-500"
+										aria-hidden="true"
+									/>
 									{errors.email.message}
 								</p>
 							)}
@@ -122,12 +128,18 @@ export default function RegisterPage() {
 								autoComplete="new-password"
 								className={cn(
 									errors.password &&
-										"border-red-500 focus:ring-red-500/20 bg-red-50/30"
+										"border-red-500 focus:ring-red-500/20 bg-red-50/30",
 								)}
 							/>
 							{errors.password && (
-								<p className="text-xs font-semibold text-red-500 ml-1 mt-1 flex items-center gap-1 animate-in slide-in-from-top-1" role="alert">
-									<span className="w-1 h-1 rounded-full bg-red-500" aria-hidden="true" />
+								<p
+									className="text-xs font-semibold text-red-500 ml-1 mt-1 flex items-center gap-1 animate-in slide-in-from-top-1"
+									role="alert"
+								>
+									<span
+										className="w-1 h-1 rounded-full bg-red-500"
+										aria-hidden="true"
+									/>
 									{errors.password.message}
 								</p>
 							)}
@@ -147,12 +159,18 @@ export default function RegisterPage() {
 								autoComplete="new-password"
 								className={cn(
 									errors.passwordConfirm &&
-										"border-red-500 focus:ring-red-500/20 bg-red-50/30"
+										"border-red-500 focus:ring-red-500/20 bg-red-50/30",
 								)}
 							/>
 							{errors.passwordConfirm && (
-								<p className="text-xs font-semibold text-red-500 ml-1 mt-1 flex items-center gap-1 animate-in slide-in-from-top-1" role="alert">
-									<span className="w-1 h-1 rounded-full bg-red-500" aria-hidden="true" />
+								<p
+									className="text-xs font-semibold text-red-500 ml-1 mt-1 flex items-center gap-1 animate-in slide-in-from-top-1"
+									role="alert"
+								>
+									<span
+										className="w-1 h-1 rounded-full bg-red-500"
+										aria-hidden="true"
+									/>
 									{errors.passwordConfirm.message}
 								</p>
 							)}
@@ -166,7 +184,11 @@ export default function RegisterPage() {
 						</div>
 
 						{state?.server_validation_error && (
-							<div className="bg-red-50 dark:bg-red-900/10 py-3 px-4 rounded-xl border border-red-100 dark:border-red-900/30 animate-in fade-in" role="alert" aria-live="polite">
+							<div
+								className="bg-red-50 dark:bg-red-900/10 py-3 px-4 rounded-xl border border-red-100 dark:border-red-900/30 animate-in fade-in"
+								role="alert"
+								aria-live="polite"
+							>
 								<p className="text-sm font-semibold text-red-600 dark:text-red-400 text-center">
 									{state.server_validation_error}
 								</p>
@@ -174,7 +196,11 @@ export default function RegisterPage() {
 						)}
 
 						{state?.server_error && (
-							<div className="bg-red-50 dark:bg-red-900/10 py-3 px-4 rounded-xl border border-red-100 dark:border-red-900/30 animate-in fade-in" role="alert" aria-live="polite">
+							<div
+								className="bg-red-50 dark:bg-red-900/10 py-3 px-4 rounded-xl border border-red-100 dark:border-red-900/30 animate-in fade-in"
+								role="alert"
+								aria-live="polite"
+							>
 								<p className="text-sm font-semibold text-red-600 dark:text-red-400 text-center">
 									{state.server_error}
 								</p>

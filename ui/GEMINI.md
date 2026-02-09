@@ -70,9 +70,9 @@ components/
     └── footer.tsx
 
 lib/
-├── api-client.ts          # API client wrapper
-├── clientService.ts       # Client services
-├── utils.ts               # Utilities
+├── clientService.ts       # Unified API client (import from @/lib/clientService)
+├── clientConfig.ts        # Client configuration (base URL)
+├── utils.ts               # Utility functions
 └── openapi-client/        # Generated client (DO NOT EDIT)
 ```
 

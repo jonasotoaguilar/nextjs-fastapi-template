@@ -1,4 +1,4 @@
-import { passwordResetConfirm } from "@/components/actions/password-reset-action";
+import { passwordResetConfirm } from "@/actions/password/password-reset-action";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { notFound, useSearchParams } from "next/navigation";
 import { type Mock, vi } from "vitest";
@@ -10,7 +10,7 @@ vi.mock("next/navigation", async () => ({
 	notFound: vi.fn(),
 }));
 
-vi.mock("@/components/actions/password-reset-action", () => ({
+vi.mock("@/actions/password/password-reset-action", () => ({
 	passwordResetConfirm: vi.fn(),
 }));
 

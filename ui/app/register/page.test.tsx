@@ -1,9 +1,9 @@
-import { register } from "@/components/actions/register-action";
+import { register } from "@/actions/auth/register-action";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { type Mock, vi } from "vitest";
 import Page from "./page";
 
-vi.mock("@/components/actions/register-action", () => ({
+vi.mock("@/actions/auth/register-action", () => ({
 	register: vi.fn(),
 }));
 

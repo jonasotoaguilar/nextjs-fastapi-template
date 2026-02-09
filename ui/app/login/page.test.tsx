@@ -1,9 +1,9 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { type Mock, vi } from "vitest";
-import { login } from "@/components/actions/login-action";
+import { login } from "@/actions/auth/login-action";
 import Page from "./page";
 
-vi.mock("@/components/actions/login-action", () => ({
+vi.mock("@/actions/auth/login-action", () => ({
   login: vi.fn(),
 }));
 
@@ -29,7 +29,9 @@ describe("Login Page", () => {
 
     const emailInput = screen.getByLabelText(/email/i);
     const passwordInput = screen.getByPlaceholderText(/••••••••/);
-    const submitButton = screen.getByRole("button", { name: /Iniciar Sesión/i });
+    const submitButton = screen.getByRole("button", {
+      name: /Iniciar Sesión/i,
+    });
 
     fireEvent.change(emailInput, {
       target: { value: "testuser@example.com" },
@@ -55,7 +57,9 @@ describe("Login Page", () => {
 
     const emailInput = screen.getByLabelText(/email/i);
     const passwordInput = screen.getByPlaceholderText(/••••••••/);
-    const submitButton = screen.getByRole("button", { name: /Iniciar Sesión/i });
+    const submitButton = screen.getByRole("button", {
+      name: /Iniciar Sesión/i,
+    });
 
     fireEvent.change(emailInput, { target: { value: "wrong@example.com" } });
     fireEvent.change(passwordInput, { target: { value: "wrongpass" } });
@@ -75,7 +79,9 @@ describe("Login Page", () => {
 
     const emailInput = screen.getByLabelText(/email/i);
     const passwordInput = screen.getByPlaceholderText(/••••••••/);
-    const submitButton = screen.getByRole("button", { name: /Iniciar Sesión/i });
+    const submitButton = screen.getByRole("button", {
+      name: /Iniciar Sesión/i,
+    });
 
     fireEvent.change(emailInput, { target: { value: "test@test.com" } });
     fireEvent.change(passwordInput, { target: { value: "password123" } });

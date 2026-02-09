@@ -1,6 +1,6 @@
 "use client";
 
-import { passwordReset } from "@/components/actions/password-reset-action";
+import { passwordReset } from "@/actions/password/password-reset-action";
 import {
 	Card,
 	CardContent,

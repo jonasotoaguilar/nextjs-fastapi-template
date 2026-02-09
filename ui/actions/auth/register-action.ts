@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 
-import { registerRegister } from "@/app/clientService";
+import { registerRegister } from "@/lib/clientService";
 
 import { registerSchema } from "@/lib/definitions";
 import { getErrorMessage } from "@/lib/utils";

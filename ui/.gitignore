@@ -36,7 +36,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-/app/openapi-client/
+/lib/openapi-client/
 
 !/lib/
 .env.*
@@ -46,3 +46,5 @@ next-env.d.ts
 .agent/
 .claude/
 .gemini/
+
+shared-data/

@@ -37,17 +37,17 @@ When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 
 ### Adding New Models
 
-1. Create model in `api/app/db/models/`
-2. Import in `api/app/db/base.py`
-3. Create schemas in `api/app/schemas/`
+1. Create model in `api/app/modules/<module>/models.py`
+2. Import in `api/app/core/base.py` (if new base is needed)
+3. Create schemas in `api/app/modules/<module>/schemas.py`
 4. Create migration: `make docker-db-schema migration_name="description"`
 5. Apply migration: `make docker-migrate-db`
 
 ### Adding New Endpoints
 
-1. Create router in `api/app/api/routes/`
+1. Create/Update router in `api/app/modules/<module>/router.py`
 2. Register router in `api/app/main.py`
-3. The frontend client will regenerate automatically
+3. The frontend client will regenerate automatically in `ui/lib/openapi-client`
 
 ### Adding New Components
 

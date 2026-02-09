@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { authJwtLogout } from "@/app/clientService";
+import { authJwtLogout } from "@/lib/clientService";
 
 export async function logout() {
   const cookieStore = await cookies();

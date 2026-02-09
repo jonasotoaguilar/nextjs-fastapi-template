@@ -64,5 +64,6 @@
 
 	// Snyk
 	"snyk.advanced.organization": "aea24540-be5c-4ac8-8e68-ab1e3cb248b7",
-	"snyk.advanced.autoSelectOrganization": true
+	"snyk.advanced.autoSelectOrganization": true,
+	"typescript.tsserver.useSyntaxServer": "never"
 }

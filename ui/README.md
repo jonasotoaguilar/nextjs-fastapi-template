@@ -13,7 +13,7 @@ Next.js + FastAPI template frontend built with Next.js 16, React 19, TypeScript,
 - **React Hook Form 7** - Form management
 - **Vitest** - Testing framework
 - **Biome** - Modern linter and formatter
-- **OpenAPI-TS** - Typed client generation from OpenAPI
+- **@hey-api/openapi-ts** - Type-safe OpenAPI client generation
 
 ## Project Structure
 
@@ -31,8 +31,9 @@ ui/
 │   ├── ui/               # shadcn/ui components
 │   └── ...               # Custom components
 ├── lib/                  # Utilities and configuration
-│   ├── api-client.ts     # Typed API client
-│   ├── clientService.ts  # Client services
+│   ├── clientService.ts  # Unified API client (import from @/lib/clientService)
+│   ├── clientConfig.ts   # Client configuration (base URL)
+│   ├── openapi-client/   # Generated client (DO NOT EDIT)
 │   └── utils.ts          # Utility functions
 ├── public/               # Static assets
 ├── Dockerfile            # Docker configuration
@@ -90,7 +91,7 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 
 ### Typed API Client
 
-The API client is automatically generated from the backend's OpenAPI schema:
+The API client is automatically generated from the backend's OpenAPI schema using `@hey-api/openapi-ts`. This provides a fully typed, functional-style client.
 
 1. **Automatic generation**: The watcher detects changes in `openapi.json` and regenerates the client.
 2. **Manual generation**: Run `pnpm generate-client`.
@@ -98,19 +99,18 @@ The API client is automatically generated from the backend's OpenAPI schema:
 **Client Usage:**
 
 ```typescript
-import { client } from "@/lib/api-client";
+import { authJwtLogin } from "@/lib/clientService";
 
-// The client is fully typed
-const { data, error } = await client.POST("/api/users/", {
+// The client is fully typed and categorized by tags
+const { data, error } = await authJwtLogin({
   body: {
-    email: "user@example.com",
+    username: "user@example.com",
     password: "securepassword",
   },
 });
 
-// TypeScript knows the structure of 'data' and 'error'
 if (data) {
-  console.log(data.id, data.email);
+  console.log(data.access_token);
 }
 ```
 

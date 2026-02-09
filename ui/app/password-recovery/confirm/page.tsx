@@ -1,19 +1,25 @@
 "use client";
 
+import { passwordResetConfirm } from "@/actions/password/password-reset-action";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { PasswordInput } from "@/components/ui/password-input";
+import { SubmitButton } from "@/components/ui/submitButton";
+import { passwordResetConfirmSchema } from "@/lib/definitions";
+import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Lock } from "lucide-react";
 import Link from "next/link";
 import { notFound, useSearchParams } from "next/navigation";
 import { Suspense, startTransition, useActionState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { passwordResetConfirm } from "@/components/actions/password-reset-action";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { SubmitButton } from "@/components/ui/submitButton";
-import { PasswordInput } from "@/components/ui/password-input";
-import { passwordResetConfirmSchema } from "@/lib/definitions";
-import { cn } from "@/lib/utils";
+import type { z } from "zod";
 
 type PasswordResetConfirmInputs = z.infer<typeof passwordResetConfirmSchema>;
 
@@ -91,12 +97,19 @@ function ResetPasswordForm() {
 								placeholder="••••••••"
 								autoComplete="new-password"
 								className={cn(
-									errors.password && "border-red-500 focus:ring-red-500/20 bg-red-50/30"
+									errors.password &&
+										"border-red-500 focus:ring-red-500/20 bg-red-50/30",
 								)}
 							/>
 							{errors.password && (
-								<p className="text-xs font-semibold text-red-500 ml-1 mt-1 flex items-center gap-1 animate-in slide-in-from-top-1" role="alert">
-									<span className="w-1 h-1 rounded-full bg-red-500" aria-hidden="true" />
+								<p
+									className="text-xs font-semibold text-red-500 ml-1 mt-1 flex items-center gap-1 animate-in slide-in-from-top-1"
+									role="alert"
+								>
+									<span
+										className="w-1 h-1 rounded-full bg-red-500"
+										aria-hidden="true"
+									/>
 									{errors.password.message}
 								</p>
 							)}
@@ -115,21 +128,25 @@ function ResetPasswordForm() {
 								placeholder="••••••••"
 								autoComplete="new-password"
 								className={cn(
-									errors.passwordConfirm && "border-red-500 focus:ring-red-500/20 bg-red-50/30"
+									errors.passwordConfirm &&
+										"border-red-500 focus:ring-red-500/20 bg-red-50/30",
 								)}
 							/>
 							{errors.passwordConfirm && (
-								<p className="text-xs font-semibold text-red-500 ml-1 mt-1 flex items-center gap-1 animate-in slide-in-from-top-1" role="alert">
-									<span className="w-1 h-1 rounded-full bg-red-500" aria-hidden="true" />
+								<p
+									className="text-xs font-semibold text-red-500 ml-1 mt-1 flex items-center gap-1 animate-in slide-in-from-top-1"
+									role="alert"
+								>
+									<span
+										className="w-1 h-1 rounded-full bg-red-500"
+										aria-hidden="true"
+									/>
 									{errors.passwordConfirm.message}
 								</p>
 							)}
 						</div>
 
-						<input
-							type="hidden"
-							{...registerField("token")}
-						/>
+						<input type="hidden" {...registerField("token")} />
 
 						<div className="pt-2">
 							<SubmitButton
@@ -171,7 +188,13 @@ function ResetPasswordForm() {
 
 export default function Page() {
 	return (
-		<Suspense fallback={<div className="flex min-h-screen items-center justify-center">Cargando formulario...</div>}>
+		<Suspense
+			fallback={
+				<div className="flex min-h-screen items-center justify-center">
+					Cargando formulario...
+				</div>
+			}
+		>
 			<ResetPasswordForm />
 		</Suspense>
 	);
