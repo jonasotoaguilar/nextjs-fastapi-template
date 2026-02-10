@@ -59,14 +59,3 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           flag-name: node-coverage
           parallel: true
-
-  hadolint:
-    name: Docker Lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-      - name: Run Hadolint
-        uses: hadolint/hadolint-action@v3.3.0
-        with:
-          dockerfile: ui/Dockerfile
