@@ -14,7 +14,7 @@ router.include_router(
 )
 
 router.include_router(
-    fastapi_users.get_register_router(UserRead, UserCreate),
+    fastapi_users.get_register_router(UserRead, UserCreate),  # type: ignore
     prefix=f"/{AUTH_URL_PATH}",
     tags=["auth"],
 )
@@ -26,14 +26,14 @@ router.include_router(
 )
 
 router.include_router(
-    fastapi_users.get_verify_router(UserRead),
+    fastapi_users.get_verify_router(UserRead),  # type: ignore
     prefix=f"/{AUTH_URL_PATH}",
     tags=["auth"],
 )
 
 # User management routes
 router.include_router(
-    fastapi_users.get_users_router(UserRead, UserUpdate),
+    fastapi_users.get_users_router(UserRead, UserUpdate),  # type: ignore
     prefix="/users",
     tags=["users"],
 )

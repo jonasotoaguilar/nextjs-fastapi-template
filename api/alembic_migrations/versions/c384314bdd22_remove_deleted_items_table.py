@@ -6,17 +6,16 @@ Create Date: 2026-02-08 21:23:36.352937
 
 """
 
-from typing import Sequence, Union
+from collections.abc import Sequence
 
-from alembic import op
 import sqlalchemy as sa
-
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision: str = "c384314bdd22"
-down_revision: Union[str, None] = "402d067a8b92"
-branch_labels: Union[str, Sequence[str], None] = None
-depends_on: Union[str, Sequence[str], None] = None
+down_revision: str | None = "402d067a8b92"
+branch_labels: str | Sequence[str] | None = None
+depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:
@@ -34,9 +33,7 @@ def downgrade() -> None:
         sa.Column("description", sa.VARCHAR(), autoincrement=False, nullable=True),
         sa.Column("quantity", sa.INTEGER(), autoincrement=False, nullable=True),
         sa.Column("user_id", sa.UUID(), autoincrement=False, nullable=False),
-        sa.ForeignKeyConstraint(
-            ["user_id"], ["user.id"], name=op.f("items_user_id_fkey")
-        ),
+        sa.ForeignKeyConstraint(["user_id"], ["user.id"], name=op.f("items_user_id_fkey")),
         sa.PrimaryKeyConstraint("id", name=op.f("items_pkey")),
     )
     # ### end Alembic commands ###

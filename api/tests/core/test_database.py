@@ -1,4 +1,7 @@
 import pytest
+from fastapi_users.db import SQLAlchemyUserDatabase
+from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
+
 from app.core.base import Base
 from app.core.database import (
     async_session_maker,
@@ -7,8 +10,6 @@ from app.core.database import (
     get_user_db,
 )
 from app.modules.users.models import User
-from fastapi_users.db import SQLAlchemyUserDatabase
-from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 
 
 @pytest.fixture

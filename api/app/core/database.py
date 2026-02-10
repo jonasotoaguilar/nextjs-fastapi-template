@@ -1,13 +1,14 @@
 import uuid
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
 from urllib.parse import urlparse
 
-from app.core.base import Base
-from app.modules.users.models import User
 from fastapi import Depends
 from fastapi_users.db import SQLAlchemyUserDatabase
 from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+
+from app.core.base import Base
+from app.modules.users.models import User
 
 from .config import settings
 
@@ -23,9 +24,7 @@ async_db_connection_url = (
 # Disable connection pooling for serverless environments like Vercel
 engine = create_async_engine(async_db_connection_url, poolclass=NullPool)
 
-async_session_maker = async_sessionmaker(
-    engine, expire_on_commit=settings.EXPIRE_ON_COMMIT
-)
+async_session_maker = async_sessionmaker(engine, expire_on_commit=settings.EXPIRE_ON_COMMIT)
 
 
 async def create_db_and_tables() -> None:

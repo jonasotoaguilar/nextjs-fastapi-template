@@ -1,21 +1,25 @@
 import uuid
 
 import pytest_asyncio
+from fastapi_users.db import SQLAlchemyUserDatabase
+from fastapi_users.password import PasswordHelper
+from httpx import ASGITransport, AsyncClient
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+
 from app.core.base import Base
 from app.core.config import settings
 from app.core.database import get_async_session, get_user_db
 from app.main import app
 from app.modules.users.manager import get_jwt_strategy
 from app.modules.users.models import User
-from fastapi_users.db import SQLAlchemyUserDatabase
-from fastapi_users.password import PasswordHelper
-from httpx import ASGITransport, AsyncClient
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 
 @pytest_asyncio.fixture(scope="function")
 async def engine():
     """Create a fresh test database engine for each test function."""
+    if not settings.TEST_DATABASE_URL:
+        raise ValueError("TEST_DATABASE_URL must be set")
+
     engine = create_async_engine(settings.TEST_DATABASE_URL, echo=True)
 
     async with engine.begin() as conn:
@@ -32,9 +36,7 @@ async def engine():
 @pytest_asyncio.fixture(scope="function")
 async def db_session(engine):
     """Create a fresh database session for each test."""
-    async_session_maker = async_sessionmaker(
-        engine, class_=AsyncSession, expire_on_commit=False
-    )
+    async_session_maker = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
     async with async_session_maker() as session:
         yield session
@@ -93,7 +95,7 @@ async def authenticated_user(test_client, db_session):
 
     # Generate token using the strategy directly
     strategy = get_jwt_strategy()
-    access_token = await strategy.write_token(user)
+    access_token = await strategy.write_token(user)  # type: ignore
 
     # Return both the headers and the user data
     return {

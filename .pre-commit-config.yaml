@@ -63,9 +63,9 @@ repos:
   - repo: local
     hooks:
       # api - Security scans & Type checking
-      - id: api-mypy
-        name: API - MyPy (Type Checking)
-        entry: sh -c 'cd api && uv run mypy .'
+      - id: api-pyrefly
+        name: API - Pyrefly (Type Checking)
+        entry: sh -c 'cd api && uv run pyrefly check'
         language: system
         files: ^api/.*\.py$
         pass_filenames: false

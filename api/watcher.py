@@ -3,7 +3,7 @@ import re
 import subprocess
 import time
 from threading import Timer
-from typing import Any, Optional
+from typing import Any
 
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
@@ -16,7 +16,7 @@ APP_PATH = "app"
 class MyHandler(FileSystemEventHandler):
     def __init__(self) -> None:
         super().__init__()
-        self.debounce_timer: Optional[Timer] = None
+        self.debounce_timer: Timer | None = None
         self.last_modified: float = 0
 
     def on_modified(self, event: Any) -> None:

@@ -1,8 +1,9 @@
 from pathlib import Path
 
 import pytest
-from app.core.email import get_email_config
 from fastapi_mail import ConnectionConfig
+
+from app.core.email import get_email_config
 
 
 @pytest.fixture

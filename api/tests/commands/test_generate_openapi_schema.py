@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 
 import pytest
+
 from commands.generate_openapi_schema import (
     generate_openapi_schema,
     remove_operation_id_tag,
@@ -12,7 +13,7 @@ from commands.generate_openapi_schema import (
 def load_json_file(filename):
     test_dir = os.path.dirname(__file__)
     file_path = os.path.join(test_dir, "files", filename)
-    with open(file_path, "r") as f:
+    with open(file_path) as f:
         return json.load(f)
 
 
@@ -57,7 +58,7 @@ def test_generate_openapi_schema(mocker, mock_app):
 
     output_path = Path(output_file)
     assert output_path.is_file()
-    with open(output_file, "r") as f:
+    with open(output_file) as f:
         content = json.load(f)
         assert content == {"mocked_schema": True}
 

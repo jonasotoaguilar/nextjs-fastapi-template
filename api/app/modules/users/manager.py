@@ -1,6 +1,6 @@
 import re
 import uuid
-from typing import AsyncGenerator, Optional
+from collections.abc import AsyncGenerator
 
 from fastapi import Depends, Request
 from fastapi_users import (
@@ -26,23 +26,27 @@ from .service import send_reset_password_email
 AUTH_URL_PATH = "auth"
 
 
-class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
+class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):  # type: ignore
     reset_password_token_secret = settings.RESET_PASSWORD_SECRET_KEY
     verification_token_secret = settings.VERIFICATION_SECRET_KEY
 
-    async def on_after_register(
-        self, user: User, _request: Optional[Request] = None
+    async def on_after_register(  # type: ignore
+        self, user: User, request: Request | None = None
     ) -> None:
+        _ = request
         print(f"User {user.id} has registered.")
 
-    async def on_after_forgot_password(
-        self, user: User, token: str, _request: Optional[Request] = None
+    async def on_after_forgot_password(  # type: ignore
+        self, user: User, token: str, request: Request | None = None
     ) -> None:
+        _ = request
         await send_reset_password_email(user, token)
 
-    async def on_after_request_verify(
-        self, user: User, token: str, _request: Optional[Request] = None
+    async def on_after_request_verify(  # type: ignore
+        self, user: User, token: str, request: Request | None = None
     ) -> None:
+        _ = request
+
         print(f"Verification requested for user {user.id}. Verification token: {token}")
 
     async def validate_password(  # type: ignore[override]
@@ -68,7 +72,7 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
 async def get_user_manager(
     user_db: SQLAlchemyUserDatabase[User, uuid.UUID] = Depends(get_user_db),
 ) -> AsyncGenerator[UserManager, None]:
-    yield UserManager(user_db)
+    yield UserManager(user_db)  # type: ignore
 
 
 bearer_transport = BearerTransport(tokenUrl=f"{AUTH_URL_PATH}/jwt/login")

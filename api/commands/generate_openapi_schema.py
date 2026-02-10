@@ -1,18 +1,18 @@
 import json
 import os
 from pathlib import Path
+from typing import Any
 
-from app.main import app
 from dotenv import load_dotenv
 
-from typing import Any, Dict, Optional
+from app.main import app
 
 load_dotenv()
 
 OUTPUT_FILE = os.getenv("OPENAPI_OUTPUT_FILE")
 
 
-def generate_openapi_schema(output_file: Optional[str]) -> None:
+def generate_openapi_schema(output_file: str | None) -> None:
     if not output_file:
         print("No output file specified in OPENAPI_OUTPUT_FILE env var")
         return
@@ -39,7 +39,7 @@ def generate_openapi_schema(output_file: Optional[str]) -> None:
         print(f"Could not format with Biome: {e}")
 
 
-def remove_operation_id_tag(schema: Dict[str, Any]) -> Dict[str, Any]:
+def remove_operation_id_tag(schema: dict[str, Any]) -> dict[str, Any]:
     """
     Removes the tag prefix from the operation IDs in the OpenAPI schema.
 
@@ -49,11 +49,7 @@ def remove_operation_id_tag(schema: Dict[str, Any]) -> Dict[str, Any]:
     """
     for path_data in schema["paths"].values():
         for operation in path_data.values():
-            if (
-                isinstance(operation, dict)
-                and "tags" in operation
-                and "operationId" in operation
-            ):
+            if isinstance(operation, dict) and "tags" in operation and "operationId" in operation:
                 tag = operation["tags"][0]
                 operation_id = operation["operationId"]
                 to_remove = f"{tag}-"

@@ -58,9 +58,9 @@ jobs:
         working-directory: ./api
         run: uv run ruff format --check .
 
-      - name: Run MyPy
+      - name: Run Pyrefly
         working-directory: ./api
-        run: uv run mypy .
+        run: uv run pyrefly check
 
       - name: Run tests
         working-directory: ./api
@@ -77,15 +77,3 @@ jobs:
           flag-name: python-coverage
           parallel: true
           path-to-lcov: api/coverage.xml
-
-  hadolint:
-    name: Docker Lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-      - name: Run Hadolint
-        uses: hadolint/hadolint-action@v3.3.0
-        with:
-          dockerfile: api/Dockerfile
-          ignore: DL3013

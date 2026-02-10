@@ -1,8 +1,9 @@
 import pytest
-from app.modules.users.models import User
 from fastapi import status
 from fastapi_users.router import ErrorCode
 from sqlalchemy import select
+
+from app.modules.users.models import User
 
 
 class TestPasswordValidation:
@@ -38,9 +39,7 @@ class TestPasswordValidation:
                 {
                     "detail": {
                         "code": ErrorCode.REGISTER_INVALID_PASSWORD.value,
-                        "reason": [
-                            "Password should contain at least one uppercase letter."
-                        ],
+                        "reason": ["Password should contain at least one uppercase letter."],
                     }
                 },
             ),
@@ -51,9 +50,7 @@ class TestPasswordValidation:
                 {
                     "detail": {
                         "code": ErrorCode.REGISTER_INVALID_PASSWORD.value,
-                        "reason": [
-                            "Password should contain at least one special character."
-                        ],
+                        "reason": ["Password should contain at least one special character."],
                     }
                 },
             ),

@@ -1,7 +1,8 @@
 import pytest
+from fastapi_mail import MessageSchema
+
 from app.modules.users.models import User
 from app.modules.users.service import send_reset_password_email
-from fastapi_mail import MessageSchema
 
 
 @pytest.fixture
@@ -59,9 +60,7 @@ async def test_send_reset_password_email(mock_settings, mock_user, mocker):
     assert [r.email for r in message_arg.recipients] == [mock_user.email]
 
     # Verify template body contains correct data
-    expected_link = (
-        f"http://test-frontend.com/password-recovery/confirm?token={test_token}"
-    )
+    expected_link = f"http://test-frontend.com/password-recovery/confirm?token={test_token}"
     assert message_arg.template_body == {
         "username": mock_user.email,
         "link": expected_link,

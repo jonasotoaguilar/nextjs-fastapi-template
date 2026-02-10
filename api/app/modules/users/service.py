@@ -1,6 +1,6 @@
 import urllib.parse
 
-from fastapi_mail import FastMail, MessageSchema, MessageType
+from fastapi_mail import FastMail, MessageSchema, MessageType, NameEmail
 
 from app.core.config import settings
 from app.core.email import get_email_config
@@ -16,7 +16,7 @@ async def send_reset_password_email(user: User, token: str) -> None:
     link = f"{base_url}{encoded_params}"
     message = MessageSchema(
         subject="Password recovery",
-        recipients=[email],
+        recipients=[NameEmail(name="", email=email)],
         template_body={"username": email, "link": link},
         subtype=MessageType.html,
     )

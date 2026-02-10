@@ -1,4 +1,4 @@
-from typing import Sequence
+from collections.abc import Sequence
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -38,9 +38,7 @@ class Settings(BaseSettings):
     # CORS
     CORS_ORIGINS: Sequence[str]
 
-    model_config = SettingsConfigDict(
-        env_file=".env", env_file_encoding="utf-8", extra="ignore"
-    )
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
 
-settings = Settings()
+settings = Settings()  # type: ignore

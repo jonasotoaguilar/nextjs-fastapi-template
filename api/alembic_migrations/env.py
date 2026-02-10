@@ -5,18 +5,17 @@ import pkgutil
 from logging.config import fileConfig
 from urllib.parse import urlparse
 
-import app.modules
 from alembic import context
-from app.core.base import Base
 from dotenv import load_dotenv
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
+import app.modules
+from app.core.base import Base
+
 # Import models before accessing Base.metadata
-for _, module_name, _ in pkgutil.walk_packages(
-    app.modules.__path__, app.modules.__name__ + "."
-):
+for _, module_name, _ in pkgutil.walk_packages(app.modules.__path__, app.modules.__name__ + "."):
     if module_name.endswith(".models"):
         importlib.import_module(module_name)
 
