@@ -29,11 +29,6 @@ install-pre-commit: ## Install pre-commit hooks using uv from api
 	@echo "Installing pre-commit hooks..."
 	cd $(API_DIR) && uv run pre-commit install
 
-install-skills: ## Install AI skills (interactive)
-	@echo "Installing AI skills..."
-	@chmod +x skills/setup.sh
-	./skills/setup.sh
-
 lint: ## Run pre-commit hooks on all files
 	@echo "Running pre-commit hooks..."
 	cd $(API_DIR) && uv run pre-commit run --all-files
