@@ -13,16 +13,16 @@ wheels = [
 
 [[package]]
 name = "alembic"
-version = "1.18.3"
+version = "1.18.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "mako" },
     { name = "sqlalchemy" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/79/41/ab8f624929847b49f84955c594b165855efd829b0c271e1a8cac694138e5/alembic-1.18.3.tar.gz", hash = "sha256:1212aa3778626f2b0f0aa6dd4e99a5f99b94bd25a0c1ac0bba3be65e081e50b0", size = 2052564, upload-time = "2026-01-29T20:24:15.124Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/94/13/8b084e0f2efb0275a1d534838844926f798bd766566b1375174e2448cd31/alembic-1.18.4.tar.gz", hash = "sha256:cb6e1fd84b6174ab8dbb2329f86d631ba9559dd78df550b57804d607672cedbc", size = 2056725, upload-time = "2026-02-10T16:00:47.195Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/45/8e/d79281f323e7469b060f15bd229e48d7cdd219559e67e71c013720a88340/alembic-1.18.3-py3-none-any.whl", hash = "sha256:12a0359bfc068a4ecbb9b3b02cf77856033abfdb59e4a5aca08b7eacd7b74ddd", size = 262282, upload-time = "2026-01-29T20:24:17.488Z" },
+    { url = "https://files.pythonhosted.org/packages/d2/29/6533c317b74f707ea28f8d633734dbda2119bbadfc61b2f3640ba835d0f7/alembic-1.18.4-py3-none-any.whl", hash = "sha256:a5ed4adcf6d8a4cb575f3d759f071b03cd6e5c7618eb796cb52497be25bfe19a", size = 263893, upload-time = "2026-02-10T16:00:49.997Z" },
 ]
 
 [[package]]
@@ -93,7 +93,7 @@ requires-dist = [
     { name = "asyncpg", specifier = ">=0.31.0,<0.32" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.128.1,<0.129" },
     { name = "fastapi-mail", specifier = ">=1.6.1,<2" },
-    { name = "fastapi-pagination", specifier = "==0.15.9" },
+    { name = "fastapi-pagination", specifier = "==0.15.10" },
     { name = "fastapi-users", extras = ["sqlalchemy"], specifier = ">=15.0.4,<16" },
     { name = "pydantic-settings", specifier = ">=2.12.0,<3" },
 ]
@@ -596,16 +596,16 @@ wheels = [
 
 [[package]]
 name = "fastapi-pagination"
-version = "0.15.9"
+version = "0.15.10"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fastapi" },
     { name = "pydantic" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/48/4b/057fea634912ba285e71fa9b65594c9cc90f589ad25ccbdc7549202c12a2/fastapi_pagination-0.15.9.tar.gz", hash = "sha256:e24b0419a6077a75f38970ada2a57e277845fb177cc2da7300374ee8be32e8b5", size = 574790, upload-time = "2026-02-02T18:29:20.863Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/09/36/4314836683bec1b33195bbaf2d74e1515cfcbb7e7ef5431ef515b864a5d0/fastapi_pagination-0.15.10.tar.gz", hash = "sha256:0ba7d4f795059a91a9e89358af129f2114876452c1defaf198ea8e3419e9a3cd", size = 575160, upload-time = "2026-02-08T13:13:40.312Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c8/7e/7d1a66b618309ef3d1d969ccab187a8c09444e6eb8d3abcd3bc12f145578/fastapi_pagination-0.15.9-py3-none-any.whl", hash = "sha256:21f5ab465fb75e21a3454234603071711b679b1973ba2428e7a63db2221abc09", size = 60100, upload-time = "2026-02-02T18:29:19.363Z" },
+    { url = "https://files.pythonhosted.org/packages/91/95/cce73569317fdba138c315b980c39c6a035baa0ea5867d12276f1d312cff/fastapi_pagination-0.15.10-py3-none-any.whl", hash = "sha256:d50071ebc93b519391f16ff6c3ba9e3603bd659963fe6774ba2f4d5037e17fd8", size = 60798, upload-time = "2026-02-08T13:13:41.972Z" },
 ]
 
 [[package]]
